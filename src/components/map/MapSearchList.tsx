@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const MapSearchList = () => {
@@ -37,7 +36,8 @@ const MapSearchListContainer = styled.div`
   justify-content: space-between;
 `;
 const MapSearchListLeftBox = styled.div`
-  width: 80%;
+  width: 85%;
+  margin-right: 0;
 `;
 const MapSearchListLeftCategoryText = styled.p`
   color: #9ca4a7;
@@ -51,7 +51,8 @@ const MapSearchListLeftAdressText = styled.p`
   margin-top: 0.5rem;
 `;
 const MapSearchListRightBox = styled.div`
-  width: 12%;
+  width: 15%;
+  margin: 0;
 `;
 const MapSearchListRightModalBtn = styled.button`
   width: 100%;

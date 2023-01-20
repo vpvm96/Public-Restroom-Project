@@ -1,7 +1,6 @@
-import React from 'react';
 import { BsSearch, BsX } from 'react-icons/bs';
-import styled from 'styled-components';
 import MapSearchList from './MapSearchList';
+import styled from 'styled-components';
 
 const MapSearch = () => {
   return (
@@ -35,7 +34,7 @@ const MapSearchContainer = styled.div`
 const MapSearchBarContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 2.8rem;
+  height: 3rem;
 `;
 const MapSearchBar = styled.input`
   width: 100%;
@@ -49,14 +48,14 @@ const MapIconBox = styled.div`
   .search {
     position: absolute;
     overflow: hidden;
-    top: 11px;
+    top: 15px;
     left: 10px;
   }
   .xamrk {
     position: absolute;
     overflow: hidden;
     font-size: 1.5rem;
-    top: 11px;
+    top: 13px;
     right: 10px;
   }
 `;

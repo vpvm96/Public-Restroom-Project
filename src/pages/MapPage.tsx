@@ -1,5 +1,5 @@
-import React from 'react';
 import MapSearch from '../components/map/MapSearch';
+import MapLocation from '../components/map/MapLocation';
 import styled from 'styled-components';
 
 const MapPage = () => {
@@ -9,7 +9,9 @@ const MapPage = () => {
         <MapPageLeftBox>
           <MapSearch />
         </MapPageLeftBox>
-        <MapPageRightBox></MapPageRightBox>
+        <MapPageRightBox>
+          <MapLocation />
+        </MapPageRightBox>
       </MapPageContainer>
     </MapPageWrapper>
   );
@@ -20,6 +22,8 @@ const MapPageWrapper = styled.div`
 `;
 const MapPageContainer = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: row;
 `;
 const MapPageLeftBox = styled.div`
   width: 40%;

@@ -1,13 +1,7 @@
 import React, { useRef, useState } from 'react';
-import {
-  ModalLayout,
-  ModalBox,
-  ModalInput,
-  MyModal,
-  YourModal,
-  ModalBtn,
-} from './style';
-
+import { ModalLayout, ModalBox, ModalInput, MyModal } from './style';
+import { uuidv4 } from '@firebase/util';
+import YourModal from './YourModal/YourModal';
 export default function Modal(): any {
   const [modalText, setModalText] = useState('');
   const [isModal, setisModal] = useState(false);
@@ -19,6 +13,7 @@ export default function Modal(): any {
       writer: '빨간휴지',
       text: '노란휴지없나',
       isModal: false,
+      id: uuidv4(),
     },
   ]);
 
@@ -37,7 +32,7 @@ export default function Modal(): any {
     setModalText(event.target.value);
   };
 
-  const ModalInputBtn = (): any => {
+  const addModal = (): any => {
     if (!modalText) {
       alert('리뷰입력하삼');
       InputRef.current.focus();
@@ -46,6 +41,7 @@ export default function Modal(): any {
     const newModal: any = {
       modalText,
       isModal: false,
+      id: uuidv4(),
     };
 
     setModals((prev: any): any => {
@@ -55,6 +51,7 @@ export default function Modal(): any {
     alert('리뷰등록됨');
   };
 
+  console.log(modal);
   return (
     <>
       <button onClick={ModalBtn}>이걸누르면 모달이 툭</button>
@@ -68,16 +65,11 @@ export default function Modal(): any {
               onChange={ModalTextChange}
               ref={InputRef}
             />
-            <button onClick={ModalInputBtn}>확인</button>
-            <button>수정</button> <button>삭제</button>
+            <button onClick={addModal}>확인</button>
           </ModalBox>
         </MyModal>
         {modal.map((item: any) => {
-          return (
-            <YourModal>
-              <p> 내용 : {item.modalText}</p>
-            </YourModal>
-          );
+          return <YourModal item={item} setModals={setModals} />;
         })}
       </ModalLayout>
     </>

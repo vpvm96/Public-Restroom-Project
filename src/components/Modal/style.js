@@ -20,17 +20,4 @@ const ModalInput = styled.input`
   border: 2px solid blue;
 `;
 
-const ModalBtn = styled.button`
-  background-color: red;
-  color: white;
-`;
-
-const YourModal = styled.div`
-  margin-top: 30px;
-  padding: 20px;
-  width: 600px;
-  height: 100px;
-  border: 1px solid black;
-`;
-
-export { ModalLayout, ModalBox, ModalInput, ModalBtn, MyModal, YourModal };
+export { ModalLayout, ModalBox, ModalInput, MyModal };

@@ -2,7 +2,13 @@ import { BsSearch, BsX } from 'react-icons/bs';
 import MapSearchList from './MapSearchList';
 import styled from 'styled-components';
 
-const MapSearch = () => {
+interface MapSearchProps {
+  markerInfo: [
+    { id: string; marker: kakao.maps.Marker; data: [key: string | number] }
+  ];
+}
+
+const MapSearch = ({ markerInfo }: MapSearchProps) => {
   return (
     <MapSearchWrapper>
       <MapSearchContainer>
@@ -15,9 +21,10 @@ const MapSearch = () => {
         </MapSearchBarContainer>
       </MapSearchContainer>
       <MapSearchListContainer>
-        <MapSearchListText>1 Result</MapSearchListText>
-        <MapSearchList />
-        <MapSearchList />
+        <MapSearchListText>총 {markerInfo.length}개의 결과</MapSearchListText>
+        {markerInfo.map((info) => (
+          <MapSearchList key={info.id} markerInfo={info.data} />
+        ))}
       </MapSearchListContainer>
     </MapSearchWrapper>
   );
@@ -25,6 +32,11 @@ const MapSearch = () => {
 
 const MapSearchWrapper = styled.div`
   width: 100%;
+  height: 100vh;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const MapSearchContainer = styled.div`
   width: 100%;
@@ -63,7 +75,7 @@ const MapSearchListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.3rem;
+  gap: 1rem;
 `;
 const MapSearchListText = styled.p`
   font-size: 1.3rem;

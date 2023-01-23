@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useCurrentLocation = () => {
+const useLocation = () => {
   const [markerInfo, setMarkerInfo]: any = useState([]);
 
   function kakaoLocation(locationData: any) {
@@ -123,4 +123,4 @@ const useCurrentLocation = () => {
   };
 };
 
-export default useCurrentLocation;
+export default useLocation;

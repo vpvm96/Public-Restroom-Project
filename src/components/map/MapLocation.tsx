@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import useCurrentLocation from '../../hooks/useCurrentLocation';
-import useRestroom from '../../hooks/useRestroom';
 import styled from 'styled-components';
 
-const MapLocation = () => {
-  const { kakaoLocation } = useCurrentLocation();
-  const { locationData } = useRestroom();
+interface MapLocationProps {
+  locationData: any;
+  kakaoLocation: any;
+}
 
+const MapLocation = ({ locationData, kakaoLocation }: MapLocationProps) => {
   useEffect(() => {
     kakaoLocation(locationData);
-  }, [kakaoLocation, locationData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locationData]);
 
   return (
     <MapLocationWrapper>

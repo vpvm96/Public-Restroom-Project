@@ -26,10 +26,10 @@ const MapPageContainer = styled.div`
   flex-direction: row;
 `;
 const MapPageLeftBox = styled.div`
-  width: 40%;
+  width: 35%;
 `;
 const MapPageRightBox = styled.div`
-  width: 60%;
+  width: 65%;
 `;
 
 export default MapPage;

@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import useCurrentLocation from '../../hooks/useCurrentLocation';
+import useRestroom from '../../hooks/useRestroom';
 import styled from 'styled-components';
 
 const MapLocation = () => {
-  const kakaoLocation: any = useCurrentLocation();
+  const { kakaoLocation } = useCurrentLocation();
+  const { locationData } = useRestroom();
 
   useEffect(() => {
-    kakaoLocation();
-  }, [kakaoLocation]);
+    kakaoLocation(locationData);
+  }, [kakaoLocation, locationData]);
 
   return (
     <MapLocationWrapper>

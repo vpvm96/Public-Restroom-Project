@@ -1,11 +1,11 @@
 import MapSearch from '../components/map/MapSearch';
 import MapLocation from '../components/map/MapLocation';
 import styled from 'styled-components';
-import useLocation from '../hooks/useLocation';
+import useMapLocation from '../hooks/useMapLocation';
 import useRestroom from '../hooks/useRestroom';
 
 const MapPage = () => {
-  const { markerInfo, kakaoLocation } = useLocation();
+  const { markerInfo, kakaoLocation } = useMapLocation();
   const { locationData } = useRestroom();
 
   return (

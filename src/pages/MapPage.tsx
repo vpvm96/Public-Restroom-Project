@@ -1,7 +1,8 @@
 import React from 'react';
+import Navbar from '../components/Navbar';
 
 const MapPage = () => {
-  return <div></div>;
+  return <>MapPage</>;
 };
 
 export default MapPage;

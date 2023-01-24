@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Navbar, CustomButton, CustomInput } from '../components';
+import {
+  Navbar,
+  CustomButton,
+  CustomInput,
+  CustomNicknameInput,
+} from '../components';
 import { apiKey } from '../api/firebaseService';
 import { Link } from 'react-router-dom';
 
@@ -24,9 +29,15 @@ const MyPage = () => {
       <Container>
         마이페이지
         <InputWrapper>
-          <CustomInput label="current" />
+          <>
+            <CustomNicknameInput />
+            <CustomButton>닉네임 변경</CustomButton>
+          </>
+
+          <CustomInput />
+          {/* <CustomInput label="current" />
           <CustomInput label="new" />
-          <CustomInput label="confirm" />
+          <CustomInput label="confirm" /> */}
         </InputWrapper>
         <BtnWrapper>
           <CustomButton>로그아웃</CustomButton>
@@ -87,7 +98,7 @@ const Container = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 `;
 
 const BtnWrapper = styled.div`

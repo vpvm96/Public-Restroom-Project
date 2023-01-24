@@ -1,16 +1,24 @@
 import MapSearch from '../components/map/MapSearch';
 import MapLocation from '../components/map/MapLocation';
 import styled from 'styled-components';
+import useMapLocation from '../hooks/useMapLocation';
+import useRestroom from '../hooks/useRestroom';
 
 const MapPage = () => {
+  const { markerInfo, kakaoLocation } = useMapLocation();
+  const { locationData } = useRestroom();
+
   return (
     <MapPageWrapper>
       <MapPageContainer>
         <MapPageLeftBox>
-          <MapSearch />
+          <MapSearch markerInfo={markerInfo} />
         </MapPageLeftBox>
         <MapPageRightBox>
-          <MapLocation />
+          <MapLocation
+            locationData={locationData}
+            kakaoLocation={kakaoLocation}
+          />
         </MapPageRightBox>
       </MapPageContainer>
     </MapPageWrapper>

@@ -1,13 +1,13 @@
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Router from './routes/Router';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 function App() {
-  return (
-    <div className="App">
-      {/* <Login></Login> */}
-      <Register></Register>
-    </div>
-  );
+  return <Router />;
 }
 
 export default App;

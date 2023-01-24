@@ -1,16 +1,21 @@
 import styled from 'styled-components';
 
-const MapSearchList = () => {
+interface MapSearchListProps {
+  markerInfo: any;
+}
+
+const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
+  const { GU_NM, HNR_NAM, LAT, LNG }: any = markerInfo;
   return (
     <MapSearchListWrapper>
       <MapSearchListContainer>
         <MapSearchListLeftBox>
           <MapSearchListLeftCategoryText>화장실</MapSearchListLeftCategoryText>
           <MapSearchListLeftPlaceNameText>
-            송파구 마천동 공용 화장실
+            {`${GU_NM + ' ' + HNR_NAM} 공용 화장실`}
           </MapSearchListLeftPlaceNameText>
           <MapSearchListLeftAdressText>
-            서울 종로구 동숭길 86 2,3층
+            {`위도 ${LAT} 경도 ${LNG}`}
           </MapSearchListLeftAdressText>
         </MapSearchListLeftBox>
         <MapSearchListRightBox>
@@ -20,9 +25,9 @@ const MapSearchList = () => {
     </MapSearchListWrapper>
   );
 };
-// phoeNumber, categoryGroupName, placeName, x, y, roadAdressName, placeUrl
+
 const MapSearchListWrapper = styled.div`
-  width: 100%;
+  width: 98%;
   display: flex;
   flex-direction: column;
   padding: 1rem;

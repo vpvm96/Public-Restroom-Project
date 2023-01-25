@@ -10,14 +10,15 @@ import {
   YourModalsInput,
 } from './style';
 
-export default function YourModal({ item, setModals }: any) {
+export default function YourModal({ item, modal, setModals }: any) {
   // 수정,버튼
   const changeInput = useRef<any>();
   const changeDel = useRef<any>();
   const changeEdit = useRef<any>();
   const changeSuc = useRef<any>();
-  const [edit, setEdit] = useState(item.modalText);
+  const [edit, setEdit] = useState('');
 
+  console.log(item, modal);
   // 댓글삭제하기
   const deleteModal = () => {
     setModals((prev: any) => prev.filter((t: any) => t.id !== item.id));
@@ -32,7 +33,7 @@ export default function YourModal({ item, setModals }: any) {
     changeSuc.current.style = 'display:block';
     changeInput.current.style = 'display:block';
     changeInput.current.focus();
-    setEdit(event.target.value);
+    setEdit(item.modalText);
   };
 
   //수정완료버튼
@@ -41,33 +42,28 @@ export default function YourModal({ item, setModals }: any) {
     changeDel.current.style = 'display:block';
     changeEdit.current.style = 'display:block';
     changeSuc.current.style = 'display:none';
-
-    const NewEdit = {
-      // writer: '',
-      modalText: edit,
-      // isModal: false,
-      // id: uuidv4(),
-    };
-
-    // setModals(NewEdit);
-  };
-
-  const edits = ({ item }: any): any => {
-    const newModal: any = {
-      writer: '',
-      modalText: edit,
-      isModal: false,
-      id: uuidv4(),
-    };
-    setModals((prev: any): any => {
-      return { ...prev, newModal };
-    });
+    const editValue = modal.map((data: any) => ({
+      ...data,
+      modalText: data.id === item.id ? edit : data.modalText,
+    }));
+    setModals(editValue);
   };
 
   //input onchange
   const inputTextHandeler = (event: any) => {
     setEdit(event.target.value);
+    console.log(edit);
   };
+
+  // const dkanrjsk = ({ modal }: any): any => {
+  //   setModals({
+  //     writer: '',
+  //     modalText: edit,
+  //     isModal: false,
+
+  //     id: uuidv4(),
+  //   });
+  // };
 
   return (
     <YourModalsLayout>
@@ -78,7 +74,6 @@ export default function YourModal({ item, setModals }: any) {
           id="text"
           name="text"
           ref={changeInput}
-          // value={item.modalText}
           value={edit}
           onChange={inputTextHandeler}
         />
@@ -100,7 +95,11 @@ export default function YourModal({ item, setModals }: any) {
         >
           수정
         </button>
-        <button ref={changeSuc} onClick={edits} style={{ display: 'none' }}>
+        <button
+          ref={changeSuc}
+          onClick={inputTextChange}
+          style={{ display: 'none' }}
+        >
           수정완료
         </button>
       </YourModalsBtnArea>

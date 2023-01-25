@@ -6,8 +6,10 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  updateProfile,
 } from 'firebase/auth';
 import usePwdManager from './usePwdManager';
+import useEditProfile from './useEditProfile';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -23,8 +25,10 @@ interface pwdRelatedValueTypes {
 
 const useButtonReactions = ({
   pwdRelatedValues,
+  userNickname,
 }: {
   pwdRelatedValues: pwdRelatedValueTypes;
+  userNickname: string;
 }) => {
   const navigate = useNavigate();
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
@@ -48,11 +52,19 @@ const useButtonReactions = ({
     }
   };
 
-  const handleChangeNickname = () => {
+  //   console.log('userNickname:', userNickname);
+
+  const handleChangeNickname = async () => {
     if (authService.currentUser?.displayName) {
-      console.log('닉네임', authService.currentUser?.displayName);
+      await updateProfile(authService.currentUser, {
+        displayName: userNickname,
+      })
+        .then(() => {
+          console.log('프로필 업데이트 완료!');
+        })
+        .catch((error) => console.log(error));
     }
-    console.log('닉네임 변경 버튼 클릭!');
+    console.log('현재 닉네임', authService.currentUser?.displayName);
     console.log(
       'Button 컴포넌트에서 userInfo:',
       currentPwd,

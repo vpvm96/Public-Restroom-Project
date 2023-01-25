@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { pwdRegex } from '../utils/UserInfoRegex';
 
 const usePwdManager = () => {
-  //여러 Input에 대해서는 하나의 useState, onchange에 객체로 관리하는 것이 더 좋음.
   const [pwdRelatedValues, setPwdRelatedValues] = useState({
     currentPwd: '',
     newPwd: '',

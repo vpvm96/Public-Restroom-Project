@@ -1,14 +1,5 @@
-import React, {
-  memo,
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-  useEffect,
-} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-// import { pwdRegex } from '../utils/UserInfoRegex';
-// import usePwdManager from '../hooks/usePwdManager';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -22,9 +13,7 @@ interface pwdRelatedValueTypes {
   confirmNewPwdObserver: string;
 }
 
-//Mypage로부터 받았던 label props -> { label }: { label: string }
 const CustomInput = ({
-  // label,
   type,
   value,
   observeValue,
@@ -33,9 +22,7 @@ const CustomInput = ({
   name,
   pwdRelatedValues,
   onChangePwd,
-}: // onChangePwd,
-{
-  // label: string;
+}: {
   type: string;
   value: string;
   observeValue: boolean;

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  Navbar,
+  // Navbar,
   CustomButton,
   CustomInput,
   CustomNicknameInput,
 } from '../components';
-import { apiKey } from '../api/firebaseService';
+// import { apiKey } from '../api/firebaseService';
 import { Link } from 'react-router-dom';
 import usePwdManager from '../hooks/usePwdManager';
 import useButtonReactions from '../hooks/useButtonReactions';
+import useLoginState from '../hooks/useLoginState';
+import useEditProfile from '../hooks/useEditProfile';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -24,85 +26,33 @@ interface pwdRelatedValueTypes {
 }
 
 const MyPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const sessionKey = `firebase:authUser:${apiKey}:[DEFAULT]`;
-  const isAuthorizedInSession = sessionStorage.getItem(sessionKey)
-    ? true
-    : false;
-
+  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
+  const {
+    userNickname,
+    userNicknameObserver,
+    isValidNickname,
+    onChangeUserNickname,
+  } = useEditProfile();
   const {
     handleChangeNickname,
     handleLogOut,
     handleChangePwd,
     handleDeleteAccount,
-  } = useButtonReactions({ pwdRelatedValues });
-
-  useEffect(() => {
-    if (isAuthorizedInSession) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [isAuthorizedInSession]);
+  } = useButtonReactions({ pwdRelatedValues, userNickname });
 
   return (
     <>
-      {/* <Container>
-        <NicknameWrapper>
-          마이페이지
-          <CustomNicknameInput />
-          <CustomButton onClickEvent={handleChangeNickname}>
-            닉네임 변경
-          </CustomButton>
-        </NicknameWrapper>
-        <InputWrapper>
-          <CustomInput
-            type="password"
-            value={pwdRelatedValues.currentPwd}
-            observeValue={pwdRelatedValues.isCurrentPwd}
-            observeContent={pwdRelatedValues.currentPwdObserver}
-            placeholder="기존 비밀번호를 입력하세요"
-            name="currentPwd"
-            pwdRelatedValues={pwdRelatedValues}
-            onChangePwd={onChangePwd}
-          />
-          <CustomInput
-            type="password"
-            value={pwdRelatedValues.newPwd}
-            observeValue={pwdRelatedValues.isValidPwd}
-            observeContent={pwdRelatedValues.newPwdObserver}
-            placeholder="새 비밀번호를 입력하세요"
-            name="newPwd"
-            pwdRelatedValues={pwdRelatedValues}
-            onChangePwd={onChangePwd}
-          />
-          <CustomInput
-            type="password"
-            value={pwdRelatedValues.confirmNewPwd}
-            observeValue={pwdRelatedValues.isSamePwd}
-            observeContent={pwdRelatedValues.confirmNewPwdObserver}
-            placeholder="같은 비밀번호를 입력하세요"
-            name="confirmNewPwd"
-            pwdRelatedValues={pwdRelatedValues}
-            onChangePwd={onChangePwd}
-          />
-          <BtnWrapper>
-            <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton>
-            <CustomButton onClickEvent={handleChangePwd}>
-              비밀번호 변경
-            </CustomButton>
-            <CustomButton onClickEvent={handleDeleteAccount}>
-              회원탈퇴
-            </CustomButton>
-          </BtnWrapper>
-        </InputWrapper>
-      </Container> */}
       {isLoggedIn && isAuthorizedInSession ? (
         <Container>
           <NicknameWrapper>
             마이페이지
-            <CustomNicknameInput />
+            <CustomNicknameInput
+              userNickname={userNickname}
+              userNicknameObserver={userNicknameObserver}
+              isValidNickname={isValidNickname}
+              onChangeUserNickname={onChangeUserNickname}
+            />
             <CustomButton onClickEvent={handleChangeNickname}>
               닉네임 변경
             </CustomButton>

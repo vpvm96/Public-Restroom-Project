@@ -1,4 +1,3 @@
-import { BsSearch, BsX } from 'react-icons/bs';
 import MapSearchList from './MapSearchList';
 import styled from 'styled-components';
 
@@ -11,15 +10,7 @@ interface MapSearchProps {
 const MapSearch = ({ markerInfo }: MapSearchProps) => {
   return (
     <MapSearchWrapper>
-      <MapSearchContainer>
-        <MapSearchBarContainer>
-          <MapIconBox>
-            <BsSearch className="search" />
-            <BsX className="xamrk" />
-          </MapIconBox>
-          <MapSearchBar type="text" placeholder="Search" />
-        </MapSearchBarContainer>
-      </MapSearchContainer>
+      <MapSearchContainer></MapSearchContainer>
       <MapSearchListContainer>
         <MapSearchListText>총 {markerInfo.length}개의 결과</MapSearchListText>
         {markerInfo.map((info) => (
@@ -32,7 +23,7 @@ const MapSearch = ({ markerInfo }: MapSearchProps) => {
 
 const MapSearchWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 89vh;
   overflow: scroll;
   ::-webkit-scrollbar {
     display: none;
@@ -42,34 +33,6 @@ const MapSearchContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-`;
-const MapSearchBarContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 3rem;
-`;
-const MapSearchBar = styled.input`
-  width: 100%;
-  height: 100%;
-  padding-left: 2rem;
-  border-radius: 0.5rem;
-  background-color: #f0f1f6;
-  border: 2px transparent;
-`;
-const MapIconBox = styled.div`
-  .search {
-    position: absolute;
-    overflow: hidden;
-    top: 15px;
-    left: 10px;
-  }
-  .xamrk {
-    position: absolute;
-    overflow: hidden;
-    font-size: 1.5rem;
-    top: 13px;
-    right: 10px;
-  }
 `;
 const MapSearchListContainer = styled.div`
   width: 100%;

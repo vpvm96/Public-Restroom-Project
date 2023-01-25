@@ -63,7 +63,7 @@ const useMapLocation = () => {
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const radius = 350;
 
-    locationData.row.forEach((item: any) => {
+    locationData.flat().forEach((item: any) => {
       const imageSize = new kakao.maps.Size(24, 35);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
       const c1 = locPosition;
@@ -80,10 +80,16 @@ const useMapLocation = () => {
           image: markerImage,
         });
         const infoWindow = new kakao.maps.InfoWindow({
-          content: `<div style="padding:5px;">${
-            item.GU_NM + ' ' + item.HNR_NAM
+          content: `<div style="padding:5px;">No.${
+            item.OBJECTID + ' ' + item.GU_NM
           } 화장실</div>`,
           removable: true,
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function () {
+          window.open(
+            `https://map.kakao.com/link/roadview/${item.LAT},${item.LNG}`
+          );
         });
 
         infoWindow.open(map, marker);

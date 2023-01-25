@@ -22,28 +22,27 @@ const MyPage = () => {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [isAuthorizedInSession]);
 
   return (
     <>
       <Container>
-        마이페이지
+        <NicknameWrapper>
+          마이페이지
+          <CustomNicknameInput />
+          <CustomButton>닉네임 변경</CustomButton>
+        </NicknameWrapper>
         <InputWrapper>
-          <>
-            <CustomNicknameInput />
-            <CustomButton>닉네임 변경</CustomButton>
-          </>
-
           <CustomInput />
           {/* <CustomInput label="current" />
           <CustomInput label="new" />
           <CustomInput label="confirm" /> */}
+          <BtnWrapper>
+            <CustomButton>로그아웃</CustomButton>
+            <CustomButton>비밀번호 변경</CustomButton>
+            <CustomButton>회원탈퇴</CustomButton>
+          </BtnWrapper>
         </InputWrapper>
-        <BtnWrapper>
-          <CustomButton>로그아웃</CustomButton>
-          <CustomButton>비밀번호 변경</CustomButton>
-          <CustomButton>회원탈퇴</CustomButton>
-        </BtnWrapper>
       </Container>
       {/* {isLoggedIn && isAuthorizedInSession ? (
         <Container>
@@ -85,13 +84,13 @@ export default MyPage;
 
 const Container = styled.div`
   margin-top: 15rem;
-  width: 40%;
-  height: 60%;
+  /* width: 40%; */
+  /* height: 60%; */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   gap: 10px;
 `;
 
@@ -106,3 +105,8 @@ const BtnWrapper = styled.div`
 `;
 
 const NoticeWrapper = styled.div``;
+
+const NicknameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

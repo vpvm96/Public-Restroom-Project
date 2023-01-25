@@ -21,9 +21,9 @@ const CustomNicknameInput = () => {
   };
 
   return (
-    <>
+    <Container>
       <InputStyle
-        type="password"
+        type="text"
         value={userNickname}
         placeholder="변경할 닉네임을 입력하세요"
         onChange={onChangeUserNickname}
@@ -35,15 +35,20 @@ const CustomNicknameInput = () => {
           </NicknameObserver>
         )}
       </ObserverWrapper>
-    </>
+    </Container>
   );
 };
 
 export default CustomNicknameInput;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const InputStyle = styled.input`
   margin-left: 0;
-  width: 100px;
+  width: 150px;
   height: 30px;
   border: none;
   background-color: #eeeeee;
@@ -58,10 +63,10 @@ const NicknameObserver = styled.p<{ isSamePwd: boolean }>`
   margin-left: 0;
   font-weight: 500;
   font-size: 0.5rem;
-  line-height: 20px;
+  line-height: 0px;
   letter-spacing: -0.5px;
   position: relative;
-  bottom: 20px;
+  bottom: -10px;
   /* left: 0; */
   color: ${(props) => (props.isSamePwd ? '#189701' : '#ff2727')};
 `;

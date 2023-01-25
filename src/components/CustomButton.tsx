@@ -18,6 +18,7 @@ import {
   updateUserNickname,
 } from '../redux/modules/userSlice';
 import { RootState } from '../redux/config/configStore';
+import { userInfo } from 'os';
 // import { userStateType } from '../redux/modules/userSlice';
 
 type ButtonText = {
@@ -39,6 +40,8 @@ const CustomButton = ({ children }: ButtonText) => {
   // const newPwdConfirmed = newPwd === confirmNewPwd;
   const newPwdConfirmed = userInfo.newPwd === userInfo.confirmNewPwd;
 
+  console.log('userInfo:', userInfo.currentPwd);
+
   const handleLogOut = async () => {
     await signOut(authService)
       .then(() => console.log('성공적으로 로그아웃 하였습니다!'))
@@ -47,6 +50,7 @@ const CustomButton = ({ children }: ButtonText) => {
   };
 
   const handleDeleteAccount = async () => {
+    console.log('회원탈퇴 완료');
     if (authService.currentUser) {
       await deleteUser(authService.currentUser)
         .then(() => console.log('성공적으로 탈퇴하였습니다!'))
@@ -56,12 +60,12 @@ const CustomButton = ({ children }: ButtonText) => {
   };
 
   const handleChangeNickname = () => {
-    console.log('닉네임 변경부분');
+    console.log('닉네임 변경');
     // dispatch(updateUserInfo({userInfo.userNickname}))
   };
 
   const handleChangePwd = () => {
-    // console.log('비밀번호 변경 클릭!');
+    console.log('비밀번호 변경');
 
     if (authService.currentUser?.email) {
       const credential = EmailAuthProvider.credential(

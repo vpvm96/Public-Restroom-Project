@@ -1,7 +1,7 @@
 import React from 'react';
-
+import Navbar from '../components/Navbar';
 const LoginPage = () => {
-  return <div>Login</div>;
+  return <div></div>;
 };
 
 export default LoginPage;

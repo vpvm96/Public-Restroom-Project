@@ -19,7 +19,7 @@ export const getBublicRestroomRequest = async () => {
     } = await axios.get(
       `http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_PUBLIC_API_KEY}/json/GeoInfoPublicToiletWGS/${req[0]}/${req[1]}`
     );
-    restRoomData.push(row);
+    restRoomData.push(...row);
   });
 
   return restRoomData;

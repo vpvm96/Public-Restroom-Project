@@ -6,14 +6,14 @@ interface MapSearchListProps {
 }
 
 const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
-  const { GU_NM, HNR_NAM, LAT, LNG }: any = markerInfo;
+  const { GU_NM, HNR_NAM, LAT, LNG, OBJECTID }: any = markerInfo;
   return (
     <MapSearchListWrapper>
       <MapSearchListContainer>
         <MapSearchListLeftBox>
           <MapSearchListLeftCategoryText>화장실</MapSearchListLeftCategoryText>
           <MapSearchListLeftPlaceNameText>
-            {`${GU_NM + ' ' + HNR_NAM} 공용 화장실`}
+            {`No.${OBJECTID + ' ' + GU_NM + ' ' + HNR_NAM} 공용 화장실`}
           </MapSearchListLeftPlaceNameText>
           <MapSearchListLeftAdressText>
             {`위도 ${LAT} 경도 ${LNG}`}

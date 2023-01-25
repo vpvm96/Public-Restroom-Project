@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Route = () => {
+const SignUpPage = () => {
   return <div></div>;
 };
 
-export default Route;
+export default SignUpPage;

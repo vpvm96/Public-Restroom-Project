@@ -23,7 +23,7 @@ const MapSearch = ({ markerInfo }: MapSearchProps) => {
 
 const MapSearchWrapper = styled.div`
   width: 100%;
-  height: 89vh;
+  height: 90vh;
   overflow: scroll;
   ::-webkit-scrollbar {
     display: none;

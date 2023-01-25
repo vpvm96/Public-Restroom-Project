@@ -10,6 +10,7 @@ import {
   ModalButton,
   ModalFooter,
   FooterButton,
+  ReviewBtton,
 } from './style';
 
 export default function Modal({ header }: any): any {
@@ -23,7 +24,7 @@ export default function Modal({ header }: any): any {
 
   return (
     <>
-      <button onClick={openModal}>모달팝업</button>
+      <ReviewBtton onClick={openModal}>리뷰작성</ReviewBtton>
       <Modallayout className={modalOpen ? 'openModal modal' : 'modal'}>
         {modalOpen ? (
           <ModalSection>

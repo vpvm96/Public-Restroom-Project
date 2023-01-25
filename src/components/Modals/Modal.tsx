@@ -13,7 +13,7 @@ import {
   ReviewBtton,
 } from './style';
 
-export default function Modal({ header }: any): any {
+export default function Modal({ HNR_NAM, GU_NM }: any): any {
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => {
     setModalOpen(false);
@@ -29,7 +29,7 @@ export default function Modal({ header }: any): any {
         {modalOpen ? (
           <ModalSection>
             <ModalHeader>
-              화장실 리뷰
+              {`${GU_NM + ' ' + HNR_NAM} 공용 화장실`}
               <ModalButton className="close" onClick={closeModal}>
                 &times;
               </ModalButton>

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Modal from '../Modals/Modal';
 
 interface MapSearchListProps {
   markerInfo: any;
@@ -19,7 +20,7 @@ const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
           </MapSearchListLeftAdressText>
         </MapSearchListLeftBox>
         <MapSearchListRightBox>
-          <MapSearchListRightModalBtn>리뷰 작성</MapSearchListRightModalBtn>
+          <Modal />
         </MapSearchListRightBox>
       </MapSearchListContainer>
     </MapSearchListWrapper>

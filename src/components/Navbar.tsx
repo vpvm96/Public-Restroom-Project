@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import logoImg from '../assets/await.png';
 import profileImg from '../assets/cat.jpg';
 import blankImg from '../assets/blank.png';
+import { getAuth, signOut } from 'firebase/auth';
 
 const Navbar = () => {
   const [user, setUser] = useState(false);
@@ -12,8 +13,17 @@ const Navbar = () => {
     setUser(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (e: any) => {
     setUser(false);
+
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        alert('로그아웃 되었습니다.');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -44,9 +54,9 @@ const Navbar = () => {
 
       <LoginButtonBox to="/login">
         {user ? (
-          <LoginButton onClick={handleLogout}>Login</LoginButton>
+          <LoginButton onClick={handleLogin}>Login</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
         ) : (
-          <LoginButton onClick={handleLogin}>Logout</LoginButton>
+          <LoginButton onClick={handleLogout}>Logout</LoginButton>
         )}
       </LoginButtonBox>
     </Nav>

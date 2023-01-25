@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { auth } from '../api/firebaseService';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPwd, setCnfirmPwd] = useState('');
+  const navigate = useNavigate();
 
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +30,13 @@ const SignUpPage = () => {
     console.log('handleSubmitClick');
     //인증부분
     try {
-      //   const auth = getAuth();
+      const auth = getAuth();
       const user = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       ).then(() => {
-        console.log('회원가입성공');
+        console.log('회원가입성공:', user);
       });
     } catch (error) {
       console.log(error);
@@ -47,6 +48,7 @@ const SignUpPage = () => {
       <form onSubmit={handleSubmitClick}>
         <InputBox>
           <button
+            onClick={() => navigate('/login')}
             style={{
               border: 'none',
               backgroundColor: 'white',
@@ -67,6 +69,7 @@ const SignUpPage = () => {
                 placeholder="아이디"
                 onChange={onChangeEmail}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input
@@ -74,6 +77,7 @@ const SignUpPage = () => {
                 placeholder="비밀번호"
                 onChange={onChangePassword}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input
@@ -81,6 +85,7 @@ const SignUpPage = () => {
                 placeholder="비밀번호 확인"
                 onChange={onChangeconfirmPwd}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>

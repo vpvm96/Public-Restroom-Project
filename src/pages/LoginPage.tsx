@@ -1,22 +1,107 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  //onchange로 값을 저장한다.
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    console.log('onchnageemail:', email);
+  };
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    console.log('onchnageemail:', password);
+  };
+
+  //firebase
+  const handleSubmitClick = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log(user);
+            navigate('/');
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+  };
+
+  //firebase 비밀번호 찾기 작업중...
+  const findPwd = (e: any) => {
+    e.preventDefault();
+
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        console.log('성공');
+        alert('비밀번호 초기화 이메일이 전송되었습니다.');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        alert(errorMessage);
+      });
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmitClick}>
         <InputBox>
           <LoginLogo>
             <h1>wait !</h1>
           </LoginLogo>
 
           <InputBoxContent>
-            <Input name="아이디" value="아이디" />
-            <Input name="비밀번호" value="비밀번호" />
+            <Inputholder>
+              <Input
+                name="아이디"
+                placeholder="아이디"
+                onChange={onChangeEmail}
+              ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
+            </Inputholder>
+            <Inputholder>
+              <Input
+                name="비밀번호"
+                placeholder="비밀번호"
+                onChange={onChangePassword}
+              ></Input>
+            </Inputholder>
           </InputBoxContent>
           <ButtonBox>
-            <RegisterBtn>회원 가입</RegisterBtn>
+            <RegisterBtn onClick={() => navigate('/signup')}>
+              회원 가입
+            </RegisterBtn>
             <LoginBtn>로그인</LoginBtn>
+            <RegisterBtn onClick={findPwd}>비밀번호 찾기</RegisterBtn>
           </ButtonBox>
         </InputBox>
       </form>
@@ -39,15 +124,22 @@ const InputBox = styled.div`
 
 // 인풋태그
 const Input = styled.input`
+  border: none;
+  width: 300px;
+  height: 38px;
+  position: relative;
+  left: 30px;
+  outline: none;
+`;
+
+//Input태그의 테두리
+const Inputholder = styled.div`
   border-radius: 30px;
   width: 380px;
   height: 45px;
-
   border: 3px solid #b2c8df;
-
   color: #b2c8df;
-
-  margin-top: 20px;
+  margin-top: 25px;
 `;
 
 //인풋을 둘러싼 박스
@@ -80,6 +172,7 @@ const LoginBtn = styled.button`
   font-weight: 900;
   margin-top: 15px;
   background-color: White;
+  cursor: pointer;
   &:hover {
     background: cornflowerblue;
     color: white;
@@ -94,6 +187,7 @@ const RegisterBtn = styled.button`
   border: none;
   margin-top: 10px;
   background-color: White;
+  cursor: pointer;
   &:hover {
     color: #816ceb;
     transition: 0.4s;

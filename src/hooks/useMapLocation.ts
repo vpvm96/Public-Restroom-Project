@@ -43,11 +43,15 @@ const useMapLocation = () => {
         // const lat = position.coords.latitude, 현재 위치 정보 얻어오는 위도 경도
         //   lon = position.coords.longitude;
 
-        const locPosition = new kakao.maps.LatLng(37.571033, 127.009504),
+        // 동대문역 위도 경도 37.571033, 127.009504
+        // 노원역 위도 경도 37.654326, 127.060089
+        // 서울역 위도 경도 37.555364, 126.968700
+
+        const locPosition = new kakao.maps.LatLng(37.654326, 127.060089),
           message = '<div style="padding:5px;">현재 위치</div>';
 
-        displayMarker(locPosition, message, map);
         displayMarkerAll(locationData, map, locPosition);
+        displayMarker(locPosition, message, map);
         displayCircle(locPosition, map);
       });
     } else {
@@ -55,6 +59,8 @@ const useMapLocation = () => {
         message = 'geolocation을 사용할수 없어요..';
 
       displayMarker(locPosition, message, map);
+      displayCircle(locPosition, map);
+      displayMarkerAll(locationData, map, locPosition);
     }
   }
 
@@ -85,19 +91,21 @@ const useMapLocation = () => {
     map: kakao.maps.Map,
     locPosition: kakao.maps.LatLng
   ) {
+    const markerArr: any = [];
     const imageSrc: string =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const radius = 350;
+    const imageSize = new kakao.maps.Size(24, 35);
+    const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-    locationData.forEach((item: any) => {
-      const imageSize = new kakao.maps.Size(24, 35);
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    locationData?.forEach((item: any) => {
       const c1 = locPosition;
       const c2 = new kakao.maps.LatLng(item.LAT, item.LNG);
       const poly = new kakao.maps.Polyline({
         path: [c1, c2],
       });
       const dist = poly.getLength();
+
       if (dist < radius) {
         const marker = new kakao.maps.Marker({
           map: map,
@@ -111,27 +119,18 @@ const useMapLocation = () => {
           } 화장실</div>`,
           removable: true,
         });
-
         kakao.maps.event.addListener(marker, 'click', function () {
           window.open(
             `https://map.kakao.com/link/roadview/${item.LAT},${item.LNG}`
           );
         });
-
+        markerArr.push(item);
         infoWindow.open(map, marker);
-
-        setMarkerInfo((prev: any) => [
-          ...prev,
-          {
-            id: item.OBJECTID,
-            marker: marker,
-            data: item,
-          },
-        ]);
       } else {
         console.log('영역 밖 맵');
       }
     });
+    setMarkerInfo(markerArr);
   }
 
   function displayCircle(locPosition: kakao.maps.LatLng, map: kakao.maps.Map) {

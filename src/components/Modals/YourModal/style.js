@@ -15,4 +15,9 @@ const YourModalsLayout = styled.div`
   height: 100%;
   padding: 10px 10px 10px 10px;
 `;
-export { YourModals, YourModalsBtnArea, YourModalsLayout };
+const YourModalsInput = styled.input`
+  width: 100%;
+  height: 100%;
+  display: none;
+`;
+export { YourModals, YourModalsBtnArea, YourModalsLayout, YourModalsInput };

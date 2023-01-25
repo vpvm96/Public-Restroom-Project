@@ -1,4 +1,3 @@
-
 import Router from './routes/Router';
 
 declare global {
@@ -7,14 +6,8 @@ declare global {
   }
 }
 
-
 function App() {
-  return (
-
-      <Router />
-
-    </>
-  );
+  return <Router />;
 }
 
 export default App;

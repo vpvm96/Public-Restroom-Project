@@ -2,6 +2,7 @@ import React from 'react';
 import { YourModals, YourModalsBtnArea, YourModalsLayout } from './style';
 
 export default function YourModal({ item, setModals }: any) {
+  // 댓글삭제하기
   const deleteModal = () => {
     setModals((prev: any) => prev.filter((t: any) => t.id !== item.id));
     console.log(item);

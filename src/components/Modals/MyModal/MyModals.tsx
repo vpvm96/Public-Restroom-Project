@@ -23,7 +23,7 @@ export default function MyModals(): any {
   const ModalTextChange = (event: any): any => {
     setModalText(event.target.value);
   };
-
+  // 댓글추가하기
   const addModal = (): any => {
     if (!modalText) {
       alert('리뷰입력하삼');

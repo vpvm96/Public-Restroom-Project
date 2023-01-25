@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { ModalLayout, ModalBox, ModalInput, MyModal } from './style';
 import { uuidv4 } from '@firebase/util';
-import YourModal from './YourModal/YourModal';
-export default function Modal(): any {
+import YourModal from '../YourModal/YourModal';
+export default function MyModals(): any {
   const [modalText, setModalText] = useState('');
-  const [isModal, setisModal] = useState(false);
+
   const modalRef = useRef<any>();
   const InputRef = useRef<any>();
 
@@ -18,14 +18,6 @@ export default function Modal(): any {
   ]);
 
   // 버튼누르면 Modal 보이고 안보이고
-  const ModalBtn = () => {
-    setisModal(!isModal);
-    if (isModal === false) {
-      modalRef.current.style = 'display:none';
-    } else if (isModal === true) {
-      modalRef.current.style = 'display:block';
-    }
-  };
 
   // input 창안에 onchange
   const ModalTextChange = (event: any): any => {
@@ -51,16 +43,14 @@ export default function Modal(): any {
     alert('리뷰등록됨');
   };
 
-  console.log(modal);
   return (
     <>
-      <button onClick={ModalBtn}>이걸누르면 모달이 툭</button>
       <ModalLayout ref={modalRef}>
         <MyModal>
           작성자 : 빨간휴지줄까 파란휴지줄까
           <ModalBox>
             <ModalInput
-              placeholder="댓글을 입력해주세요"
+              placeholder="리뷰를 남겨주세요"
               value={modalText}
               onChange={ModalTextChange}
               ref={InputRef}

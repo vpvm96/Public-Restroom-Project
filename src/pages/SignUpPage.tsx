@@ -48,7 +48,6 @@ const SignUpPage = () => {
   };
 
   //유효성검사 함수
-  const;
 
   return (
     <div>

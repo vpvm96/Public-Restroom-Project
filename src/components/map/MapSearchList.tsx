@@ -20,7 +20,7 @@ const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
           </MapSearchListLeftAdressText>
         </MapSearchListLeftBox>
         <MapSearchListRightBox>
-          <Modal GU_NM={GU_NM} HNR_NAM={HNR_NAM} />
+          <Modal GU_NM={GU_NM} HNR_NAM={HNR_NAM} OBJECTID={OBJECTID} />
         </MapSearchListRightBox>
       </MapSearchListContainer>
     </MapSearchListWrapper>

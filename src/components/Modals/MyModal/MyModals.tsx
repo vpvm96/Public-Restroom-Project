@@ -2,17 +2,16 @@ import React, { useRef, useState } from 'react';
 import { ModalLayout, ModalBox, ModalInput, MyModal } from './style';
 import { uuidv4 } from '@firebase/util';
 import YourModal from '../YourModal/YourModal';
-export default function MyModals(): any {
+export default function MyModals({ OBJECTID }: any): any {
   const [modalText, setModalText] = useState('');
-
   const modalRef = useRef<any>();
   const InputRef = useRef<any>();
-
   const [modal, setModals]: any = useState([
     {
       writer: '빨간휴지',
       modalText: '노란휴지없나',
       isModal: false,
+      ModalId: OBJECTID,
       id: uuidv4(),
     },
   ]);
@@ -34,6 +33,7 @@ export default function MyModals(): any {
       writer: '',
       modalText,
       isModal: false,
+      ModalId: OBJECTID,
       id: uuidv4(),
     };
 
@@ -60,7 +60,14 @@ export default function MyModals(): any {
           </ModalBox>
         </MyModal>
         {modal.map((item: any) => {
-          return <YourModal key={item.id} item={item} setModals={setModals} />;
+          return (
+            <YourModal
+              key={item.id}
+              item={item}
+              modal={modal}
+              setModals={setModals}
+            />
+          );
         })}
       </ModalLayout>
     </>

@@ -13,7 +13,7 @@ import {
   ReviewBtton,
 } from './style';
 
-export default function Modal({ HNR_NAM, GU_NM }: any): any {
+export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => {
     setModalOpen(false);
@@ -34,7 +34,7 @@ export default function Modal({ HNR_NAM, GU_NM }: any): any {
                 &times;
               </ModalButton>
             </ModalHeader>
-            <MyModals />
+            <MyModals OBJECTID={OBJECTID} />
             <ModalFooter>
               <FooterButton className="close" onClick={closeModal}>
                 close

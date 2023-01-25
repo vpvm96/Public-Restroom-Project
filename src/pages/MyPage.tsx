@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import {
   // Navbar,
+  ProfileImage,
   CustomButton,
   CustomInput,
   CustomNicknameInput,
@@ -12,18 +13,19 @@ import usePwdManager from '../hooks/usePwdManager';
 import useButtonReactions from '../hooks/useButtonReactions';
 import useLoginState from '../hooks/useLoginState';
 import useEditProfile from '../hooks/useEditProfile';
+// import ProfileImage from '../components/ProfileImage';
 
-interface pwdRelatedValueTypes {
-  currentPwd: string;
-  newPwd: string;
-  confirmNewPwd: string;
-  isCurrentPwd: boolean;
-  isValidPwd: boolean;
-  isSamePwd: boolean;
-  currentPwdObserver: string;
-  newPwdObserver: string;
-  confirmNewPwdObserver: string;
-}
+// interface pwdRelatedValueTypes {
+//   currentPwd: string;
+//   newPwd: string;
+//   confirmNewPwd: string;
+//   isCurrentPwd: boolean;
+//   isValidPwd: boolean;
+//   isSamePwd: boolean;
+//   currentPwdObserver: string;
+//   newPwdObserver: string;
+//   confirmNewPwdObserver: string;
+// }
 
 const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession } = useLoginState();
@@ -33,20 +35,22 @@ const MyPage = () => {
     userNicknameObserver,
     isValidNickname,
     onChangeUserNickname,
+    setUserNickname,
   } = useEditProfile();
   const {
     handleChangeNickname,
     handleLogOut,
     handleChangePwd,
     handleDeleteAccount,
-  } = useButtonReactions({ pwdRelatedValues, userNickname });
+  } = useButtonReactions({ pwdRelatedValues, userNickname, setUserNickname });
 
   return (
     <>
       {isLoggedIn && isAuthorizedInSession ? (
         <Container>
-          <NicknameWrapper>
+          <ProfileWrapper>
             마이페이지
+            <ProfileImage />
             <CustomNicknameInput
               userNickname={userNickname}
               userNicknameObserver={userNicknameObserver}
@@ -56,7 +60,7 @@ const MyPage = () => {
             <CustomButton onClickEvent={handleChangeNickname}>
               닉네임 변경
             </CustomButton>
-          </NicknameWrapper>
+          </ProfileWrapper>
           <InputWrapper>
             <CustomInput
               type="password"
@@ -147,7 +151,9 @@ const BtnWrapper = styled.div`
 
 const NoticeWrapper = styled.div``;
 
-const NicknameWrapper = styled.div`
+const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;

@@ -26,9 +26,11 @@ interface pwdRelatedValueTypes {
 const useButtonReactions = ({
   pwdRelatedValues,
   userNickname,
+  setUserNickname,
 }: {
   pwdRelatedValues: pwdRelatedValueTypes;
   userNickname: string;
+  setUserNickname: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
@@ -60,18 +62,14 @@ const useButtonReactions = ({
         displayName: userNickname,
       })
         .then(() => {
-          console.log('프로필 업데이트 완료!');
+          alert('프로필 업데이트 완료!');
+          setUserNickname('');
+          navigate('/mypage', { replace: true });
         })
         .catch((error) => console.log(error));
     }
-    console.log('현재 닉네임', authService.currentUser?.displayName);
-    console.log(
-      'Button 컴포넌트에서 userInfo:',
-      currentPwd,
-      newPwd,
-      confirmNewPwd
-    );
   };
+  console.log('현재 닉네임', authService.currentUser?.displayName);
 
   const handleChangePwd = () => {
     console.log('비밀번호 변경');

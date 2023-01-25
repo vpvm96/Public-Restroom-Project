@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const useEditProfile = () => {
-  const [userNickname, setUserNickname] = useState('');
+  const [userNickname, setUserNickname] = useState<string>('');
 
   //닉네임 유효성 검사
   const [userNicknameObserver, setUserNicknameObserver] = useState<string>('');
@@ -23,6 +23,7 @@ const useEditProfile = () => {
     userNicknameObserver,
     isValidNickname,
     onChangeUserNickname,
+    setUserNickname,
   };
 };
 

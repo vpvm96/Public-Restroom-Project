@@ -19,4 +19,5 @@ const BtnStyle = styled.button`
   background-color: #468bfb;
   margin: 10px;
   color: white;
+  cursor: pointer;
 `;

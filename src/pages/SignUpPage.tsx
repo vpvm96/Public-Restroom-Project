@@ -9,6 +9,10 @@ const SignUpPage = () => {
   const [confirmPwd, setCnfirmPwd] = useState('');
   const navigate = useNavigate();
 
+  //유효성검사
+  const [validateId, setValidateId] = useState('');
+  const [validateIdColor, setValidateIdColor] = useState(true);
+
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -42,6 +46,9 @@ const SignUpPage = () => {
       console.log(error);
     }
   };
+
+  //유효성검사 함수
+  const;
 
   return (
     <div>

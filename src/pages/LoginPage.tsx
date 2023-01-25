@@ -86,7 +86,6 @@ const LoginPage = () => {
                 placeholder="아이디"
                 onChange={onChangeEmail}
               ></Input>
-              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input

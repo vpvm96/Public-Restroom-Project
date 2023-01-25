@@ -1,5 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { ModalLayout, ModalBox, ModalInput, MyModal } from './style';
+import {
+  ModalLayout,
+  ModalBox,
+  ModalInput,
+  MyModal,
+  ModalSapan,
+} from './style';
 import { uuidv4 } from '@firebase/util';
 import YourModal from '../YourModal/YourModal';
 export default function MyModals({ OBJECTID }: any): any {
@@ -48,15 +54,15 @@ export default function MyModals({ OBJECTID }: any): any {
     <>
       <ModalLayout ref={modalRef}>
         <MyModal>
-          작성자 : 빨간휴지줄까 파란휴지줄까
           <ModalBox>
+            작성자 : 빨간휴지줄까 파란휴지줄까
+            <ModalSapan onClick={addModal}>확인</ModalSapan>
             <ModalInput
               placeholder="리뷰를 남겨주세요"
               value={modalText}
               onChange={ModalTextChange}
               ref={InputRef}
             />
-            <button onClick={addModal}>확인</button>
           </ModalBox>
         </MyModal>
         {modal.map((item: any) => {

@@ -1,5 +1,3 @@
-import { uuidv4 } from '@firebase/util';
-import { text } from 'node:stream/consumers';
 import React from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
@@ -8,6 +6,8 @@ import {
   YourModalsBtnArea,
   YourModalsLayout,
   YourModalsInput,
+  YourModalSapan,
+  YourModlasText,
 } from './style';
 
 export default function YourModal({ item, modal, setModals }: any) {
@@ -16,9 +16,10 @@ export default function YourModal({ item, modal, setModals }: any) {
   const changeDel = useRef<any>();
   const changeEdit = useRef<any>();
   const changeSuc = useRef<any>();
+  const input = useRef<any>();
+  const [totgle, setTtogle] = useState(false);
   const [edit, setEdit] = useState('');
 
-  console.log(item, modal);
   // 댓글삭제하기
   const deleteModal = () => {
     setModals((prev: any) => prev.filter((t: any) => t.id !== item.id));
@@ -28,25 +29,11 @@ export default function YourModal({ item, modal, setModals }: any) {
 
   // 수정버튼
   const inputText = (event: any) => {
-    changeDel.current.style = 'display:none';
-    changeEdit.current.style = 'display:none';
-    changeSuc.current.style = 'display:block';
+    setTtogle(true);
+    input.current.style = 'display:none';
     changeInput.current.style = 'display:block';
     changeInput.current.focus();
     setEdit(item.modalText);
-  };
-
-  //수정완료버튼
-  const inputTextChange = (event: any) => {
-    changeInput.current.style = 'display:none';
-    changeDel.current.style = 'display:block';
-    changeEdit.current.style = 'display:block';
-    changeSuc.current.style = 'display:none';
-    const editValue = modal.map((data: any) => ({
-      ...data,
-      modalText: data.id === item.id ? edit : data.modalText,
-    }));
-    setModals(editValue);
   };
 
   //input onchange
@@ -55,21 +42,29 @@ export default function YourModal({ item, modal, setModals }: any) {
     console.log(edit);
   };
 
-  // const dkanrjsk = ({ modal }: any): any => {
-  //   setModals({
-  //     writer: '',
-  //     modalText: edit,
-  //     isModal: false,
-
-  //     id: uuidv4(),
-  //   });
-  // };
+  //수정완료버튼
+  const inputTextChange = (event: any) => {
+    if (edit === '') {
+      alert('입력하삼');
+      return;
+    }
+    setTtogle(false);
+    input.current.style = 'display:block';
+    changeInput.current.style = 'display:none';
+    const editValue = modal.map((data: any) => ({
+      ...data,
+      modalText: data.id === item.id ? edit : data.modalText,
+    }));
+    setModals(editValue);
+  };
 
   return (
     <YourModalsLayout>
       <YourModals>
-        {item.modalText}
-        <input
+        <YourModlasText ref={input} style={{ display: 'block' }}>
+          {item.modalText}
+        </YourModlasText>
+        <YourModalsInput
           style={{ display: 'none' }}
           id="text"
           name="text"
@@ -77,32 +72,23 @@ export default function YourModal({ item, modal, setModals }: any) {
           value={edit}
           onChange={inputTextHandeler}
         />
+        <YourModalsBtnArea>
+          {totgle === false ? (
+            <>
+              <YourModalSapan ref={changeDel} onClick={deleteModal}>
+                삭제
+              </YourModalSapan>
+              <YourModalSapan ref={changeEdit} onClick={inputText}>
+                수정
+              </YourModalSapan>
+            </>
+          ) : (
+            <YourModalSapan ref={changeSuc} onClick={inputTextChange}>
+              수정완료
+            </YourModalSapan>
+          )}
+        </YourModalsBtnArea>
       </YourModals>
-      <YourModalsBtnArea>
-        <button
-          ref={changeDel}
-          style={{ display: 'block' }}
-          name="del"
-          onClick={deleteModal}
-        >
-          삭제
-        </button>
-        <button
-          ref={changeEdit}
-          style={{ display: 'block' }}
-          name="edit"
-          onClick={inputText}
-        >
-          수정
-        </button>
-        <button
-          ref={changeSuc}
-          onClick={inputTextChange}
-          style={{ display: 'none' }}
-        >
-          수정완료
-        </button>
-      </YourModalsBtnArea>
     </YourModalsLayout>
   );
 }

@@ -7,10 +7,26 @@ import blankImg from '../assets/blank.png';
 import DfProfileImg from '../assets/profile.png';
 import { getAuth } from 'firebase/auth';
 
+import { signOut } from 'firebase/auth';
+import { authService } from '../api/firebaseService';
+import { useNavigate } from 'react-router-dom';
+import useLoginState from '../hooks/useLoginState';
+
 const Navbar = () => {
   const auth = getAuth();
+  const navigate = useNavigate();
+  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
 
-  console.log(auth.currentUser);
+  const handleLogout = () => {
+    signOut(authService)
+      .then(() => {
+        alert('로그아웃 되었습니다.');
+        navigate('/', { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <Nav>
@@ -40,11 +56,12 @@ const Navbar = () => {
         <div>{auth.currentUser?.displayName} </div>
       </div>
 
-      <LoginButtonBox to="/login">
-        {!auth.currentUser ? (
-          <LoginButton>Login</LoginButton>
+      {/* <LoginButtonBox to="/login"> */}
+      <LoginButtonBox>
+        {isLoggedIn && isAuthorizedInSession ? (
+          <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
         ) : (
-          <LoginButton>Logout</LoginButton>
+          <LoginButton onClick={() => navigate('/login')}>Login</LoginButton>
         )}
       </LoginButtonBox>
     </Nav>
@@ -98,10 +115,14 @@ const LoginButton = styled.button`
   background: #4285f4;
   background: linear-gradient(90deg, #4285f4 0%, #3b5d9d 100%);
   color: white;
+  cursor: pointer;
 `;
-const LoginButtonBox = styled(Link)`
-  margin: 0;
-`;
+
+// const LoginButtonBox = styled(Link)`
+//   margin: 0;
+// `;
+
+const LoginButtonBox = styled.div``;
 
 const ProfileImg = styled.img`
   width: 40px;

@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { auth } from '../api/firebaseService';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { authService } from '../api/firebaseService';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPwd, setCnfirmPwd] = useState('');
+  const [displayname, setDisplayname] = useState('');
+  const navigate = useNavigate();
+
+  //유효성검사
+  const [validateId, setValidateId] = useState('');
+  const [validateIdColor, setValidateIdColor] = useState(true);
 
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +28,10 @@ const SignUpPage = () => {
     setCnfirmPwd(e.target.value);
     // console.log('onchnageemail:', confirmPwd);
   };
+  const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayname(e.target.value);
+    console.log('onchnageemail:', displayname);
+  };
 
   // submit & firebase
   const handleSubmitClick = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,24 +40,39 @@ const SignUpPage = () => {
     console.log('handleSubmitClick');
     //인증부분
     try {
-      //   const auth = getAuth();
       const user = await createUserWithEmailAndPassword(
-        auth,
+        authService,
         email,
         password
-      ).then(() => {
-        console.log('회원가입성공');
-      });
-    } catch (error) {
-      console.log(error);
-    }
+      )
+        .then((result) => {
+          updateProfile(result.user, {
+            displayName: displayname,
+          })
+            .then(() => {
+              console.log('닉네임 입력 성공');
+              console.log('회원가입성공:', result.user);
+              alert('회원가입성공');
+              navigate('/login');
+            })
+            .catch((error) => {
+              console.log('닉네임 입력실패:', error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch {}
   };
+
+  //유효성검사 함수
 
   return (
     <div>
       <form onSubmit={handleSubmitClick}>
         <InputBox>
           <button
+            onClick={() => navigate('/login')}
             style={{
               border: 'none',
               backgroundColor: 'white',
@@ -63,24 +89,37 @@ const SignUpPage = () => {
           <InputBoxContent>
             <Inputholder>
               <Input
+                name="닉네임"
+                placeholder="닉네임"
+                onChange={onChangeDisplayname}
+              ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
+            </Inputholder>
+            <Inputholder>
+              <Input
                 name="아이디"
                 placeholder="아이디"
                 onChange={onChangeEmail}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input
+                // type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input
+                type="password"
                 name="비밀번호 확인"
                 placeholder="비밀번호 확인"
                 onChange={onChangeconfirmPwd}
               ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>

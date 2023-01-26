@@ -1,63 +1,91 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  Navbar,
+  // Navbar,
+  ProfileImage,
   CustomButton,
   CustomInput,
-  CustomNicknameInput,
 } from '../components';
-import { apiKey } from '../api/firebaseService';
+// import { apiKey } from '../api/firebaseService';
 import { Link } from 'react-router-dom';
+import usePwdManager from '../hooks/usePwdManager';
+import useButtonReactions from '../hooks/useButtonReactions';
+import useLoginState from '../hooks/useLoginState';
+import useEditProfile from '../hooks/useEditProfile';
+// import ProfileImage from '../components/ProfileImage';
 
 const MyPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const sessionKey = `firebase:authUser:${apiKey}:[DEFAULT]`;
-  const isAuthorizedInSession = sessionStorage.getItem(sessionKey)
-    ? true
-    : false;
-
-  useEffect(() => {
-    if (isAuthorizedInSession) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
+  const { pwdRelatedValues, onChangePwd } = usePwdManager();
+  const { profileRelatedValues, onChangeUserNickname } = useEditProfile();
+  const {
+    handleChangeNickname,
+    handleLogOut,
+    handleChangePwd,
+    handleDeleteAccount,
+  } = useButtonReactions({ pwdRelatedValues, profileRelatedValues });
 
   return (
     <>
-      <Container>
-        마이페이지
-        <InputWrapper>
-          <>
-            <CustomNicknameInput />
-            <CustomButton>닉네임 변경</CustomButton>
-          </>
-
-          <CustomInput />
-          {/* <CustomInput label="current" />
-          <CustomInput label="new" />
-          <CustomInput label="confirm" /> */}
-        </InputWrapper>
-        <BtnWrapper>
-          <CustomButton>로그아웃</CustomButton>
-          <CustomButton>비밀번호 변경</CustomButton>
-          <CustomButton>회원탈퇴</CustomButton>
-        </BtnWrapper>
-      </Container>
-      {/* {isLoggedIn && isAuthorizedInSession ? (
+      {isLoggedIn && isAuthorizedInSession ? (
         <Container>
-          마이페이지
+          <ProfileWrapper>
+            마이페이지
+            <ProfileImage />
+            <CustomInput
+              type="text"
+              value={profileRelatedValues.userNickname}
+              observeValue={profileRelatedValues.isValidNickname}
+              observeContent={profileRelatedValues.userNicknameObserver}
+              placeholder="변경할 닉네임을 입력하세요"
+              name="userNickname"
+              onChangeEvent={onChangeUserNickname}
+            />
+            <CustomButton onClickEvent={handleChangeNickname}>
+              닉네임 변경
+            </CustomButton>
+          </ProfileWrapper>
           <InputWrapper>
-            <CustomInput label="current" />
-            <CustomInput label="new" />
-            <CustomInput label="confirm" />
+            <CustomInput
+              type="password"
+              value={pwdRelatedValues.currentPwd}
+              observeValue={pwdRelatedValues.isCurrentPwd}
+              observeContent={pwdRelatedValues.currentPwdObserver}
+              placeholder="기존 비밀번호를 입력하세요"
+              name="currentPwd"
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
+            />
+            <CustomInput
+              type="password"
+              value={pwdRelatedValues.newPwd}
+              observeValue={pwdRelatedValues.isValidPwd}
+              observeContent={pwdRelatedValues.newPwdObserver}
+              placeholder="새 비밀번호를 입력하세요"
+              name="newPwd"
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
+            />
+            <CustomInput
+              type="password"
+              value={pwdRelatedValues.confirmNewPwd}
+              observeValue={pwdRelatedValues.isSamePwd}
+              observeContent={pwdRelatedValues.confirmNewPwdObserver}
+              placeholder="같은 비밀번호를 입력하세요"
+              name="confirmNewPwd"
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
+            />
+            <BtnWrapper>
+              {/* <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton> */}
+              <CustomButton onClickEvent={handleChangePwd}>
+                비밀번호 변경
+              </CustomButton>
+              <CustomButton onClickEvent={handleDeleteAccount}>
+                회원탈퇴
+              </CustomButton>
+            </BtnWrapper>
           </InputWrapper>
-          <BtnWrapper>
-            <CustomButton>로그아웃</CustomButton>
-            <CustomButton>비밀번호 변경</CustomButton>
-            <CustomButton>회원탈퇴</CustomButton>
-          </BtnWrapper>
         </Container>
       ) : (
         <Container>
@@ -76,7 +104,7 @@ const MyPage = () => {
             &nbsp;해주세요.
           </NoticeWrapper>
         </Container>
-      )} */}
+      )}
     </>
   );
 };
@@ -85,13 +113,13 @@ export default MyPage;
 
 const Container = styled.div`
   margin-top: 15rem;
-  width: 40%;
-  height: 60%;
+  /* width: 40%; */
+  /* height: 60%; */
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   gap: 10px;
 `;
 
@@ -106,3 +134,10 @@ const BtnWrapper = styled.div`
 `;
 
 const NoticeWrapper = styled.div``;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
 
@@ -30,6 +30,7 @@ const SignUpPage = () => {
   };
   const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayname(e.target.value);
+    console.log('onchnageemail:', displayname);
   };
 
   // submit & firebase
@@ -43,14 +44,25 @@ const SignUpPage = () => {
         authService,
         email,
         password
-      ).then(() => {
-        console.log('회원가입성공:', user);
-        alert('회원가입성공');
-        navigate('/login');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      )
+        .then((result) => {
+          updateProfile(result.user, {
+            displayName: displayname,
+          })
+            .then(() => {
+              console.log('닉네임 입력 성공');
+              console.log('회원가입성공:', result.user);
+              alert('회원가입성공');
+              navigate('/login');
+            })
+            .catch((error) => {
+              console.log('닉네임 입력실패:', error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch {}
   };
 
   //유효성검사 함수
@@ -93,7 +105,7 @@ const SignUpPage = () => {
             </Inputholder>
             <Inputholder>
               <Input
-                type="password"
+                // type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}

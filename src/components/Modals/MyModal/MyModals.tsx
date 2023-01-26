@@ -11,7 +11,7 @@ import {
 } from './style';
 import YourModal from '../YourModal/YourModal';
 import { getAuth } from 'firebase/auth';
-import { fireStore } from '../../../api/firebaseService';
+import { authService, fireStore } from '../../../api/firebaseService';
 import { doc, setDoc, collection, onSnapshot } from 'firebase/firestore';
 
 export default function MyModals({
@@ -24,8 +24,7 @@ export default function MyModals({
   const [content, setcontent] = useState('');
   const modalRef = useRef<any>();
   const InputRef = useRef<any>();
-  const auth = getAuth();
-  const [re, setRe] = useState(false);
+
   // 파이어베이스에 리뷰가져오기
   useEffect(() => {
     const q = collection(fireStore, 'reviews');
@@ -49,7 +48,7 @@ export default function MyModals({
   const addModal = (event: any): any => {
     event.preventDefault();
     // 로그인을 안했을때
-    if (!auth.currentUser) {
+    if (!authService.currentUser) {
       alert('로그인이 필요합니다');
       return;
       // input에 리뷰를 입력하지 않았을때
@@ -59,13 +58,13 @@ export default function MyModals({
       return;
     }
     setcontent('');
-    setRe(true);
+
     alert('리뷰등록됨');
     //파이어베이스 데이터베이스에 넣어놓기
-    const authId = auth.currentUser?.uid;
+    const authId = authService.currentUser?.uid;
     const usersRef = collection(fireStore, 'reviews');
     setDoc(doc(usersRef), {
-      displayName: auth.currentUser.displayName,
+      displayName: authService.currentUser.displayName,
       ModalId: OBJECTID,
       authId,
       content,
@@ -82,7 +81,7 @@ export default function MyModals({
           <ModalBox>
             <ModalHeader>
               <ModalDisplayName>
-                작성자 : {auth.currentUser?.displayName}
+                작성자 : {authService.currentUser?.displayName}
               </ModalDisplayName>
               <ModalSapan onClick={addModal}>확인</ModalSapan>
             </ModalHeader>

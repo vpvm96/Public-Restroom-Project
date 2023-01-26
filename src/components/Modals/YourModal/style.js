@@ -41,7 +41,7 @@ const YourModalSapan = styled.span`
   border-radius: 5px;
   cursor: pointer;
 `;
-
+const YourModalTitle = styled.div``;
 export {
   YourModalSapan,
   YourModals,
@@ -49,4 +49,5 @@ export {
   YourModalsLayout,
   YourModalsInput,
   YourModlasText,
+  YourModalTitle,
 };

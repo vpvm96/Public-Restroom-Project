@@ -12,9 +12,8 @@ import {
   ReviewBtton,
 } from './style';
 import { uuidv4 } from '@firebase/util';
-import { getAuth } from 'firebase/auth';
+import { authService } from '../../api/firebaseService';
 export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
-  const auth = getAuth();
   const [modal, setModals]: any = useState([
     {
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
@@ -31,7 +30,7 @@ export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
   }, []);
   const openModal = useCallback(() => {
     // 로그인 안하면 리뷰작성 안눌림
-    if (!auth.currentUser) {
+    if (!authService.currentUser) {
       alert('로그인이 필요합니다');
       return;
     }

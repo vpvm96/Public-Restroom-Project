@@ -135,11 +135,9 @@ const FontBox = styled.div`
   width: 100%;
 `;
 
-const Font = styled.p`
-  font-weight: 500;
-  font-size: 35px;
-  font-style: oblique;
-  margin-bottom: 0.5rem;
+const Font = styled.h4`
+  font-size: 25px;
+  margin-top: 0.4rem;
 `;
 
 const MenuSection = styled.div`
@@ -192,4 +190,3 @@ const ProfileImg = styled.img`
   height: 45px;
   border-radius: 100%;
 `;
-

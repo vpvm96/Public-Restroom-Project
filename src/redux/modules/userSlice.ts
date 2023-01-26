@@ -1,7 +1,6 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../config/configStore';
 
-// type userAction = ReturnType<typeof updateUserInfo>;
 interface userState {
   userNickname: string;
   currentPwd: string;
@@ -15,8 +14,6 @@ const initialState: userState = {
   newPwd: '',
   confirmNewPwd: '',
 };
-
-// createAction<string>('user');
 
 const userSlice: any = createSlice({
   name: 'user',

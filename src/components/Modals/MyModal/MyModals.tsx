@@ -5,6 +5,9 @@ import {
   ModalInput,
   MyModal,
   ModalSapan,
+  ModalDisplayName,
+  ModalHeader,
+  Scroll,
 } from './style';
 import YourModal from '../YourModal/YourModal';
 import { getAuth } from 'firebase/auth';
@@ -22,7 +25,7 @@ export default function MyModals({
   const modalRef = useRef<any>();
   const InputRef = useRef<any>();
   const auth = getAuth();
-
+  const [re, setRe] = useState(false);
   // 파이어베이스에 리뷰가져오기
   useEffect(() => {
     const q = collection(fireStore, 'reviews');
@@ -42,25 +45,27 @@ export default function MyModals({
   const ModalTextChange = (event: any): any => {
     setcontent(event.target.value);
   };
-
   // 댓글추가하기
-  const addModal = (): any => {
+  const addModal = (event: any): any => {
+    event.preventDefault();
+    // 로그인을 안했을때
     if (!auth.currentUser) {
       alert('로그인이 필요합니다');
       return;
-    }
-    if (!content) {
+      // input에 리뷰를 입력하지 않았을때
+    } else if (!content) {
       alert('리뷰를 입력하세요');
       InputRef.current.focus();
       return;
     }
     setcontent('');
+    setRe(true);
     alert('리뷰등록됨');
     //파이어베이스 데이터베이스에 넣어놓기
     const authId = auth.currentUser?.uid;
     const usersRef = collection(fireStore, 'reviews');
     setDoc(doc(usersRef), {
-      nickName: '차차',
+      displayName: auth.currentUser.displayName,
       ModalId: OBJECTID,
       authId,
       content,
@@ -74,29 +79,36 @@ export default function MyModals({
       <ModalLayout ref={modalRef}>
         <MyModal>
           <ModalBox>
-            작성자 : 빨간휴지줄까 파란휴지줄까
-            <ModalSapan onClick={addModal}>확인</ModalSapan>
+            <ModalHeader>
+              <ModalDisplayName>
+                작성자 : {auth.currentUser?.displayName}
+              </ModalDisplayName>
+              <ModalSapan onClick={addModal}>확인</ModalSapan>
+            </ModalHeader>
             <ModalInput
               placeholder="리뷰를 남겨주세요"
               value={content}
               onChange={ModalTextChange}
               ref={InputRef}
+              style={{ display: 'block' }}
             />
           </ModalBox>
         </MyModal>
-        {modal
-          /* 화장실Id에 맞는거만 필터로 보여줘서 맵을 돌림*/
-          .filter((m: any) => m.ModalId === OBJECTID)
-          .map((item: any) => {
-            return (
-              <YourModal
-                key={item.id}
-                item={item}
-                modal={modal}
-                setModals={setModals}
-              />
-            );
-          })}
+        <Scroll>
+          {modal
+            /* 화장실Id에 맞는거만 필터로 보여줘서 맵을 돌림*/
+            .filter((m: any) => m.ModalId === OBJECTID)
+            .map((item: any) => {
+              return (
+                <YourModal
+                  key={item.id}
+                  item={item}
+                  modal={modal}
+                  setModals={setModals}
+                />
+              );
+            })}
+        </Scroll>
       </ModalLayout>
     </>
   );

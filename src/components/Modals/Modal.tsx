@@ -12,11 +12,13 @@ import {
   ReviewBtton,
 } from './style';
 import { uuidv4 } from '@firebase/util';
+import { getAuth } from 'firebase/auth';
 export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
+  const auth = getAuth();
   const [modal, setModals]: any = useState([
     {
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
-      nickName: '빨간휴지',
+      displayName: '빨간휴지',
       content: '노란휴지없나',
       ModalId: OBJECTID,
       id: uuidv4(),
@@ -28,6 +30,11 @@ export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
     setModalOpen(false);
   }, []);
   const openModal = useCallback(() => {
+    // 로그인 안하면 리뷰작성 안눌림
+    if (!auth.currentUser) {
+      alert('로그인이 필요합니다');
+      return;
+    }
     setModalOpen(true);
   }, []);
 

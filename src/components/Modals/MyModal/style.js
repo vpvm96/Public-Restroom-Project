@@ -23,14 +23,36 @@ const ModalInput = styled.input`
 
 const ModalSapan = styled.span`
   padding: 5px;
-  margin-left: 200px;
   width: 100%;
   height: 100%;
-  border: 1px solid black;
-  background-color: blue;
-  color: white;
+  border: 1px solid white;
+  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
+  color: #fff;
+  background-color: #4285f4;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
+  left: 90%;
+`;
+const ModalDisplayName = styled.div`
+  position: absolute;
+`;
+const ModalHeader = styled.div`
+  position: relative;
+  justify-content: space-between;
 `;
 
-export { ModalLayout, ModalBox, ModalInput, MyModal, ModalSapan };
+const Scroll = styled.div`
+  overflow-y: scroll;
+  height: 420px;
+`;
+export {
+  ModalLayout,
+  ModalBox,
+  ModalInput,
+  MyModal,
+  ModalSapan,
+  ModalDisplayName,
+  ModalHeader,
+  Scroll,
+};

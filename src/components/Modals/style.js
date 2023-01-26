@@ -68,11 +68,11 @@ const ReviewBtton = styled.button`
   border: none;
   box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
   color: #fff;
+  background-color: #4285f4;
   letter-spacing: 1px;
   outline: none;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #4285f4;
 `;
 
 export {

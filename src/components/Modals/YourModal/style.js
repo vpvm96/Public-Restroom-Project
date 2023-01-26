@@ -22,6 +22,7 @@ const YourModalsBtnArea = styled.div`
 const YourModalsLayout = styled.div`
   width: 100%;
   height: 100%;
+  margin-bottom: 10px;
 `;
 const YourModalsInput = styled.input`
   width: 100%;
@@ -34,12 +35,13 @@ const YourModalSapan = styled.span`
   margin-left: 2px;
   width: 100%;
   height: 100%;
-  border: 1px solid black;
-  background-color: blue;
-  color: white;
+  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
+  color: #fff;
+  background-color: #4285f4;
   border-radius: 5px;
   cursor: pointer;
 `;
+
 export {
   YourModalSapan,
   YourModals,

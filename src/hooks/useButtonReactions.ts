@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -10,6 +11,7 @@ import {
 } from 'firebase/auth';
 import usePwdManager from './usePwdManager';
 import useEditProfile from './useEditProfile';
+import useLoginState from './useLoginState';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -29,6 +31,11 @@ interface profileRelatedValueTypes {
   isValidNickname: boolean;
 }
 
+interface profilePersistenceTypes {
+  userObj: object;
+  setUserObj: React.Dispatch<React.SetStateAction<string>>;
+}
+
 const useButtonReactions = ({
   pwdRelatedValues,
   profileRelatedValues,
@@ -43,6 +50,7 @@ const useButtonReactions = ({
   const { userNickname } = profileRelatedValues;
   const { setPwdRelatedValues } = usePwdManager();
   const { setProfileRelatedValues } = useEditProfile();
+  // const { refreshUser } = useLoginState();
   const newPwdConfirmed = newPwd === confirmNewPwd;
 
   const handleLogOut = async () => {
@@ -62,8 +70,6 @@ const useButtonReactions = ({
     }
   };
 
-  //   console.log('userNickname:', userNickname);
-
   const handleChangeNickname = async () => {
     if (authService.currentUser?.displayName) {
       await updateProfile(authService.currentUser, {
@@ -72,6 +78,7 @@ const useButtonReactions = ({
         .then(() => {
           alert('프로필 업데이트 완료!');
           setProfileRelatedValues((prev) => ({ ...prev, userNickname: '' }));
+          // refreshUser();
           navigate('/mypage', { replace: true });
         })
         .catch((error) => console.log(error));
@@ -79,7 +86,6 @@ const useButtonReactions = ({
       alert('아직 계정에 displayName이 없습니다.');
     }
   };
-  console.log('현재 닉네임', authService.currentUser?.displayName);
 
   const handleChangePwd = () => {
     console.log('비밀번호 변경');

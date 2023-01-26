@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   ModalLayout,
   ModalBox,
@@ -6,48 +6,67 @@ import {
   MyModal,
   ModalSapan,
 } from './style';
-import { uuidv4 } from '@firebase/util';
 import YourModal from '../YourModal/YourModal';
-export default function MyModals({ OBJECTID }: any): any {
-  const [modalText, setModalText] = useState('');
+import { getAuth } from 'firebase/auth';
+import { fireStore } from '../../../api/firebaseService';
+import { doc, setDoc, collection, onSnapshot } from 'firebase/firestore';
+
+export default function MyModals({
+  HNR_NAM,
+  GU_NM,
+  OBJECTID,
+  modal,
+  setModals,
+}: any): any {
+  const [content, setcontent] = useState('');
   const modalRef = useRef<any>();
   const InputRef = useRef<any>();
-  const [modal, setModals]: any = useState([
-    {
-      writer: '빨간휴지',
-      modalText: '노란휴지없나',
-      isModal: false,
-      ModalId: OBJECTID,
-      id: uuidv4(),
-    },
-  ]);
+  const auth = getAuth();
 
-  // 버튼누르면 Modal 보이고 안보이고
+  // 파이어베이스에 리뷰가져오기
+  useEffect(() => {
+    const q = collection(fireStore, 'reviews');
+    onSnapshot(q, (snapshot) => {
+      const reviews: any = snapshot.docs.map((doc) => {
+        const review = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        return review;
+      });
+      setModals(reviews);
+    });
+  }, []);
 
   // input 창안에 onchange
   const ModalTextChange = (event: any): any => {
-    setModalText(event.target.value);
+    setcontent(event.target.value);
   };
+
   // 댓글추가하기
   const addModal = (): any => {
-    if (!modalText) {
-      alert('리뷰입력하삼');
+    if (!auth.currentUser) {
+      alert('로그인이 필요합니다');
+      return;
+    }
+    if (!content) {
+      alert('리뷰를 입력하세요');
       InputRef.current.focus();
       return;
     }
-    const newModal: any = {
-      writer: '',
-      modalText,
-      isModal: false,
-      ModalId: OBJECTID,
-      id: uuidv4(),
-    };
-
-    setModals((prev: any): any => {
-      return [...prev, newModal];
-    });
-    setModalText('');
+    setcontent('');
     alert('리뷰등록됨');
+    //파이어베이스 데이터베이스에 넣어놓기
+    const authId = auth.currentUser?.uid;
+    const usersRef = collection(fireStore, 'reviews');
+    setDoc(doc(usersRef), {
+      nickName: '차차',
+      ModalId: OBJECTID,
+      authId,
+      content,
+      title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
+    });
+    return;
   };
 
   return (
@@ -59,22 +78,25 @@ export default function MyModals({ OBJECTID }: any): any {
             <ModalSapan onClick={addModal}>확인</ModalSapan>
             <ModalInput
               placeholder="리뷰를 남겨주세요"
-              value={modalText}
+              value={content}
               onChange={ModalTextChange}
               ref={InputRef}
             />
           </ModalBox>
         </MyModal>
-        {modal.map((item: any) => {
-          return (
-            <YourModal
-              key={item.id}
-              item={item}
-              modal={modal}
-              setModals={setModals}
-            />
-          );
-        })}
+        {modal
+          /* 화장실Id에 맞는거만 필터로 보여줘서 맵을 돌림*/
+          .filter((m: any) => m.ModalId === OBJECTID)
+          .map((item: any) => {
+            return (
+              <YourModal
+                key={item.id}
+                item={item}
+                modal={modal}
+                setModals={setModals}
+              />
+            );
+          })}
       </ModalLayout>
     </>
   );

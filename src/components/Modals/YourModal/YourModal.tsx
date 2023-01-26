@@ -9,8 +9,10 @@ import {
   YourModalSapan,
   YourModlasText,
 } from './style';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { fireStore } from '../../../api/firebaseService';
 
-export default function YourModal({ item, modal, setModals }: any) {
+export default function YourModal({ item }: any) {
   // 수정,버튼
   const changeInput = useRef<any>();
   const changeDel = useRef<any>();
@@ -21,10 +23,9 @@ export default function YourModal({ item, modal, setModals }: any) {
   const [edit, setEdit] = useState('');
 
   // 댓글삭제하기
-  const deleteModal = () => {
-    setModals((prev: any) => prev.filter((t: any) => t.id !== item.id));
-    console.log(item);
-    alert('삭제하시겠습니까');
+  const handleModalCommentDelete = async (reviewId: any) => {
+    console.log('reviewId', reviewId);
+    await deleteDoc(doc(fireStore, 'reviews', reviewId));
   };
 
   // 수정버튼
@@ -32,37 +33,36 @@ export default function YourModal({ item, modal, setModals }: any) {
     setTtogle(true);
     input.current.style = 'display:none';
     changeInput.current.style = 'display:block';
+    setEdit(item.content);
     changeInput.current.focus();
-    setEdit(item.modalText);
   };
 
   //input onchange
   const inputTextHandeler = (event: any) => {
     setEdit(event.target.value);
-    console.log(edit);
   };
 
   //수정완료버튼
-  const inputTextChange = (event: any) => {
-    if (edit === '') {
-      alert('입력하삼');
-      return;
+  const handleModalCommentEdit = async () => {
+    const commentRef = doc(fireStore, 'reviews', item.id);
+    try {
+      await updateDoc(commentRef, {
+        content: edit,
+      });
+      setTtogle(false);
+      input.current.style = 'display:block';
+      changeInput.current.style = 'display:none';
+    } catch (err) {
+      console.log(err);
     }
-    setTtogle(false);
-    input.current.style = 'display:block';
-    changeInput.current.style = 'display:none';
-    const editValue = modal.map((data: any) => ({
-      ...data,
-      modalText: data.id === item.id ? edit : data.modalText,
-    }));
-    setModals(editValue);
   };
 
   return (
     <YourModalsLayout>
+      닉네임
       <YourModals>
         <YourModlasText ref={input} style={{ display: 'block' }}>
-          {item.modalText}
+          {item.content}
         </YourModlasText>
         <YourModalsInput
           style={{ display: 'none' }}
@@ -75,7 +75,10 @@ export default function YourModal({ item, modal, setModals }: any) {
         <YourModalsBtnArea>
           {totgle === false ? (
             <>
-              <YourModalSapan ref={changeDel} onClick={deleteModal}>
+              <YourModalSapan
+                ref={changeDel}
+                onClick={() => handleModalCommentDelete(item.id)}
+              >
                 삭제
               </YourModalSapan>
               <YourModalSapan ref={changeEdit} onClick={inputText}>
@@ -83,7 +86,7 @@ export default function YourModal({ item, modal, setModals }: any) {
               </YourModalSapan>
             </>
           ) : (
-            <YourModalSapan ref={changeSuc} onClick={inputTextChange}>
+            <YourModalSapan ref={changeSuc} onClick={handleModalCommentEdit}>
               수정완료
             </YourModalSapan>
           )}

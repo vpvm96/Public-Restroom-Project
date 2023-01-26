@@ -4,22 +4,20 @@ import styled from 'styled-components';
 import logoImg from '../assets/await.png';
 import profileImg from '../assets/cat.jpg';
 import blankImg from '../assets/blank.png';
-import { getAuth, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+import { authService } from '../api/firebaseService';
+import { useNavigate } from 'react-router-dom';
+import useLoginState from '../hooks/useLoginState';
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const navigate = useNavigate();
+  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
 
-  const handleLogin = () => {
-    setUser(true);
-  };
-
-  const handleLogout = (e: any) => {
-    setUser(false);
-
-    const auth = getAuth();
-    signOut(auth)
+  const handleLogout = () => {
+    signOut(authService)
       .then(() => {
         alert('로그아웃 되었습니다.');
+        navigate('/', { replace: true });
       })
       .catch((error) => {
         console.log(error);
@@ -45,18 +43,19 @@ const Navbar = () => {
         </NavLi>
       </NavUl>
       <div>
-        {!user ? (
+        {isLoggedIn && isAuthorizedInSession ? (
           <ProfileImg src={profileImg}></ProfileImg>
         ) : (
           <ProfileImg src={blankImg}></ProfileImg>
         )}
       </div>
 
-      <LoginButtonBox to="/login">
-        {user ? (
-          <LoginButton onClick={handleLogin}>Login</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
+      {/* <LoginButtonBox to="/login"> */}
+      <LoginButtonBox>
+        {isLoggedIn && isAuthorizedInSession ? (
+          <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
         ) : (
-          <LoginButton onClick={handleLogout}>Logout</LoginButton>
+          <LoginButton onClick={() => navigate('/login')}>Login</LoginButton>
         )}
       </LoginButtonBox>
     </Nav>
@@ -109,10 +108,14 @@ const LoginButton = styled.button`
     rgba(157, 59, 148, 1) 100%
   );
   color: white;
+  cursor: pointer;
 `;
-const LoginButtonBox = styled(Link)`
-  margin: 0;
-`;
+
+// const LoginButtonBox = styled(Link)`
+//   margin: 0;
+// `;
+
+const LoginButtonBox = styled.div``;
 
 const ProfileImg = styled.img`
   width: 40px;

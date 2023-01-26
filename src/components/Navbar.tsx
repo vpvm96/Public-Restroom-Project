@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
@@ -14,7 +15,8 @@ import styled from 'styled-components';
 const Navbar = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, setInit, setIsLoggedIn } =
+    useLoginState();
 
   const handleLogout = () => {
     signOut(authService)
@@ -26,6 +28,24 @@ const Navbar = () => {
         console.log(error);
       });
   };
+
+  //새로고침해도 닉네임 유지 방법 1
+  // let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
+  // console.log(userObj);
+  // let userObjParsed = JSON.parse(userObj!); //null 이 올 수도 있다. 근데 이 방법은 좋진 않다.
+  // console.log(userObjParsed);
+
+  //새로고침해도 닉네임 유지 방법 2
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, [setInit, setIsLoggedIn]);
 
   return (
     <Nav>

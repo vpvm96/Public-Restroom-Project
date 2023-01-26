@@ -2,9 +2,7 @@ import MapSearchList from './MapSearchList';
 import styled from 'styled-components';
 
 interface MapSearchProps {
-  markerInfo: [
-    { id: string; marker: kakao.maps.Marker; data: [key: string | number] }
-  ];
+  markerInfo: any[];
 }
 
 const MapSearch = ({ markerInfo }: MapSearchProps) => {
@@ -14,7 +12,7 @@ const MapSearch = ({ markerInfo }: MapSearchProps) => {
       <MapSearchListContainer>
         <MapSearchListText>총 {markerInfo.length}개의 결과</MapSearchListText>
         {markerInfo.map((info) => (
-          <MapSearchList key={info.id} markerInfo={info.data} />
+          <MapSearchList key={info.OBJECTID} markerInfo={info} />
         ))}
       </MapSearchListContainer>
     </MapSearchWrapper>

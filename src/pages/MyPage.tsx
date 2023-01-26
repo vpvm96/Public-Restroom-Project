@@ -14,18 +14,6 @@ import useLoginState from '../hooks/useLoginState';
 import useEditProfile from '../hooks/useEditProfile';
 // import ProfileImage from '../components/ProfileImage';
 
-// interface pwdRelatedValueTypes {
-//   currentPwd: string;
-//   newPwd: string;
-//   confirmNewPwd: string;
-//   isCurrentPwd: boolean;
-//   isValidPwd: boolean;
-//   isSamePwd: boolean;
-//   currentPwdObserver: string;
-//   newPwdObserver: string;
-//   confirmNewPwdObserver: string;
-// }
-
 const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
@@ -89,7 +77,7 @@ const MyPage = () => {
               onChangeEvent={onChangePwd}
             />
             <BtnWrapper>
-              <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton>
+              {/* <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton> */}
               <CustomButton onClickEvent={handleChangePwd}>
                 비밀번호 변경
               </CustomButton>

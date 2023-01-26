@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-import mainImg from '../assets/Banner.png';
+import mainImg from '../assets/Banner.jpg';
 import InfoImg from '../assets/Info.png';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { fireStore } from '../api/firebaseService';
@@ -73,9 +73,10 @@ const MainWrap = styled.div`
 
 const MainImg = styled.div`
   background-size: cover;
+  object-fit: contain;
   background-position: center;
   width: 100%;
-  height: 300px;
+  height: 400px;
   background-image: url(${mainImg});
 `;
 

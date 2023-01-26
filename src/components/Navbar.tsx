@@ -4,23 +4,19 @@ import styled from 'styled-components';
 import logoImg from '../assets/await.png';
 import profileImg from '../assets/cat.jpg';
 import blankImg from '../assets/blank.png';
+import DfProfileImg from '../assets/profile.png';
+import { getAuth } from 'firebase/auth';
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const auth = getAuth();
 
-  const handleLogin = () => {
-    setUser(true);
-  };
-
-  const handleLogout = () => {
-    setUser(false);
-  };
+  console.log(auth.currentUser);
 
   return (
     <Nav>
       <LeftSection>
         <Link to="/">
-          <img src={logoImg} alt="Logo" />
+          <LogoImg src={logoImg} alt="Logo" />
         </Link>
       </LeftSection>
       <NavUl>
@@ -35,18 +31,20 @@ const Navbar = () => {
         </NavLi>
       </NavUl>
       <div>
-        {!user ? (
-          <ProfileImg src={profileImg}></ProfileImg>
+        {auth.currentUser?.photoURL ? (
+          <ProfileImg src={auth.currentUser.photoURL} />
         ) : (
-          <ProfileImg src={blankImg}></ProfileImg>
+          <ProfileImg src={DfProfileImg} />
         )}
+
+        <div>{auth.currentUser?.displayName} </div>
       </div>
 
       <LoginButtonBox to="/login">
-        {user ? (
-          <LoginButton onClick={handleLogout}>Login</LoginButton>
+        {!auth.currentUser ? (
+          <LoginButton>Login</LoginButton>
         ) : (
-          <LoginButton onClick={handleLogin}>Logout</LoginButton>
+          <LoginButton>Logout</LoginButton>
         )}
       </LoginButtonBox>
     </Nav>
@@ -59,7 +57,8 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f9f9fb;
+  /* background-color: #f9f9fb; */
+  background-color: #ffff;
   padding: 30px 35px 30px 35px;
 `;
 
@@ -67,6 +66,10 @@ const LeftSection = styled.div`
   justify-items: flex-start;
   display: flex;
   margin: 0px;
+`;
+
+const LogoImg = styled.img`
+  width: 150px;
 `;
 
 const NavUl = styled.ul`
@@ -92,12 +95,8 @@ const LoginButton = styled.button`
   padding-bottom: 10px;
   border-radius: 20px;
   width: 100px;
-  background: rgb(7, 7, 101);
-  background: linear-gradient(
-    90deg,
-    rgba(7, 7, 101, 1) 0%,
-    rgba(157, 59, 148, 1) 100%
-  );
+  background: #4285f4;
+  background: linear-gradient(90deg, #4285f4 0%, #3b5d9d 100%);
   color: white;
 `;
 const LoginButtonBox = styled(Link)`

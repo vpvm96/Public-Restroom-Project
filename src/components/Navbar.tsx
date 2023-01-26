@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImg from '../assets/await.png';
@@ -11,7 +11,8 @@ import useLoginState from '../hooks/useLoginState';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, setInit, setIsLoggedIn } =
+    useLoginState();
 
   const handleLogout = () => {
     signOut(authService)
@@ -23,6 +24,24 @@ const Navbar = () => {
         console.log(error);
       });
   };
+
+  //새로고침해도 닉네임 유지 방법 1
+  // let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
+  // console.log(userObj);
+  // let userObjParsed = JSON.parse(userObj!); //null 이 올 수도 있다. 근데 이 방법은 좋진 않다.
+  // console.log(userObjParsed);
+
+  //새로고침해도 닉네임 유지 방법 2
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, [setInit, setIsLoggedIn]);
 
   return (
     <Nav>
@@ -50,10 +69,13 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* <LoginButtonBox to="/login"> */}
       <LoginButtonBox>
         {isLoggedIn && isAuthorizedInSession ? (
-          <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
+          <>
+            <LoginButton onClick={handleLogout}>Logout</LoginButton>
+            {/* <div>{userObjParsed.displayName}님 안녕하세요!</div> */}
+            <div>{authService.currentUser?.displayName}님 안녕하세요!</div>
+          </>
         ) : (
           <LoginButton onClick={() => navigate('/login')}>Login</LoginButton>
         )}

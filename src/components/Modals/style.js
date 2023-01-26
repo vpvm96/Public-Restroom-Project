@@ -62,6 +62,18 @@ const FooterButton = styled.button`
   border-radius: 5px;
   font-size: 13px;
 `;
+const ReviewBtton = styled.button`
+  width: 52px;
+  height: 1.9rem;
+  border: none;
+  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
+  color: #fff;
+  background-color: #4285f4;
+  letter-spacing: 1px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+`;
 
 export {
   Modallayout,
@@ -71,4 +83,5 @@ export {
   ModalFooter,
   FooterButton,
   ModalOpen,
+  ReviewBtton,
 };

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../api/firebaseService';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -34,9 +35,8 @@ const SignUpPage = () => {
     console.log('handleSubmitClick');
     //인증부분
     try {
-      const auth = getAuth();
       const user = await createUserWithEmailAndPassword(
-        auth,
+        authService,
         email,
         password
       ).then(() => {
@@ -79,6 +79,7 @@ const SignUpPage = () => {
             </Inputholder>
             <Inputholder>
               <Input
+                type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}
@@ -87,6 +88,7 @@ const SignUpPage = () => {
             </Inputholder>
             <Inputholder>
               <Input
+                type="password"
                 name="비밀번호 확인"
                 placeholder="비밀번호 확인"
                 onChange={onChangeconfirmPwd}

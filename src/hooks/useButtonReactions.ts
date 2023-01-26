@@ -23,18 +23,26 @@ interface pwdRelatedValueTypes {
   confirmNewPwdObserver: string;
 }
 
+interface profileRelatedValueTypes {
+  userNickname: string;
+  userNicknameObserver: string;
+  isValidNickname: boolean;
+}
+
 const useButtonReactions = ({
   pwdRelatedValues,
-  userNickname,
-  setUserNickname,
-}: {
+  profileRelatedValues,
+}: // setUserNickname,
+{
   pwdRelatedValues: pwdRelatedValueTypes;
-  userNickname: string;
-  setUserNickname: React.Dispatch<React.SetStateAction<string>>;
+  profileRelatedValues: profileRelatedValueTypes;
+  // setUserNickname: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
+  const { userNickname } = profileRelatedValues;
   const { setPwdRelatedValues } = usePwdManager();
+  const { setProfileRelatedValues } = useEditProfile();
   const newPwdConfirmed = newPwd === confirmNewPwd;
 
   const handleLogOut = async () => {
@@ -63,10 +71,12 @@ const useButtonReactions = ({
       })
         .then(() => {
           alert('프로필 업데이트 완료!');
-          setUserNickname('');
+          setProfileRelatedValues((prev) => ({ ...prev, userNickname: '' }));
           navigate('/mypage', { replace: true });
         })
         .catch((error) => console.log(error));
+    } else {
+      alert('아직 계정에 displayName이 없습니다.');
     }
   };
   console.log('현재 닉네임', authService.currentUser?.displayName);

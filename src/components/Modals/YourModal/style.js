@@ -1,18 +1,52 @@
 import styled from 'styled-components';
 
+const YourModlasText = styled.div`
+  position: absolute;
+`;
 const YourModals = styled.div`
-  margin-top: 30px;
-  padding: 10px;
-  width: 600px;
+  margin-top: 10px;
+  width: 100%;
   height: 100px;
   border: 1px solid black;
   word-wrap: break-word;
+  padding: 10px;
   display: flex;
+  position: relative;
 `;
-const YourModalsBtnArea = styled.div``;
+const YourModalsBtnArea = styled.div`
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  right: 0px;
+`;
 const YourModalsLayout = styled.div`
-  width: 800px;
+  width: 100%;
   height: 100%;
-  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
 `;
-export { YourModals, YourModalsBtnArea, YourModalsLayout };
+const YourModalsInput = styled.input`
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+`;
+const YourModalSapan = styled.span`
+  padding-left: 50px;
+  padding: 5px;
+  margin-left: 2px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
+  color: #fff;
+  background-color: #4285f4;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+export {
+  YourModalSapan,
+  YourModals,
+  YourModalsBtnArea,
+  YourModalsLayout,
+  YourModalsInput,
+  YourModlasText,
+};

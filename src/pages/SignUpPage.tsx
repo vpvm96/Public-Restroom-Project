@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPwd, setCnfirmPwd] = useState('');
+  const [displayname, setDisplayname] = useState('');
   const navigate = useNavigate();
 
   //유효성검사
@@ -26,6 +31,9 @@ const SignUpPage = () => {
     setCnfirmPwd(e.target.value);
     // console.log('onchnageemail:', confirmPwd);
   };
+  const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayname(e.target.value);
+  };
 
   // submit & firebase
   const handleSubmitClick = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,18 +41,19 @@ const SignUpPage = () => {
     //확인
     console.log('handleSubmitClick');
     //인증부분
-    try {
-      const auth = getAuth();
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      ).then(() => {
+    const auth = getAuth();
+    const user = createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        updateProfile(result.user, {
+          displayName: displayname,
+        });
         console.log('회원가입성공:', user);
+        alert('회원가입성공');
+        navigate('/login');
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   //유효성검사 함수
@@ -69,6 +78,14 @@ const SignUpPage = () => {
           </LoginLogo>
 
           <InputBoxContent>
+            <Inputholder>
+              <Input
+                name="닉네임"
+                placeholder="닉네임"
+                onChange={onChangeDisplayname}
+              ></Input>
+              <p>아이디가 옳바르지 않습니다.</p>
+            </Inputholder>
             <Inputholder>
               <Input
                 name="아이디"

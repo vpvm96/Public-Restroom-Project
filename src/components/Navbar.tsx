@@ -14,8 +14,7 @@ import styled from 'styled-components';
 const Navbar = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-  const { isLoggedIn, isAuthorizedInSession, setInit, setIsLoggedIn } =
-    useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, setInit } = useLoginState();
 
   const handleLogout = () => {
     signOut(authService)
@@ -36,15 +35,10 @@ const Navbar = () => {
 
   //새로고침해도 닉네임 유지 방법 2
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
+    authService.onAuthStateChanged(() => {
       setInit(true);
     });
-  }, [setInit, setIsLoggedIn]);
+  }, [setInit]);
 
   return (
     <Nav>

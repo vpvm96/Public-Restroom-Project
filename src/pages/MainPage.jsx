@@ -51,9 +51,9 @@ const MainPage = () => {
               <p>{r.nickName}</p>
               <p>{r.title}</p>
               <p>{r.content}</p>
-              <p style={{ position: 'absolute', top: '0%', right: '0%' }}>
+              {/* <p style={{ position: 'absolute', top: '0%', right: '0%' }}>
                 {r.createdAt}
-              </p>
+              </p> */}
             </ReviewBox>
           );
         })}

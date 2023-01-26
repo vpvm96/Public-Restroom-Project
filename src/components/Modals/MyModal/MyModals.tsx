@@ -70,6 +70,7 @@ export default function MyModals({
       authId,
       content,
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
+      createdAt: new Date(),
     });
     return;
   };

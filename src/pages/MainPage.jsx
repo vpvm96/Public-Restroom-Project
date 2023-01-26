@@ -43,12 +43,12 @@ const MainPage = () => {
       <ReviewBoxWrap>
         {reviews.map((r) => {
           return (
-            <ReviewBox>
+            <ReviewBox key={r.id}>
               <Icon>
                 <BsFillBookmarkFill size={50} />
               </Icon>
 
-              <p>{r.nickName}</p>
+              <p>{r.displayName}</p>
               <p>{r.title}</p>
               <p>{r.content}</p>
               <p style={{ position: 'absolute', top: '0%', right: '0%' }}>

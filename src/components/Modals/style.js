@@ -63,16 +63,20 @@ const FooterButton = styled.button`
   font-size: 13px;
 `;
 const ReviewBtton = styled.button`
-  width: 52px;
-  height: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2rem;
   border: none;
   box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
+  padding: 1.05rem 0.5rem 1.05rem 0.5rem;
   color: #fff;
-  background-color: #4285f4;
   letter-spacing: 1px;
   outline: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #6790eb;
 `;
 
 export {

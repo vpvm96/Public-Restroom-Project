@@ -1,17 +1,13 @@
 import MapSearchList from './MapSearchList';
 import styled from 'styled-components';
 
-interface MapSearchProps {
-  markerInfo: any[];
-}
-
-const MapSearch = ({ markerInfo }: MapSearchProps) => {
+const MapSearch = ({ markerInfo }: any) => {
   return (
     <MapSearchWrapper>
       <MapSearchContainer></MapSearchContainer>
       <MapSearchListContainer>
         <MapSearchListText>총 {markerInfo.length}개의 결과</MapSearchListText>
-        {markerInfo.map((info) => (
+        {markerInfo.map((info: any) => (
           <MapSearchList key={info.OBJECTID} markerInfo={info} />
         ))}
       </MapSearchListContainer>

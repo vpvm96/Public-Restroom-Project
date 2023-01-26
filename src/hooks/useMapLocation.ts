@@ -1,35 +1,13 @@
 import { useState } from 'react';
 
-// interface MarkerInfoType {
-//   markerInfo: {
-//     id: string;
-//     marker: kakao.maps.Marker;
-//     data: [key: string | number];
-//   };
-//   setMarkerInfo: {
-//     id: string;
-//     marker: kakao.maps.Marker;
-//     data: [key: string | number];
-//   };
-// }
-
-// interface LocationDataType {
-//   CREAT_DE:string
-//   GU_NM: string;
-//   HNR_NAM: string;
-//   LAT: string
-//   LNG: string
-//   MASTERNO: string;
-//   MTC_AT: string;
-//   NEADRES_NM: string;
-//   OBJECTID: number;
-//   SLAVENO: string;
-// }
+interface LocationDataType {
+  readonly [key: string | number]: string;
+}
 
 const useMapLocation = () => {
-  const [markerInfo, setMarkerInfo]: any = useState([]);
+  const [markerInfo, setMarkerInfo] = useState<LocationDataType[]>([]);
 
-  function kakaoLocation(locationData: any) {
+  function kakaoLocation(locationData: LocationDataType[]) {
     const container = document.getElementById('map');
     const options = {
       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -86,7 +64,7 @@ const useMapLocation = () => {
   }
 
   function displayMarkerAll(
-    locationData: any,
+    locationData: LocationDataType[],
     map: kakao.maps.Map,
     locPosition: kakao.maps.LatLng
   ) {

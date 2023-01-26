@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
-import mainImg from '../assets/main.png';
-import profileImg from '../assets/cat.jpg';
+// import mainImg from '../assets/main.png';
+// import profileImg from '../assets/cat.jpg';
 import { getAuth } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 const MainPage = () => {
@@ -13,7 +13,7 @@ const MainPage = () => {
 
   return (
     <MainWrap>
-      <MainImg />
+      {/* <MainImg /> */}
       <Into>
         <p>급똥 어디까지 참아봤니?</p>
         <p>
@@ -55,13 +55,13 @@ const MainWrap = styled.div`
   background-color: lightgray;
 `;
 
-const MainImg = styled.div`
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 300px;
-  background-image: url(${mainImg});
-`;
+// const MainImg = styled.div`
+//   background-size: cover;
+//   background-position: center;
+//   width: 100%;
+//   height: 300px;
+/* background-image: url(${mainImg}); */
+// `;
 
 const Into = styled.div`
   background-color: white;

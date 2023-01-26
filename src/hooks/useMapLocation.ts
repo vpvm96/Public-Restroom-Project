@@ -42,12 +42,11 @@ const useMapLocation = () => {
       navigator.geolocation.getCurrentPosition(function (position) {
         const lat = position.coords.latitude,
           lon = position.coords.longitude;
-        //현재 위치 정보 얻어오는 위도 경도
         // 동대문역 위도 경도 37.571033, 127.009504
         // 노원역 위도 경도 37.654326, 127.060089
         // 서울역 위도 경도 37.555364, 126.968700
 
-        const locPosition = new kakao.maps.LatLng(37.571033, 127.009504),
+        const locPosition = new kakao.maps.LatLng(lat, lon),
           message = '<div style="padding:5px;">현재 위치</div>';
 
         displayMarkerAll(locationData, map, locPosition);
@@ -94,7 +93,7 @@ const useMapLocation = () => {
     const markerArr: any = [];
     const imageSrc: string =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-    const radius = 350;
+    const radius = 500;
     const imageSize = new kakao.maps.Size(24, 35);
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
@@ -128,7 +127,6 @@ const useMapLocation = () => {
         infoWindow.open(map, marker);
       } else {
         return;
-        // console.log('영역 밖 맵');
       }
     });
     setMarkerInfo(markerArr);
@@ -137,7 +135,7 @@ const useMapLocation = () => {
   function displayCircle(locPosition: kakao.maps.LatLng, map: kakao.maps.Map) {
     const circle = new kakao.maps.Circle({
       center: locPosition,
-      radius: 350,
+      radius: 500,
       strokeWeight: 5,
       strokeColor: '#75B8FA',
       strokeOpacity: 1,

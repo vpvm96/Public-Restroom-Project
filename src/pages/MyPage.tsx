@@ -5,7 +5,6 @@ import {
   ProfileImage,
   CustomButton,
   CustomInput,
-  CustomNicknameInput,
 } from '../components';
 // import { apiKey } from '../api/firebaseService';
 import { Link } from 'react-router-dom';
@@ -30,19 +29,13 @@ import useEditProfile from '../hooks/useEditProfile';
 const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
-  const {
-    userNickname,
-    userNicknameObserver,
-    isValidNickname,
-    onChangeUserNickname,
-    setUserNickname,
-  } = useEditProfile();
+  const { profileRelatedValues, onChangeUserNickname } = useEditProfile();
   const {
     handleChangeNickname,
     handleLogOut,
     handleChangePwd,
     handleDeleteAccount,
-  } = useButtonReactions({ pwdRelatedValues, userNickname, setUserNickname });
+  } = useButtonReactions({ pwdRelatedValues, profileRelatedValues });
 
   return (
     <>
@@ -51,11 +44,14 @@ const MyPage = () => {
           <ProfileWrapper>
             마이페이지
             <ProfileImage />
-            <CustomNicknameInput
-              userNickname={userNickname}
-              userNicknameObserver={userNicknameObserver}
-              isValidNickname={isValidNickname}
-              onChangeUserNickname={onChangeUserNickname}
+            <CustomInput
+              type="text"
+              value={profileRelatedValues.userNickname}
+              observeValue={profileRelatedValues.isValidNickname}
+              observeContent={profileRelatedValues.userNicknameObserver}
+              placeholder="변경할 닉네임을 입력하세요"
+              name="userNickname"
+              onChangeEvent={onChangeUserNickname}
             />
             <CustomButton onClickEvent={handleChangeNickname}>
               닉네임 변경
@@ -69,8 +65,8 @@ const MyPage = () => {
               observeContent={pwdRelatedValues.currentPwdObserver}
               placeholder="기존 비밀번호를 입력하세요"
               name="currentPwd"
-              pwdRelatedValues={pwdRelatedValues}
-              onChangePwd={onChangePwd}
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
             />
             <CustomInput
               type="password"
@@ -79,8 +75,8 @@ const MyPage = () => {
               observeContent={pwdRelatedValues.newPwdObserver}
               placeholder="새 비밀번호를 입력하세요"
               name="newPwd"
-              pwdRelatedValues={pwdRelatedValues}
-              onChangePwd={onChangePwd}
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
             />
             <CustomInput
               type="password"
@@ -89,8 +85,8 @@ const MyPage = () => {
               observeContent={pwdRelatedValues.confirmNewPwdObserver}
               placeholder="같은 비밀번호를 입력하세요"
               name="confirmNewPwd"
-              pwdRelatedValues={pwdRelatedValues}
-              onChangePwd={onChangePwd}
+              // pwdRelatedValues={pwdRelatedValues}
+              onChangeEvent={onChangePwd}
             />
             <BtnWrapper>
               <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton>

@@ -15,7 +15,6 @@ const usePwdManager = () => {
   });
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
 
-  //useEffect로 유효성 검사
   const onChangePwd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'currentPwd') {
@@ -89,6 +88,8 @@ const usePwdManager = () => {
       }
     }
   };
+
+  //useEffect로 한꺼번에 유효성 검사 가능
 
   //pwdRelatedValues 콘솔 값 확인
   //   useEffect(() => {

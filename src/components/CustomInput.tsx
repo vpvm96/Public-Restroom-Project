@@ -20,8 +20,8 @@ const CustomInput = ({
   observeContent,
   placeholder,
   name,
-  pwdRelatedValues,
-  onChangePwd,
+  // pwdRelatedValues,
+  onChangeEvent,
 }: {
   type: string;
   value: string;
@@ -29,8 +29,8 @@ const CustomInput = ({
   observeContent: string;
   placeholder: string;
   name: string;
-  pwdRelatedValues: pwdRelatedValueTypes;
-  onChangePwd: React.ChangeEventHandler<HTMLInputElement>;
+  // pwdRelatedValues: pwdRelatedValueTypes;
+  onChangeEvent: React.ChangeEventHandler<HTMLInputElement>;
 }): JSX.Element | null => {
   return (
     <>
@@ -40,13 +40,13 @@ const CustomInput = ({
         value={value}
         placeholder={placeholder}
         name={name}
-        onChange={onChangePwd}
+        onChange={onChangeEvent}
       />
       <ObserverWrapper>
         {value.length > 0 && (
-          <PwdValueObserver observeValue={observeValue}>
+          <ValueObserver observeValue={observeValue}>
             {observeContent}
-          </PwdValueObserver>
+          </ValueObserver>
         )}
       </ObserverWrapper>
     </>
@@ -62,7 +62,7 @@ const InputStyle = styled.input`
   background-color: #eeeeee;
 `;
 
-const PwdValueObserver = styled.p<{ observeValue: boolean }>`
+const ValueObserver = styled.p<{ observeValue: boolean }>`
   font-weight: 500;
   font-size: 0.5rem;
   line-height: 20px;

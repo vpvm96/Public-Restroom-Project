@@ -89,7 +89,7 @@ const LoginPage = () => {
             </Inputholder>
             <Inputholder>
               <Input
-                type="password"
+                // type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}

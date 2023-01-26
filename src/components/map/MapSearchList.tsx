@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Modal from '../Modals/Modal';
 
 interface MapSearchListProps {
-  markerInfo: any;
+  markerInfo: readonly [key: string | number];
 }
 
 const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
@@ -59,22 +59,6 @@ const MapSearchListLeftAdressText = styled.p`
 const MapSearchListRightBox = styled.div`
   width: 15%;
   margin: 0;
-`;
-const MapSearchListRightModalBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 2rem;
-  border: none;
-  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
-  padding: 1.05rem 0.5rem 1.05rem 0.5rem;
-  color: #fff;
-  letter-spacing: 1px;
-  outline: none;
-  cursor: pointer;
-  border-radius: 10px;
-  background-color: #6790eb;
 `;
 
 export default MapSearchList;

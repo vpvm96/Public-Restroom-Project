@@ -1,25 +1,28 @@
-import React from 'react';
+import { useState } from 'react';
 import profileImgDefault from '../assets/profileImgDefault.png';
 
 const ProfileImage = () => {
-  //   const fileChange = async (event) => {
-  //       // setImgUploaded(!imgUploaded);
-  //       const {
-  //         target: { files },
-  //       } = event;
+  // const [imageUpload, setImageUpload] = useState(null);
+  // const [attachment, setAttachment] = useState();
 
-  //       const theFile = files[0];
-  //       const reader = new FileReader();
-  //       reader.readAsDataURL(theFile);
-  //       reader.onloadend = (finishedEvent) => {
-  //         const {
-  //           currentTarget: { result },
-  //         } = finishedEvent;
-  //         setAttachment(result);
-  //         const profileURL = finishedEvent.currentTarget.result;
-  //         localStorage.setItem('profileURL', profileURL);
-  //       };
+  // const fileChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
+  //     // setImgUploaded(!imgUploaded);
+  //     const {
+  //       target: { files },
+  //     } = e;
+
+  //     const theFile = files[0];
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(theFile);
+  //     reader.onloadend = (finishedEvent) => {
+  //       const {
+  //         currentTarget: { result },
+  //       } = finishedEvent;
+  //       setAttachment(result);
+  //       const profileURL = finishedEvent.currentTarget.result;
+  //       localStorage.setItem('profileURL', profileURL);
   //     };
+  //   };
 
   //   const storeImg = async () => {
   //     if (attachment !== '') {

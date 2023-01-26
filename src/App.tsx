@@ -1,13 +1,5 @@
-import Router from './routes/Router';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
 function App() {
-  return <Router />;
+  return <div className="App"></div>;
 }
 
 export default App;

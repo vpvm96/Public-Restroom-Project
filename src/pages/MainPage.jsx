@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Navbar from '../components/Navbar';
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { fireStore } from '../api/firebaseService';
+import { BsFillBookmarkFill } from 'react-icons/bs';
 import mainImg from '../assets/Banner.jpg';
 import InfoImg from '../assets/Info.png';
-import { BsFillBookmarkFill } from 'react-icons/bs';
-import { fireStore } from '../api/firebaseService';
-import { collection, getDocs } from 'firebase/firestore';
+import styled from 'styled-components';
+
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
   const testCollectionRef = collection(fireStore, 'reviews');
@@ -13,8 +13,13 @@ const MainPage = () => {
   useEffect(() => {
     const getReviews = async () => {
       const data = await getDocs(testCollectionRef);
-      // console.log(data);
-      setReviews(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setReviews(
+        data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+          createdAt: doc.data().createdAt.toDate(),
+        }))
+      );
     };
 
     getReviews();
@@ -47,12 +52,13 @@ const MainPage = () => {
               <Icon>
                 <BsFillBookmarkFill size={50} />
               </Icon>
-
-              <p>{r.displayName}</p>
-              <p>{r.title}</p>
-              <p>{r.content}</p>
-              <p style={{ position: 'absolute', top: '0%', right: '0%' }}>
-                {r.createdAt}
+              <p style={{ position: 'absolute', top: '10%' }}>
+                닉네임: {r.displayName}
+              </p>
+              <p style={{ position: 'absolute', top: '25%' }}>{r.title}</p>
+              <p style={{ position: 'absolute', top: '45%' }}>{r.content}</p>
+              <p style={{ position: 'absolute', top: '80%', right: '5%' }}>
+                {r.createdAt.toString().slice(0, 24)}
               </p>
             </ReviewBox>
           );

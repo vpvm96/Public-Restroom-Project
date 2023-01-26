@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import mainImg from '../assets/main.png';
 import profileImg from '../assets/cat.jpg';
+import { getAuth } from 'firebase/auth';
+import { authService } from '../api/firebaseService';
 const MainPage = () => {
   const [review, setReview] = useState(initialState);
+
+  const auth = getAuth();
+  console.log(authService.currentUser?.displayName);
 
   return (
     <MainWrap>

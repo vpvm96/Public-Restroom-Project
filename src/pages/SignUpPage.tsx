@@ -43,10 +43,7 @@ const SignUpPage = () => {
     //인증부분
     const auth = getAuth();
     const user = createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        updateProfile(result.user, {
-          displayName: displayname,
-        });
+      .then(() => {
         console.log('회원가입성공:', user);
         alert('회원가입성공');
         navigate('/login');

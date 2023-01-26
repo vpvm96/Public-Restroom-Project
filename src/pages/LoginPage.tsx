@@ -2,19 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState } from 'react';
 import {
-  getAuth,
   signInWithEmailAndPassword,
   setPersistence,
   browserSessionPersistence,
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../api/firebaseService';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const auth = getAuth();
+  // const auth = getAuth();
 
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,9 +30,9 @@ const LoginPage = () => {
   const handleSubmitClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setPersistence(auth, browserSessionPersistence)
+    setPersistence(authService, browserSessionPersistence)
       .then(() => {
-        return signInWithEmailAndPassword(auth, email, password)
+        return signInWithEmailAndPassword(authService, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
             console.log(user);
@@ -57,7 +57,7 @@ const LoginPage = () => {
   const findPwd = (e: any) => {
     e.preventDefault();
 
-    sendPasswordResetEmail(auth, email)
+    sendPasswordResetEmail(authService, email)
       .then(() => {
         // Password reset email sent!
         console.log('성공');

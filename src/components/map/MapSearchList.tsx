@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import Modal from '../Modals/Modal';
 
 interface MapSearchListProps {
-  markerInfo: any;
+  markerInfo: readonly [key: string | number];
 }
 
 const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
@@ -19,7 +20,7 @@ const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
           </MapSearchListLeftAdressText>
         </MapSearchListLeftBox>
         <MapSearchListRightBox>
-          <MapSearchListRightModalBtn>리뷰 작성</MapSearchListRightModalBtn>
+          <Modal GU_NM={GU_NM} HNR_NAM={HNR_NAM} OBJECTID={OBJECTID} />
         </MapSearchListRightBox>
       </MapSearchListContainer>
     </MapSearchListWrapper>
@@ -58,18 +59,6 @@ const MapSearchListLeftAdressText = styled.p`
 const MapSearchListRightBox = styled.div`
   width: 15%;
   margin: 0;
-`;
-const MapSearchListRightModalBtn = styled.button`
-  width: 100%;
-  height: 1.7rem;
-  border: none;
-  box-shadow: 0px 0px 12px -6px rgba(0, 0, 0, 5);
-  color: #fff;
-  letter-spacing: 1px;
-  outline: none;
-  cursor: pointer;
-  border-radius: 5px;
-  background-color: #4285f4;
 `;
 
 export default MapSearchList;

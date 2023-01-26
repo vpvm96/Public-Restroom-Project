@@ -1,35 +1,13 @@
 import { useState } from 'react';
 
-// interface MarkerInfoType {
-//   markerInfo: {
-//     id: string;
-//     marker: kakao.maps.Marker;
-//     data: [key: string | number];
-//   };
-//   setMarkerInfo: {
-//     id: string;
-//     marker: kakao.maps.Marker;
-//     data: [key: string | number];
-//   };
-// }
-
-// interface LocationDataType {
-//   CREAT_DE:string
-//   GU_NM: string;
-//   HNR_NAM: string;
-//   LAT: string
-//   LNG: string
-//   MASTERNO: string;
-//   MTC_AT: string;
-//   NEADRES_NM: string;
-//   OBJECTID: number;
-//   SLAVENO: string;
-// }
+interface LocationDataType {
+  readonly [key: string | number]: string;
+}
 
 const useMapLocation = () => {
-  const [markerInfo, setMarkerInfo]: any = useState([]);
+  const [markerInfo, setMarkerInfo] = useState<LocationDataType[]>([]);
 
-  function kakaoLocation(locationData: any) {
+  function kakaoLocation(locationData: LocationDataType[]) {
     const container = document.getElementById('map');
     const options = {
       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -87,14 +65,14 @@ const useMapLocation = () => {
   }
 
   function displayMarkerAll(
-    locationData: any,
+    locationData: LocationDataType[],
     map: kakao.maps.Map,
     locPosition: kakao.maps.LatLng
   ) {
     const markerArr: any = [];
     const imageSrc: string =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-    const radius = 350;
+    const radius = 500;
     const imageSize = new kakao.maps.Size(24, 35);
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
@@ -127,7 +105,7 @@ const useMapLocation = () => {
         markerArr.push(item);
         infoWindow.open(map, marker);
       } else {
-        console.log('영역 밖 맵');
+        return;
       }
     });
     setMarkerInfo(markerArr);
@@ -136,7 +114,7 @@ const useMapLocation = () => {
   function displayCircle(locPosition: kakao.maps.LatLng, map: kakao.maps.Map) {
     const circle = new kakao.maps.Circle({
       center: locPosition,
-      radius: 350,
+      radius: 500,
       strokeWeight: 5,
       strokeColor: '#75B8FA',
       strokeOpacity: 1,

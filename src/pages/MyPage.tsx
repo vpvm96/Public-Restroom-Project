@@ -18,12 +18,8 @@ const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
   const { profileRelatedValues, onChangeUserNickname } = useEditProfile();
-  const {
-    handleChangeNickname,
-    handleLogOut,
-    handleChangePwd,
-    handleDeleteAccount,
-  } = useButtonReactions({ pwdRelatedValues, profileRelatedValues });
+  const { handleChangeNickname, handleChangePwd, handleDeleteAccount } =
+    useButtonReactions({ pwdRelatedValues, profileRelatedValues });
 
   return (
     <>
@@ -112,21 +108,23 @@ const MyPage = () => {
 export default MyPage;
 
 const Container = styled.div`
-  margin-top: 15rem;
-  /* width: 40%; */
-  /* height: 60%; */
+  margin-top: 8rem;
+  padding: 50px;
+  width: 70%;
+  /* height: 80%; */
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid black; */
+  border: 1px solid #d3d3d3;
+  box-shadow: 5px 5px 5px gray;
   gap: 10px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 `;
 
 const BtnWrapper = styled.div`

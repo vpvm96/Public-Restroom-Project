@@ -100,6 +100,9 @@ const FbImg = styled.div`
 
 const FontBox = styled.div`
   width: 100%;
+  @media (max-width: 850px) {
+    display: none;
+  }
 `;
 
 const Font = styled.h4`

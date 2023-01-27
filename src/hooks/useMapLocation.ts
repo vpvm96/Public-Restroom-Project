@@ -20,12 +20,12 @@ const useMapLocation = () => {
       navigator.geolocation.getCurrentPosition(function (position) {
         const lat = position.coords.latitude,
           lon = position.coords.longitude;
-
         // 동대문역 위도 경도 37.571033, 127.009504
         // 노원역 위도 경도 37.654326, 127.060089
         // 서울역 위도 경도 37.555364, 126.968700
 
-        const locPosition = new kakao.maps.LatLng(37.571033, 127.009504),
+
+        const locPosition = new kakao.maps.LatLng(37.555364, 126.9687),
           message = '<div style="padding:5px;">현재 위치</div>';
 
         displayMarkerAll(locationData, map, locPosition);

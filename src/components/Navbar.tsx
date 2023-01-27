@@ -1,21 +1,15 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { getAuth } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import useLoginState from '../hooks/useLoginState';
-import blankImg from '../assets/blank.png';
-import DfProfileImg from '../assets/profile.png';
-import profileImg from '../assets/cat.jpg';
+import profileImgDefault from '../assets/profile.png';
 import logoImg from '../assets/await.png';
 import styled from 'styled-components';
 
 const Navbar = () => {
-  const auth = getAuth();
   const navigate = useNavigate();
-  const { isLoggedIn, isAuthorizedInSession, setInit, setIsLoggedIn } =
-    useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, userObjParsed } = useLoginState();
 
   const handleLogout = () => {
     signOut(authService)
@@ -27,24 +21,6 @@ const Navbar = () => {
         console.log(error);
       });
   };
-
-  //새로고침해도 닉네임 유지 방법 1
-  // let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
-  // console.log(userObj);
-  // let userObjParsed = JSON.parse(userObj!); //null 이 올 수도 있다. 근데 이 방법은 좋진 않다.
-  // console.log(userObjParsed);
-
-  //새로고침해도 닉네임 유지 방법 2
-  useEffect(() => {
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-      setInit(true);
-    });
-  }, [setInit, setIsLoggedIn]);
 
   return (
     <Nav>
@@ -70,22 +46,13 @@ const Navbar = () => {
         {isLoggedIn && isAuthorizedInSession ? (
           <ImgNick>
             <FbImg>
-              {auth.currentUser?.photoURL ? (
-                <ProfileImg src={auth.currentUser.photoURL} />
-              ) : (
-                <ProfileImg src={DfProfileImg} />
-              )}
+              <ProfileImg src={userObjParsed.photoURL || profileImgDefault} />
             </FbImg>
             <FontBox>
-              <Font>{auth.currentUser?.displayName} </Font>
+              <Font>{userObjParsed.displayName} </Font>
             </FontBox>
           </ImgNick>
-        ) : (
-          <FontBox>
-            <Font>{auth.currentUser?.displayName} </Font>
-          </FontBox>
-        )}
-        {/* <LoginButtonBox to="/login"> */}
+        ) : null}
         <LoginButtonBox>
           {isLoggedIn && isAuthorizedInSession ? (
             <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>

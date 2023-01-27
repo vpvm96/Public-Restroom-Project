@@ -13,8 +13,24 @@ import {
 } from './style';
 import { uuidv4 } from '@firebase/util';
 import { authService } from '../../api/firebaseService';
-export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
-  const [modal, setModals]: any = useState([
+
+//modal props 타입지정
+interface ModalProps {
+  HNR_NAM: string;
+  GU_NM: string;
+  OBJECTID: string | number;
+}
+//modal state 타입지정
+interface ModalState {
+  [key: string]: string | number;
+}
+
+export default function Modal({
+  HNR_NAM,
+  GU_NM,
+  OBJECTID,
+}: ModalProps): JSX.Element {
+  const [modal, setModals] = useState<ModalState[]>([
     {
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
       displayName: '빨간휴지',

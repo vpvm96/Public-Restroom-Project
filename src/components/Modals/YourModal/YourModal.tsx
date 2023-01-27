@@ -79,8 +79,7 @@ export default function YourModal({ item }: any) {
       console.log(err);
     }
   };
-  console.log(item.createdAt);
-  con;
+
   return (
     <div style={{ display: 'block' }}>
       <YourModalsLayout>

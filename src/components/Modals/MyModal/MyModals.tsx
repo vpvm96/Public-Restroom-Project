@@ -10,9 +10,25 @@ import {
   Scroll,
 } from './style';
 import YourModal from '../YourModal/YourModal';
-import { getAuth } from 'firebase/auth';
 import { authService, fireStore } from '../../../api/firebaseService';
-import { doc, setDoc, collection, onSnapshot } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+} from 'firebase/firestore';
+export interface ModalState {
+  [key: string]: string | number;
+}
+
+interface ModalProps {
+  HNR_NAM: string;
+  GU_NM: string;
+  OBJECTID: string | number;
+  modal: ModalState[];
+  setModals: (reviews: { id: string }[]) => void;
+}
 
 export default function MyModals({
   HNR_NAM,
@@ -20,16 +36,17 @@ export default function MyModals({
   OBJECTID,
   modal,
   setModals,
-}: any): any {
+}: ModalProps) {
   const [content, setcontent] = useState('');
-  const modalRef = useRef<any>();
-  const InputRef = useRef<any>();
+  const InputRef = useRef<HTMLInputElement>(null);
 
   // 파이어베이스에 리뷰가져오기
   useEffect(() => {
     const q = collection(fireStore, 'reviews');
+    //orderBY로 최신순정렬함
+    orderBy('createdAt');
     onSnapshot(q, (snapshot) => {
-      const reviews: any = snapshot.docs.map((doc) => {
+      const reviews = snapshot.docs.map((doc) => {
         const review = {
           id: doc.id,
           ...doc.data(),
@@ -41,11 +58,12 @@ export default function MyModals({
   }, []);
 
   // input 창안에 onchange
-  const ModalTextChange = (event: any): any => {
+  const ModalTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     setcontent(event.target.value);
   };
   // 댓글추가하기
-  const addModal = (event: any): any => {
+  const addModal = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     // 로그인을 안했을때
     if (!authService.currentUser) {
@@ -54,11 +72,10 @@ export default function MyModals({
       // input에 리뷰를 입력하지 않았을때
     } else if (!content) {
       alert('리뷰를 입력하세요');
-      InputRef.current.focus();
+      InputRef.current!.focus();
       return;
     }
     setcontent('');
-
     alert('리뷰등록됨');
     //파이어베이스 데이터베이스에 넣어놓기
     const authId = authService.currentUser?.uid;
@@ -76,7 +93,7 @@ export default function MyModals({
 
   return (
     <>
-      <ModalLayout ref={modalRef}>
+      <ModalLayout>
         <MyModal>
           <ModalBox>
             <ModalHeader>
@@ -97,8 +114,8 @@ export default function MyModals({
         <Scroll>
           {modal
             /* 화장실Id에 맞는거만 필터로 보여줘서 맵을 돌림*/
-            .filter((m: any) => m.ModalId === OBJECTID)
-            .map((item: any) => {
+            .filter((m: ModalState) => m.ModalId === OBJECTID)
+            .map((item: ModalState) => {
               return (
                 <YourModal
                   key={item.id}

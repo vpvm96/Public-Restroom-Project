@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface pwdRelatedValueTypes {
-  currentPwd: string;
-  newPwd: string;
-  confirmNewPwd: string;
-  isCurrentPwd: boolean;
-  isValidPwd: boolean;
-  isSamePwd: boolean;
-  currentPwdObserver: string;
-  newPwdObserver: string;
-  confirmNewPwdObserver: string;
-}
+// interface pwdRelatedValueTypes {
+//   currentPwd: string;
+//   newPwd: string;
+//   confirmNewPwd: string;
+//   isCurrentPwd: boolean;
+//   isValidPwd: boolean;
+//   isSamePwd: boolean;
+//   currentPwdObserver: string;
+//   newPwdObserver: string;
+//   confirmNewPwdObserver: string;
+// }
 
 const CustomInput = ({
   type,

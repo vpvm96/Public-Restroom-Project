@@ -5,9 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import useLoginState from '../hooks/useLoginState';
-import blankImg from '../assets/blank.png';
 import DfProfileImg from '../assets/profile.png';
-import profileImg from '../assets/cat.jpg';
 import logoImg from '../assets/await.png';
 import styled from 'styled-components';
 

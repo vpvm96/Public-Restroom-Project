@@ -116,6 +116,7 @@ const LoginPage = () => {
       </form>
       <LoginModal
         open={loginModalopen}
+        setLoginModalopen={setLoginModalopen}
         onClose={() => setLoginModalopen(false)}
       />
     </div>

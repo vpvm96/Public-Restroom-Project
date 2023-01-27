@@ -4,7 +4,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { authService } from '../../../api/firebaseService';
 import { emailRegex } from '../../../utils/UserInfoRegex';
 
-function LoginModal({ open, onClose }: any) {
+function LoginModal({ open, onClose, setLoginModalopen }: any) {
   const [findPwd, setFindPwd] = useState('');
   const email = findPwd;
 
@@ -19,6 +19,7 @@ function LoginModal({ open, onClose }: any) {
       await sendPasswordResetEmail(authService, email)
         .then(() => {
           alert('이메일을 발송했습니다. 보관함을 확인해 주세요.');
+          setLoginModalopen(false);
         })
         .catch((error) => {
           const errorCode = error.code;

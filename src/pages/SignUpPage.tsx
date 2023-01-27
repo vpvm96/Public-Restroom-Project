@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
+import { emailRegex, pwdRegex } from '../utils/UserInfoRegex';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -12,22 +13,58 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   //유효성검사
-  const [validateId, setValidateId] = useState('');
-  const [validateIdColor, setValidateIdColor] = useState(true);
+  const [validateEmail, setValidateEmail] = useState('');
+  const [validateEmailColor, setValidateEmailColor] = useState(true);
+  const [validatePw, setValidatePw] = useState('');
+  const [validatePwColor, setValidatePwColor] = useState(true);
+  const [validatePwconfirm, setValidatePwconfirm] = useState('');
+  const [validatePwconfirmColor, setValidatePwconfirmColor] = useState(true);
 
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     // console.log('onchnageemail:', email);
+    if (email.length > 5) {
+      if (emailRegex.test(email) === false) {
+        setValidateEmail(' 옳바른 형식을 입력해 주십시오.');
+        setValidateEmailColor(true);
+      } else {
+        setValidateEmail(' 올바른 형식의 이메일 주소입니다.');
+        setValidateEmailColor(false);
+      }
+    }
   };
+
+  // password값을 저장하고 유효성검사를 실시한다.
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    // console.log('onchnageemail:', password);
+    console.log('onchnagepassword:', password);
+    //비밀번호 유효성 검사
+    if (password.length > 0) {
+      if (pwdRegex.test(password) === false) {
+        setValidatePw(' 옳바른 형식을 입력해 주십시오.');
+      } else {
+        setValidatePw(' 올바른 형식의 비밀번호 입니다.');
+      }
+    }
   };
+
+  //passowrd를 동기적으로 처리하기 위해서 useeffect를 사용
+  useEffect(() => {
+    if (confirmPwd.length > 0) {
+      if (password === confirmPwd) {
+        setValidatePwconfirm('비밀번호와 일치합니다.');
+      } else {
+        setValidatePwconfirm('비밀번호와 일치하지 않습니다.');
+      }
+    }
+  }, [confirmPwd]);
+
   const onChangeconfirmPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCnfirmPwd(e.target.value);
-    // console.log('onchnageemail:', confirmPwd);
+    console.log('onchnageconfirmPwd:', confirmPwd);
   };
+
   const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayname(e.target.value);
     console.log('onchnageemail:', displayname);
@@ -39,6 +76,7 @@ const SignUpPage = () => {
     //확인
     console.log('handleSubmitClick');
     //인증부분
+
     try {
       const user = await createUserWithEmailAndPassword(
         authService,
@@ -61,6 +99,7 @@ const SignUpPage = () => {
         })
         .catch((error) => {
           console.log(error);
+          alert('비밀번호를 정확히 입력해 주세요');
         });
     } catch {}
   };
@@ -93,7 +132,6 @@ const SignUpPage = () => {
                 placeholder="닉네임"
                 onChange={onChangeDisplayname}
               ></Input>
-              <p>아이디가 옳바르지 않습니다.</p>
             </Inputholder>
             <Inputholder>
               <Input
@@ -101,7 +139,9 @@ const SignUpPage = () => {
                 placeholder="아이디"
                 onChange={onChangeEmail}
               ></Input>
-              <p>아이디가 옳바르지 않습니다.</p>
+              <Validityfontbox>
+                {<Validityfont>{validateEmail}</Validityfont>}
+              </Validityfontbox>
             </Inputholder>
             <Inputholder>
               <Input
@@ -109,17 +149,23 @@ const SignUpPage = () => {
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}
+                value={password}
               ></Input>
-              <p>아이디가 옳바르지 않습니다.</p>
+              <Validityfontbox>
+                {<Validityfont>{validatePw}</Validityfont>}
+              </Validityfontbox>
             </Inputholder>
             <Inputholder>
               <Input
-                type="password"
+                value={confirmPwd}
+                // type="password"
                 name="비밀번호 확인"
                 placeholder="비밀번호 확인"
                 onChange={onChangeconfirmPwd}
               ></Input>
-              <p>아이디가 옳바르지 않습니다.</p>
+              <Validityfontbox>
+                {<Validityfont>{validatePwconfirm}</Validityfont>}
+              </Validityfontbox>
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>
@@ -135,12 +181,11 @@ const SignUpPage = () => {
 export default SignUpPage;
 
 const InputBox = styled.div`
-  position: absolute;
+  position: relative;
   width: 430px;
   height: 600px;
   border-radius: 30px;
   padding: 5px;
-  left: 1200px;
   top: 150px;
   border: 2px solid #2192ff;
 `;
@@ -173,7 +218,7 @@ const InputBoxContent = styled.div`
 //잠깐만 !
 const LoginLogo = styled.div`
   text-align: center;
-  margin-top: 80px;
+  margin-top: 84px;
   margin-bottom: 25px;
   font-size: 20px;
   color: #2192ff;
@@ -202,4 +247,21 @@ const LoginBtn = styled.button`
     color: white;
     transition: 0.5s;
   }
+`;
+
+//유효성검사시 글자
+const Validityfont = styled.p`
+  color: blue;
+  font-size: 15px;
+`;
+
+const Validityfontbox = styled.div`
+  border: none;
+  width: 300px;
+  height: 38px;
+  position: relative;
+  right: 10px;
+  margin-top: 3px;
+  outline: none;
+  color: blue;
 `;

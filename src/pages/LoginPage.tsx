@@ -16,7 +16,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   // const auth = getAuth();
 
-  //onchange로 값을 저장한다.
+  //onchange로 값을 저장.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     console.log('onchnageemail:', email);
@@ -43,6 +43,7 @@ const LoginPage = () => {
             const errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            alert('이메일과 비밀번호를 확인하세요!');
           });
       })
       .catch((error) => {
@@ -97,11 +98,15 @@ const LoginPage = () => {
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>
-            <RegisterBtn onClick={() => navigate('/signup')}>
+            <RegisterBtn type="button" onClick={() => navigate('/signup')}>
               회원 가입
             </RegisterBtn>
-            <LoginBtn>로그인</LoginBtn>
-            <RegisterBtn onClick={findPwd}>비밀번호 찾기</RegisterBtn>
+
+            <LoginBtn type="submit">로그인</LoginBtn>
+
+            <RegisterBtn type="button" onClick={findPwd}>
+              비밀번호 찾기
+            </RegisterBtn>
           </ButtonBox>
         </InputBox>
       </form>
@@ -112,12 +117,11 @@ const LoginPage = () => {
 export default LoginPage;
 
 const InputBox = styled.div`
-  position: absolute;
+  position: relative;
   width: 430px;
   height: 600px;
   border-radius: 30px;
   padding: 5px;
-  left: 1200px;
   top: 150px;
   border: 2px solid #2192ff;
 `;

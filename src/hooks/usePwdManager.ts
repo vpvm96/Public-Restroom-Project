@@ -91,11 +91,6 @@ const usePwdManager = () => {
 
   //useEffect로 한꺼번에 유효성 검사 가능
 
-  //pwdRelatedValues 콘솔 값 확인
-  //   useEffect(() => {
-  //     console.log(pwdRelatedValues);
-  //   }, [pwdRelatedValues]);
-
   return {
     pwdRelatedValues,
     onChangePwd,

@@ -12,7 +12,6 @@ import logoImg from '../assets/await.png';
 import styled from 'styled-components';
 
 const Navbar = () => {
-  const auth = getAuth();
   const navigate = useNavigate();
   const { isLoggedIn, isAuthorizedInSession, setInit } = useLoginState();
 
@@ -64,19 +63,19 @@ const Navbar = () => {
         {isLoggedIn && isAuthorizedInSession ? (
           <ImgNick>
             <FbImg>
-              {auth.currentUser?.photoURL ? (
-                <ProfileImg src={auth.currentUser.photoURL} />
+              {authService.currentUser?.photoURL ? (
+                <ProfileImg src={authService.currentUser.photoURL} />
               ) : (
                 <ProfileImg src={DfProfileImg} />
               )}
             </FbImg>
             <FontBox>
-              <Font>{auth.currentUser?.displayName} </Font>
+              <Font>{authService.currentUser?.displayName} </Font>
             </FontBox>
           </ImgNick>
         ) : (
           <FontBox>
-            <Font>{auth.currentUser?.displayName} </Font>
+            <Font>{authService.currentUser?.displayName} </Font>
           </FontBox>
         )}
         {/* <LoginButtonBox to="/login"> */}

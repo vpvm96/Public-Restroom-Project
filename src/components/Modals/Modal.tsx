@@ -12,10 +12,25 @@ import {
   ReviewBtton,
 } from './style';
 import { uuidv4 } from '@firebase/util';
-import { getAuth } from 'firebase/auth';
-export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
-  const auth = getAuth();
-  const [modal, setModals]: any = useState([
+import { authService } from '../../api/firebaseService';
+
+//modal props 타입지정
+interface ModalProps {
+  HNR_NAM: string;
+  GU_NM: string;
+  OBJECTID: string | number;
+}
+//modal state 타입지정
+interface ModalState {
+  [key: string]: string | number;
+}
+
+export default function Modal({
+  HNR_NAM,
+  GU_NM,
+  OBJECTID,
+}: ModalProps): JSX.Element {
+  const [modal, setModals] = useState<ModalState[]>([
     {
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
       displayName: '빨간휴지',
@@ -31,7 +46,7 @@ export default function Modal({ HNR_NAM, GU_NM, OBJECTID }: any): any {
   }, []);
   const openModal = useCallback(() => {
     // 로그인 안하면 리뷰작성 안눌림
-    if (!auth.currentUser) {
+    if (!authService.currentUser) {
       alert('로그인이 필요합니다');
       return;
     }

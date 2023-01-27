@@ -5,10 +5,14 @@ import { BsFillBookmarkFill } from 'react-icons/bs';
 import mainImg from '../assets/Banner.jpg';
 import InfoImg from '../assets/Info.png';
 import styled from 'styled-components';
+import { getAuth } from 'firebase/auth';
 
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
   const testCollectionRef = collection(fireStore, 'reviews');
+
+  const auth = getAuth();
+  console.log('현재유저:', auth.currentUser.displayName);
 
   useEffect(() => {
     const getReviews = async () => {
@@ -40,7 +44,6 @@ const MainPage = () => {
           </p>
         </Info>
       </InfoWrap>
-
       <ReviewText>REVIEW</ReviewText>
       <div>화장실 이용에 대한 리뷰를 소개합니다.</div>
       <ReviewBoxWrap>

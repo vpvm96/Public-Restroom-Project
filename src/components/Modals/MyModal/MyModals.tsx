@@ -10,9 +10,26 @@ import {
   Scroll,
 } from './style';
 import YourModal from '../YourModal/YourModal';
-import { getAuth } from 'firebase/auth';
-import { fireStore } from '../../../api/firebaseService';
-import { doc, setDoc, collection, onSnapshot } from 'firebase/firestore';
+import { authService, fireStore } from '../../../api/firebaseService';
+import {
+  doc,
+  setDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from 'firebase/firestore';
+export interface ModalState {
+  [key: string]: string | number;
+}
+
+interface ModalProps {
+  HNR_NAM: string;
+  GU_NM: string;
+  OBJECTID: string | number;
+  modal: ModalState[];
+  setModals: (reviews: { id: string }[]) => void;
+}
 
 export default function MyModals({
   HNR_NAM,
@@ -20,17 +37,20 @@ export default function MyModals({
   OBJECTID,
   modal,
   setModals,
-}: any): any {
+}: ModalProps) {
   const [content, setcontent] = useState('');
-  const modalRef = useRef<any>();
-  const InputRef = useRef<any>();
-  const auth = getAuth();
-  const [re, setRe] = useState(false);
+  const InputRef = useRef<HTMLInputElement>(null);
+  // 시간나타내줌
+  const date = new Date().toString().slice(0, 25);
   // 파이어베이스에 리뷰가져오기
   useEffect(() => {
-    const q = collection(fireStore, 'reviews');
+    //파이어베이스에서 query로 감싸고 orderBy로 최신순으로 정렬함
+    const q = query(
+      collection(fireStore, 'reviews'),
+      orderBy('createdAt', 'desc')
+    );
     onSnapshot(q, (snapshot) => {
-      const reviews: any = snapshot.docs.map((doc) => {
+      const reviews = snapshot.docs.map((doc) => {
         const review = {
           id: doc.id,
           ...doc.data(),
@@ -42,47 +62,47 @@ export default function MyModals({
   }, []);
 
   // input 창안에 onchange
-  const ModalTextChange = (event: any): any => {
+  const ModalTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     setcontent(event.target.value);
   };
   // 댓글추가하기
-  const addModal = (event: any): any => {
+  const addModal = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     // 로그인을 안했을때
-    if (!auth.currentUser) {
+    if (!authService.currentUser) {
       alert('로그인이 필요합니다');
       return;
       // input에 리뷰를 입력하지 않았을때
     } else if (!content) {
       alert('리뷰를 입력하세요');
-      InputRef.current.focus();
+      InputRef.current!.focus();
       return;
     }
     setcontent('');
-    setRe(true);
     alert('리뷰등록됨');
     //파이어베이스 데이터베이스에 넣어놓기
-    const authId = auth.currentUser?.uid;
+    const authId = authService.currentUser?.uid;
     const usersRef = collection(fireStore, 'reviews');
     setDoc(doc(usersRef), {
-      displayName: auth.currentUser.displayName,
+      displayName: authService.currentUser.displayName,
       ModalId: OBJECTID,
       authId,
       content,
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
-      createdAt: new Date(),
+      createdAt: date,
     });
     return;
   };
 
   return (
     <>
-      <ModalLayout ref={modalRef}>
+      <ModalLayout>
         <MyModal>
           <ModalBox>
             <ModalHeader>
               <ModalDisplayName>
-                작성자 : {auth.currentUser?.displayName}
+                작성자 : {authService.currentUser?.displayName}
               </ModalDisplayName>
               <ModalSapan onClick={addModal}>확인</ModalSapan>
             </ModalHeader>
@@ -98,8 +118,8 @@ export default function MyModals({
         <Scroll>
           {modal
             /* 화장실Id에 맞는거만 필터로 보여줘서 맵을 돌림*/
-            .filter((m: any) => m.ModalId === OBJECTID)
-            .map((item: any) => {
+            .filter((m: ModalState) => m.ModalId === OBJECTID)
+            .map((item: ModalState) => {
               return (
                 <YourModal
                   key={item.id}

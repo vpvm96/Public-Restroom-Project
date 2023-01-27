@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
+import { emailRegex, pwdRegex } from '../utils/UserInfoRegex';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   // const auth = getAuth();
 
-  //onchange로 값을 저장한다.
+  //onchange로 값을 저장.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     console.log('onchnageemail:', email);
@@ -43,6 +44,16 @@ const LoginPage = () => {
             const errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            alert('로그인 실패');
+            if (email.length === 0) {
+              alert('이메일을 입력해 주세요');
+            } else if (emailRegex.test(email) === false) {
+              alert('이메일을 정확히 입력해 주세요');
+            } else if (password.length === 0) {
+              alert('비밀번호를 입력해 주세요');
+            } else if (pwdRegex.test(password) === false) {
+              alert('비밀번호를 정확히 입력해 주세요 ');
+            }
           });
       })
       .catch((error) => {
@@ -76,12 +87,13 @@ const LoginPage = () => {
       <form onSubmit={handleSubmitClick}>
         <InputBox>
           <LoginLogo>
-            <h1>wait !</h1>
+            <h1>잠깐만 !</h1>
           </LoginLogo>
 
           <InputBoxContent>
             <Inputholder>
               <Input
+                type="email"
                 name="아이디"
                 placeholder="아이디"
                 onChange={onChangeEmail}
@@ -89,7 +101,7 @@ const LoginPage = () => {
             </Inputholder>
             <Inputholder>
               <Input
-                // type="password"
+                type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}
@@ -97,11 +109,15 @@ const LoginPage = () => {
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>
-            <RegisterBtn onClick={() => navigate('/signup')}>
+            <RegisterBtn type="button" onClick={() => navigate('/signup')}>
               회원 가입
             </RegisterBtn>
-            <LoginBtn>로그인</LoginBtn>
-            <RegisterBtn onClick={findPwd}>비밀번호 찾기</RegisterBtn>
+
+            <LoginBtn type="submit">로그인</LoginBtn>
+
+            <RegisterBtn type="button" onClick={findPwd}>
+              비밀번호 찾기
+            </RegisterBtn>
           </ButtonBox>
         </InputBox>
       </form>
@@ -112,12 +128,11 @@ const LoginPage = () => {
 export default LoginPage;
 
 const InputBox = styled.div`
-  position: absolute;
+  position: relative;
   width: 430px;
   height: 600px;
   border-radius: 30px;
   padding: 5px;
-  left: 1200px;
   top: 150px;
   border: 2px solid #2192ff;
 `;

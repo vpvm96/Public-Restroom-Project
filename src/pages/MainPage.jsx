@@ -11,9 +11,6 @@ const MainPage = () => {
   const [reviews, setReviews] = useState([]);
   const testCollectionRef = collection(fireStore, 'reviews');
 
-  const auth = getAuth();
-  console.log('현재유저:', auth.currentUser.displayName);
-
   useEffect(() => {
     const getReviews = async () => {
       const data = await getDocs(testCollectionRef);

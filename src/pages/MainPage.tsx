@@ -43,7 +43,6 @@ const MainPage = () => {
         })
       );
     };
-
     getReviews();
   }, []);
 
@@ -64,7 +63,6 @@ const MainPage = () => {
           </p>
         </Info>
       </InfoWrap>
-
       <ReviewText>REVIEW</ReviewText>
       <div>화장실 이용에 대한 리뷰를 소개합니다.</div>
       <ReviewBoxWrap>

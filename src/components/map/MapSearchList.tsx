@@ -1,12 +1,13 @@
-import styled from 'styled-components';
+import { LocationDataType } from '../../hooks/useMapLocation';
 import Modal from '../Modals/Modal';
+import styled from 'styled-components';
 
 interface MapSearchListProps {
-  markerInfo: readonly [key: string | number];
+  markerInfo: LocationDataType;
 }
 
 const MapSearchList = ({ markerInfo }: MapSearchListProps) => {
-  const { GU_NM, HNR_NAM, LAT, LNG, OBJECTID }: any = markerInfo;
+  const { GU_NM, HNR_NAM, LAT, LNG, OBJECTID } = markerInfo;
   return (
     <MapSearchListWrapper>
       <MapSearchListContainer>

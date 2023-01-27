@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,7 +10,7 @@ import {
 } from 'firebase/auth';
 import usePwdManager from './usePwdManager';
 import useEditProfile from './useEditProfile';
-import useLoginState from './useLoginState';
+// import useLoginState from './useLoginState';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -31,26 +30,29 @@ interface profileRelatedValueTypes {
   isValidNickname: boolean;
 }
 
-interface profilePersistenceTypes {
-  userObj: object;
-  setUserObj: React.Dispatch<React.SetStateAction<string>>;
-}
+// interface profilePersistenceTypes {
+//   userObj: object;
+//   setUserObj: React.Dispatch<React.SetStateAction<string>>;
+// }
 
 const useButtonReactions = ({
   pwdRelatedValues,
   profileRelatedValues,
+  setPwdRelatedValues,
 }: // setUserNickname,
 {
   pwdRelatedValues: pwdRelatedValueTypes;
   profileRelatedValues: profileRelatedValueTypes;
+  setPwdRelatedValues: React.Dispatch<
+    React.SetStateAction<pwdRelatedValueTypes>
+  >;
   // setUserNickname: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
   const { userNickname } = profileRelatedValues;
-  const { setPwdRelatedValues } = usePwdManager();
+  // const { setPwdRelatedValues } = usePwdManager();
   const { setProfileRelatedValues } = useEditProfile();
-  // const { refreshUser } = useLoginState();
   const newPwdConfirmed = newPwd === confirmNewPwd;
 
   const handleLogOut = async () => {
@@ -78,7 +80,6 @@ const useButtonReactions = ({
         .then(() => {
           alert('프로필 업데이트 완료!');
           setProfileRelatedValues((prev) => ({ ...prev, userNickname: '' }));
-          // refreshUser();
           navigate('/mypage', { replace: true });
         })
         .catch((error) => console.log(error));
@@ -100,15 +101,16 @@ const useButtonReactions = ({
           if (authService.currentUser && newPwdConfirmed) {
             updatePassword(authService.currentUser, newPwd).then(() => {
               alert('비밀번호가 변경되었습니다.');
-              setPwdRelatedValues({
-                ...pwdRelatedValues,
-                currentPwd: '',
-                newPwd: '',
-                confirmNewPwd: '',
-              });
-              navigate('/mypage', { replace: true });
             });
           }
+          setPwdRelatedValues((prev) => ({
+            ...prev,
+            currentPwd: '',
+            newPwd: '',
+            confirmNewPwd: '',
+          }));
+          console.log('비밀번호값들', currentPwd, newPwd, confirmNewPwd);
+          navigate('/mypage', { replace: true });
         })
         .catch((error) => {
           if (error.code === 'auth/wrong-password') {

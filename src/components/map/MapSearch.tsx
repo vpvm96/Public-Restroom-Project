@@ -1,13 +1,18 @@
 import MapSearchList from './MapSearchList';
+import { LocationDataType } from '../../hooks/useMapLocation';
 import styled from 'styled-components';
 
-const MapSearch = ({ markerInfo }: any) => {
+interface MapSearchProps {
+  markerInfo: LocationDataType[];
+}
+
+const MapSearch = ({ markerInfo }: MapSearchProps) => {
   return (
     <MapSearchWrapper>
       <MapSearchContainer></MapSearchContainer>
       <MapSearchListContainer>
         <MapSearchListText>총 {markerInfo.length}개의 결과</MapSearchListText>
-        {markerInfo.map((info: any) => (
+        {markerInfo.map((info) => (
           <MapSearchList key={info.OBJECTID} markerInfo={info} />
         ))}
       </MapSearchListContainer>

@@ -73,16 +73,13 @@ const SignUpPage = () => {
   // submit & firebase
   const handleSubmitClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //확인
-    console.log('handleSubmitClick');
-    //인증부분
+    // //확인
+    // console.log('handleSubmitClick');
 
-    try {
-      const user = await createUserWithEmailAndPassword(
-        authService,
-        email,
-        password
-      )
+    //인증부분
+    //패스워드와 패스워드 확인이 일치하고 패스워드의 유효성 검사를 통과해야만 로그인이 가능하다.
+    if (password === confirmPwd && pwdRegex.test(password) === true) {
+      await createUserWithEmailAndPassword(authService, email, password)
         .then((result) => {
           updateProfile(result.user, {
             displayName: displayname,
@@ -99,9 +96,21 @@ const SignUpPage = () => {
         })
         .catch((error) => {
           console.log(error);
-          alert('비밀번호를 정확히 입력해 주세요');
+          if (
+            (error =
+              'FirebaseError: Firebase: Error (auth/email-already-in-use).')
+          ) {
+            alert('중복된 이메일 입니다 다시 확인해 주세요');
+          } else if (
+            (error =
+              'FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password).')
+          ) {
+            alert('비밀번호는 최소6글자 이상을 입력해야 합니다.');
+          }
         });
-    } catch {}
+    } else {
+      alert('이메일과 비밀번호를 확인해 주세요.');
+    }
   };
 
   //유효성검사 함수
@@ -250,7 +259,7 @@ const LoginBtn = styled.button`
 `;
 
 //유효성검사시 글자
-const Validityfont = styled.p`
+const Validityfont = styled.span`
   color: blue;
   font-size: 15px;
 `;

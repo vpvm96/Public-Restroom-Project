@@ -1,23 +1,22 @@
 // import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  // Navbar,
-  ProfileImage,
-  CustomButton,
-  CustomInput,
-} from '../components';
-// import { apiKey } from '../api/firebaseService';
+import { ProfileImage, CustomButton, CustomInput } from '../components';
 import { Link } from 'react-router-dom';
 import usePwdManager from '../hooks/usePwdManager';
 import useButtonReactions from '../hooks/useButtonReactions';
 import useLoginState from '../hooks/useLoginState';
 import useEditProfile from '../hooks/useEditProfile';
-// import ProfileImage from '../components/ProfileImage';
 
 const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
-  const { profileRelatedValues, onChangeUserNickname } = useEditProfile();
+  const {
+    profileRelatedValues,
+    onChangeUserNickname,
+    attachment,
+    onChangeProfileImg,
+    storeImg,
+  } = useEditProfile();
   const { handleChangeNickname, handleChangePwd, handleDeleteAccount } =
     useButtonReactions({ pwdRelatedValues, profileRelatedValues });
 
@@ -27,7 +26,11 @@ const MyPage = () => {
         <Container>
           <ProfileWrapper>
             마이페이지
-            <ProfileImage />
+            <ProfileImage
+              attachment={attachment}
+              onChangeProfileImg={onChangeProfileImg}
+              storeImg={storeImg}
+            />
             <CustomInput
               type="text"
               value={profileRelatedValues.userNickname}
@@ -134,8 +137,12 @@ const BtnWrapper = styled.div`
 const NoticeWrapper = styled.div``;
 
 const ProfileWrapper = styled.div`
+  width: 500px;
+  height: 500px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  /* align-items: baseline; */
 `;

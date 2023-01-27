@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -11,7 +10,7 @@ import {
 } from 'firebase/auth';
 import usePwdManager from './usePwdManager';
 import useEditProfile from './useEditProfile';
-import useLoginState from './useLoginState';
+// import useLoginState from './useLoginState';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -31,10 +30,10 @@ interface profileRelatedValueTypes {
   isValidNickname: boolean;
 }
 
-interface profilePersistenceTypes {
-  userObj: object;
-  setUserObj: React.Dispatch<React.SetStateAction<string>>;
-}
+// interface profilePersistenceTypes {
+//   userObj: object;
+//   setUserObj: React.Dispatch<React.SetStateAction<string>>;
+// }
 
 const useButtonReactions = ({
   pwdRelatedValues,

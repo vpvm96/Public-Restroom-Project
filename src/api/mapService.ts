@@ -1,14 +1,18 @@
 import axios from 'axios';
 
+export interface RestRoomDataType {
+  readonly [key: string | number]: string;
+}
+
 export const getBublicRestroomRequest = async () => {
-  const restRoomData: any = [];
+  const restRoomData: RestRoomDataType[] = [];
 
   const request = [
     ['1', '1000'],
-    // ['1001', '2000'],
-    // ['2001', '3000'],
-    // ['3001', '4000'],
-    // ['4001', '5000'],
+    ['1001', '2000'],
+    ['2001', '3000'],
+    ['3001', '4000'],
+    ['4001', '5000'],
   ];
 
   request.forEach(async (req) => {

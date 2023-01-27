@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-interface LocationDataType {
+export interface LocationDataType {
   readonly [key: string | number]: string;
 }
 
@@ -69,16 +69,16 @@ const useMapLocation = () => {
     map: kakao.maps.Map,
     locPosition: kakao.maps.LatLng
   ) {
-    const markerArr: any = [];
+    const markerArr: LocationDataType[] = [];
     const imageSrc: string =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const radius = 500;
     const imageSize = new kakao.maps.Size(24, 35);
     const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-    locationData?.forEach((item: any) => {
+    locationData?.forEach((item: LocationDataType) => {
       const c1 = locPosition;
-      const c2 = new kakao.maps.LatLng(item.LAT, item.LNG);
+      const c2 = new kakao.maps.LatLng(Number(item.LAT), Number(item.LNG));
       const poly = new kakao.maps.Polyline({
         path: [c1, c2],
       });

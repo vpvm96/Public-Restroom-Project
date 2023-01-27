@@ -162,6 +162,9 @@ const Container = styled.div`
   border: 1px solid #d3d3d3;
   box-shadow: 5px 5px 5px gray;
   gap: 10px;
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -209,7 +212,7 @@ const ProfileImg = styled.img`
   position: relative;
   margin: auto;
   width: 30%;
-  border: 1px solid black;
+  border: 1px solid #d3d3d3;
   border-radius: 50%;
   cursor: pointer;
 `;

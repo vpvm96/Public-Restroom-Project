@@ -117,11 +117,20 @@ const MenuSection = styled.div`
 const NavUl = styled.ul`
   display: flex;
   flex-direction: row;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const NavLi = styled.li`
   list-style: none;
   text-decoration: none;
+  &:hover {
+    /* background-color: #4285f4; */
+    /* color: white; */
+    text-decoration: underline;
+    color: #4285f4;
+  }
 `;
 const NavText = styled(Link)`
   text-decoration: none;

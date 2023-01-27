@@ -1,19 +1,15 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import useLoginState from '../hooks/useLoginState';
-// import blankImg from '../assets/blank.png';
-import DfProfileImg from '../assets/profile.png';
-// import profileImg from '../assets/cat.jpg';
+import profileImgDefault from '../assets/profile.png';
 import logoImg from '../assets/await.png';
 import styled from 'styled-components';
-import { apiKey } from '../api/firebaseService';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, isAuthorizedInSession, setInit } = useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, userObjParsed } = useLoginState();
 
   const handleLogout = () => {
     signOut(authService)
@@ -25,26 +21,6 @@ const Navbar = () => {
         console.log(error);
       });
   };
-
-  //새로고침해도 닉네임 유지 방법 1 => 새로고침 할 때 깜빡임 없어서 선택
-  //닉네임 유지용
-  let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
-  let userObjParsed;
-  if (userObj) {
-    userObjParsed = JSON.parse(userObj);
-  } else {
-    userObjParsed = {
-      displayName: 'Visitor',
-    };
-  }
-
-  //새로고침해도 닉네임 유지 방법 2 => 로딩 시간 때문인지 깜빡임이 있음
-  //프로필 사진 유지용
-  useEffect(() => {
-    authService.onAuthStateChanged(() => {
-      setInit(true);
-    });
-  }, [setInit]);
 
   return (
     <Nav>
@@ -70,22 +46,13 @@ const Navbar = () => {
         {isLoggedIn && isAuthorizedInSession ? (
           <ImgNick>
             <FbImg>
-              {authService.currentUser?.photoURL ? (
-                <ProfileImg src={authService.currentUser.photoURL} />
-              ) : (
-                <ProfileImg src={DfProfileImg} />
-              )}
+              <ProfileImg src={userObjParsed.photoURL || profileImgDefault} />
             </FbImg>
             <FontBox>
               <Font>{userObjParsed.displayName} </Font>
             </FontBox>
           </ImgNick>
-        ) : (
-          <FontBox>
-            <Font>{userObjParsed.displayName} </Font>
-          </FontBox>
-        )}
-        {/* <LoginButtonBox to="/login"> */}
+        ) : null}
         <LoginButtonBox>
           {isLoggedIn && isAuthorizedInSession ? (
             <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>

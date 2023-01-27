@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import {
-  getDownloadURL,
-  ref,
-  uploadString,
-  deleteObject,
-} from 'firebase/storage';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { authService, imgStorage } from '../api/firebaseService';
 import { updateProfile } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
+import { useNavigate } from 'react-router-dom';
 
 const useEditProfile = () => {
   const [profileRelatedValues, setProfileRelatedValues] = useState({
@@ -18,6 +14,7 @@ const useEditProfile = () => {
   // const { userNickname, userNicknameObserver, isValidNickname } =
   //   profileRelatedValues;
   const [attachment, setAttachment] = useState<string | null>();
+  const navigate = useNavigate();
 
   const onChangeUserNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,23 +69,21 @@ const useEditProfile = () => {
           });
         }
         alert('이미지 업로드가 완료되었습니다.');
+        navigate('/mypage', { replace: true });
       }
     }
   };
 
-  //Storage에 저장된 이미지 제거(미구현)
-  const clearImg = async () => {
-    const imgRef = ref(
-      imgStorage,
-      `${authService.currentUser?.uid}/profileUrl/${uuidv4()}/`
-    );
-    const profileURL = localStorage.getItem('profileURL');
-    if (profileURL) {
-      const response = await deleteObject(imgRef)
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
-      return response;
+  //기본 프로필 이미지로 변경
+  const onChangeDefaultImg = async () => {
+    localStorage.removeItem('profileURL');
+    if (authService.currentUser) {
+      await updateProfile(authService.currentUser, {
+        photoURL: '',
+      });
     }
+    alert('기본 이미지로 변경되었습니다.');
+    navigate('/mypage', { replace: true });
   };
 
   return {
@@ -97,8 +92,8 @@ const useEditProfile = () => {
     setProfileRelatedValues,
     attachment,
     onChangeProfileImg,
+    onChangeDefaultImg,
     storeImg,
-    clearImg,
   };
 };
 

@@ -8,11 +8,9 @@ import useLoginState from '../hooks/useLoginState';
 const ProfileImage = ({
   attachment,
   onChangeProfileImg,
-  storeImg,
 }: {
   attachment: string | null | undefined;
   onChangeProfileImg: React.ChangeEventHandler<HTMLInputElement>;
-  storeImg: () => void;
 }): JSX.Element | null => {
   const { setInit } = useLoginState();
 
@@ -23,7 +21,7 @@ const ProfileImage = ({
   }, [setInit]);
 
   return (
-    <ProfileImgWrapper>
+    <>
       <label htmlFor="imgInput">
         {attachment ? (
           <ProfileImg
@@ -47,28 +45,24 @@ const ProfileImage = ({
         onChange={onChangeProfileImg}
       />
       <BtnWrapper>
-        <button onClick={storeImg}>이미지 등록</button>
+        {/* <button onClick={storeImg}>이미지 등록</button> */}
         {/* <button onClick={() => setAttachment(null)}>이미지 제거</button> */}
         {/* <button onClick={clearImg}>이미지 제거</button> */}
       </BtnWrapper>
       {/* <CustomButton onClickEvent={storeImg}>프로필 수정</CustomButton> */}
-    </ProfileImgWrapper>
+    </>
   );
 };
 
 export default ProfileImage;
 
-const ProfileImgWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 const ProfileImg = styled.img`
   position: relative;
   margin: auto;
   width: 30%;
+  border: 1px solid black;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const BtnWrapper = styled.div`

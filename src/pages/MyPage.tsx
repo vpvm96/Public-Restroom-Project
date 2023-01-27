@@ -1,90 +1,125 @@
-// import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { ProfileImage, CustomButton, CustomInput } from '../components';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import usePwdManager from '../hooks/usePwdManager';
 import useButtonReactions from '../hooks/useButtonReactions';
 import useLoginState from '../hooks/useLoginState';
 import useEditProfile from '../hooks/useEditProfile';
+import profileImgDefault from '../assets/profile.png';
 
 const MyPage = () => {
-  const { isLoggedIn, isAuthorizedInSession } = useLoginState();
+  const { isLoggedIn, isAuthorizedInSession, userObjParsed } = useLoginState();
   const { pwdRelatedValues, onChangePwd } = usePwdManager();
   const {
     profileRelatedValues,
     onChangeUserNickname,
     attachment,
     onChangeProfileImg,
+    onChangeDefaultImg,
     storeImg,
   } = useEditProfile();
   const { handleChangeNickname, handleChangePwd, handleDeleteAccount } =
     useButtonReactions({ pwdRelatedValues, profileRelatedValues });
+  const [isEditUserInfo, setIsEditUserInfo] = useState(false);
 
   return (
     <>
       {isLoggedIn && isAuthorizedInSession ? (
         <Container>
-          <ProfileWrapper>
-            마이페이지
-            <ProfileImage
-              attachment={attachment}
-              onChangeProfileImg={onChangeProfileImg}
-              storeImg={storeImg}
-            />
-            <CustomInput
-              type="text"
-              value={profileRelatedValues.userNickname}
-              observeValue={profileRelatedValues.isValidNickname}
-              observeContent={profileRelatedValues.userNicknameObserver}
-              placeholder="변경할 닉네임을 입력하세요"
-              name="userNickname"
-              onChangeEvent={onChangeUserNickname}
-            />
-            <CustomButton onClickEvent={handleChangeNickname}>
-              닉네임 변경
-            </CustomButton>
-          </ProfileWrapper>
-          <InputWrapper>
-            <CustomInput
-              type="password"
-              value={pwdRelatedValues.currentPwd}
-              observeValue={pwdRelatedValues.isCurrentPwd}
-              observeContent={pwdRelatedValues.currentPwdObserver}
-              placeholder="기존 비밀번호를 입력하세요"
-              name="currentPwd"
-              // pwdRelatedValues={pwdRelatedValues}
-              onChangeEvent={onChangePwd}
-            />
-            <CustomInput
-              type="password"
-              value={pwdRelatedValues.newPwd}
-              observeValue={pwdRelatedValues.isValidPwd}
-              observeContent={pwdRelatedValues.newPwdObserver}
-              placeholder="새 비밀번호를 입력하세요"
-              name="newPwd"
-              // pwdRelatedValues={pwdRelatedValues}
-              onChangeEvent={onChangePwd}
-            />
-            <CustomInput
-              type="password"
-              value={pwdRelatedValues.confirmNewPwd}
-              observeValue={pwdRelatedValues.isSamePwd}
-              observeContent={pwdRelatedValues.confirmNewPwdObserver}
-              placeholder="같은 비밀번호를 입력하세요"
-              name="confirmNewPwd"
-              // pwdRelatedValues={pwdRelatedValues}
-              onChangeEvent={onChangePwd}
-            />
-            <BtnWrapper>
-              {/* <CustomButton onClickEvent={handleLogOut}>로그아웃</CustomButton> */}
-              <CustomButton onClickEvent={handleChangePwd}>
-                비밀번호 변경
-              </CustomButton>
-              <CustomButton onClickEvent={handleDeleteAccount}>
-                회원탈퇴
-              </CustomButton>
-            </BtnWrapper>
-          </InputWrapper>
+          {isEditUserInfo ? (
+            <>
+              <ProfileWrapper>
+                <ProfileImage
+                  attachment={attachment}
+                  onChangeProfileImg={onChangeProfileImg}
+                />
+                <CustomInput
+                  type="text"
+                  value={profileRelatedValues.userNickname}
+                  observeValue={profileRelatedValues.isValidNickname}
+                  observeContent={profileRelatedValues.userNicknameObserver}
+                  placeholder="변경할 닉네임을 입력하세요"
+                  name="userNickname"
+                  onChangeEvent={onChangeUserNickname}
+                />
+                <ProfileBtnWrapper>
+                  {attachment !== undefined ? (
+                    <UpdateImgBtn onClick={storeImg}>이미지 등록</UpdateImgBtn>
+                  ) : null}
+                  <CustomButton onClickEvent={onChangeDefaultImg}>
+                    기본 이미지로 변경
+                  </CustomButton>
+                  <EditNicknameBtn
+                    onClick={handleChangeNickname}
+                    isDisabled={profileRelatedValues.isValidNickname}
+                    disabled={
+                      profileRelatedValues.isValidNickname ? false : true
+                    }
+                  >
+                    닉네임 변경
+                  </EditNicknameBtn>
+                  <ProfileEditToggle
+                    onClick={() => setIsEditUserInfo(!isEditUserInfo)}
+                  >
+                    프로필 변경 닫기
+                  </ProfileEditToggle>
+                </ProfileBtnWrapper>
+              </ProfileWrapper>
+              <InputWrapper>
+                <CustomInput
+                  type="password"
+                  value={pwdRelatedValues.currentPwd}
+                  observeValue={pwdRelatedValues.isCurrentPwd}
+                  observeContent={pwdRelatedValues.currentPwdObserver}
+                  placeholder="기존 비밀번호를 입력하세요"
+                  name="currentPwd"
+                  onChangeEvent={onChangePwd}
+                />
+                <CustomInput
+                  type="password"
+                  value={pwdRelatedValues.newPwd}
+                  observeValue={pwdRelatedValues.isValidPwd}
+                  observeContent={pwdRelatedValues.newPwdObserver}
+                  placeholder="새 비밀번호를 입력하세요"
+                  name="newPwd"
+                  onChangeEvent={onChangePwd}
+                />
+                <CustomInput
+                  type="password"
+                  value={pwdRelatedValues.confirmNewPwd}
+                  observeValue={pwdRelatedValues.isSamePwd}
+                  observeContent={pwdRelatedValues.confirmNewPwdObserver}
+                  placeholder="같은 비밀번호를 입력하세요"
+                  name="confirmNewPwd"
+                  onChangeEvent={onChangePwd}
+                />
+                <BtnWrapper>
+                  <CustomButton onClickEvent={handleChangePwd}>
+                    비밀번호 변경
+                  </CustomButton>
+                  <CustomButton onClickEvent={handleDeleteAccount}>
+                    회원탈퇴
+                  </CustomButton>
+                </BtnWrapper>
+              </InputWrapper>
+            </>
+          ) : (
+            <>
+              <ProfileImg
+                alt="프로필이미지"
+                src={userObjParsed.photoURL || profileImgDefault}
+                style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+              />
+              <UserInfoText>{userObjParsed.email}</UserInfoText>
+              <UserInfoText>{userObjParsed.displayName}</UserInfoText>
+              <ProfileEditToggle
+                onClick={() => setIsEditUserInfo(!isEditUserInfo)}
+              >
+                프로필 변경 열기
+              </ProfileEditToggle>
+            </>
+          )}
         </Container>
       ) : (
         <Container>
@@ -127,6 +162,8 @@ const Container = styled.div`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
 `;
 
@@ -134,15 +171,63 @@ const BtnWrapper = styled.div`
   flex-direction: row;
 `;
 
+const ProfileBtnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const NoticeWrapper = styled.div``;
 
 const ProfileWrapper = styled.div`
-  width: 500px;
+  width: 300px;
   height: 500px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   /* align-items: baseline; */
 `;
+
+const ProfileEditToggle = styled.button`
+  width: 6rem;
+  height: 2rem;
+  border: none;
+  background-color: #468bfb;
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+`;
+
+const ProfileImg = styled.img`
+  position: relative;
+  margin: auto;
+  width: 30%;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+const UpdateImgBtn = styled.button`
+  width: 6rem;
+  height: 2rem;
+  border: none;
+  background-color: #468bfb;
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+`;
+
+const EditNicknameBtn = styled.button<{ isDisabled: boolean }>`
+  width: 6rem;
+  height: 2rem;
+  border: none;
+  /* background-color: #468bfb; */
+  background-color: ${(props) => (props.isDisabled ? '#468bfb' : '#a4cdfe')};
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+`;
+
+const UserInfoText = styled.p``;

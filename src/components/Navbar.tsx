@@ -3,7 +3,7 @@ import { signOut } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import useLoginState from '../hooks/useLoginState';
-import DfProfileImg from '../assets/profile.png';
+import profileImgDefault from '../assets/profile.png';
 import logoImg from '../assets/await.png';
 import styled from 'styled-components';
 

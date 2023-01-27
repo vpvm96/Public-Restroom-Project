@@ -10,7 +10,8 @@ import profileImgDefault from '../assets/profile.png';
 
 const MyPage = () => {
   const { isLoggedIn, isAuthorizedInSession, userObjParsed } = useLoginState();
-  const { pwdRelatedValues, onChangePwd } = usePwdManager();
+  const { pwdRelatedValues, onChangePwd, setPwdRelatedValues } =
+    usePwdManager();
   const {
     profileRelatedValues,
     onChangeUserNickname,
@@ -20,7 +21,11 @@ const MyPage = () => {
     storeImg,
   } = useEditProfile();
   const { handleChangeNickname, handleChangePwd, handleDeleteAccount } =
-    useButtonReactions({ pwdRelatedValues, profileRelatedValues });
+    useButtonReactions({
+      pwdRelatedValues,
+      profileRelatedValues,
+      setPwdRelatedValues,
+    });
   const [isEditUserInfo, setIsEditUserInfo] = useState(false);
 
   return (

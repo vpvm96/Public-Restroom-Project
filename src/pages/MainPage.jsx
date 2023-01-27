@@ -5,7 +5,6 @@ import { BsFillBookmarkFill } from 'react-icons/bs';
 import mainImg from '../assets/Banner.jpg';
 import InfoImg from '../assets/Info.png';
 import styled from 'styled-components';
-import { getAuth } from 'firebase/auth';
 
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -18,11 +17,9 @@ const MainPage = () => {
         data.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-          createdAt: doc.data().createdAt.toDate(),
         }))
       );
     };
-
     getReviews();
   }, []);
 
@@ -43,7 +40,6 @@ const MainPage = () => {
           </p>
         </Info>
       </InfoWrap>
-
       <ReviewText>REVIEW</ReviewText>
       <div>화장실 이용에 대한 리뷰를 소개합니다.</div>
       <ReviewBoxWrap>
@@ -59,7 +55,7 @@ const MainPage = () => {
               <p style={{ position: 'absolute', top: '25%' }}>{r.title}</p>
               <p style={{ position: 'absolute', top: '45%' }}>{r.content}</p>
               <p style={{ position: 'absolute', top: '80%', right: '5%' }}>
-                {r.createdAt.toString().slice(0, 24)}
+                {new Date(r.createdAt.seconds * 1000).toString().slice(0, 25)}
               </p>
             </ReviewBox>
           );

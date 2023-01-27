@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
+import { RestRoomDataType } from '../../api/mapService';
 import styled from 'styled-components';
 
 interface MapLocationProps {
-  kakaoLocation: any;
-  locationData: { key: string | number };
+  kakaoLocation: (locationData: RestRoomDataType[]) => void;
+  locationData: RestRoomDataType[] | undefined;
 }
 
 const MapLocation = ({ kakaoLocation, locationData }: MapLocationProps) => {

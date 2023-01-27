@@ -18,6 +18,7 @@ const Modallayout = styled.div`
 `;
 
 const ModalSection = styled.section`
+  height: 70%;
   width: 90%;
   max-width: 800px;
   margin: 0 auto;

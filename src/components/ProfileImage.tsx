@@ -5,19 +5,19 @@ import styled from 'styled-components';
 import { authService, imgStorage } from '../api/firebaseService';
 import profileImgDefault from '../assets/profile.png';
 import { uuidv4 } from '@firebase/util';
+import useLoginState from '../hooks/useLoginState';
 import CustomButton from './CustomButton';
-// type profileURLType = string | ArrayBuffer | null | undefined
 
 const ProfileImage = (): JSX.Element | null => {
   const [attachment, setAttachment] = useState<string | null>();
-  // const [userObj, setUserObj]=useState({})
+  const { setInit } = useLoginState();
 
+  //input을 통해 받은 파일을 string 타입의 이미지 DataURL로 변환 후 attachment 상태에 저장
   const onfileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const { files } = e.target;
-    // const thefile = files![0];
-    const thefile = e.target.files![0];
     const reader = new FileReader();
-    reader.readAsDataURL(thefile);
+    if (e.target.files) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
     reader.onloadend = (finishedEvent: ProgressEvent<FileReader>) => {
       const profileURL = finishedEvent.target?.result;
       if (typeof profileURL === 'string') {
@@ -34,8 +34,6 @@ const ProfileImage = (): JSX.Element | null => {
         imgStorage,
         `${authService.currentUser?.uid}/profileUrl/${uuidv4()}/`
       );
-      // const imgRef = imgStorage.ref().child(`${authService.currentUser?.uid}/profileUrl/${uuidv4()}/`)
-      console.log('이미지 등록버튼 클릭!', imgRef);
       const profileURL = localStorage.getItem('profileURL');
       if (profileURL) {
         const response = await uploadString(imgRef, profileURL, 'data_url');
@@ -51,21 +49,29 @@ const ProfileImage = (): JSX.Element | null => {
   };
 
   const onClearImg = () => setAttachment(null);
-  // useEffect(() => {
-  //   authService.onAuthStateChanged(() => {
-  //     setInit(true);
-  //   });
-  // }, [setInit]);
+
+  useEffect(() => {
+    authService.onAuthStateChanged(() => {
+      setInit(true);
+    });
+  }, [setInit]);
 
   return (
     <ProfileImgWrapper>
       <label htmlFor="imgInput">
-        <ProfileImg
-          alt="프로필이미지"
-          // src={authService.currentUser?.photoURL || profileImgDefault}
-          src={attachment || profileImgDefault}
-          style={{ width: '30%', borderRadius: '50%' }}
-        />
+        {attachment ? (
+          <ProfileImg
+            alt="프로필이미지"
+            src={attachment || profileImgDefault}
+            style={{ width: '30%', height: '30%', borderRadius: '50%' }}
+          />
+        ) : (
+          <ProfileImg
+            alt="프로필이미지"
+            src={authService.currentUser?.photoURL || profileImgDefault}
+            style={{ width: '30%', height: '30%', borderRadius: '50%' }}
+          />
+        )}
       </label>
       <input
         id="imgInput"

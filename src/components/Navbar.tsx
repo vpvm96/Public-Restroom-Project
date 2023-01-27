@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { getAuth } from 'firebase/auth';
 import { authService } from '../api/firebaseService';
 import { useNavigate } from 'react-router-dom';
 import useLoginState from '../hooks/useLoginState';
@@ -10,6 +9,7 @@ import DfProfileImg from '../assets/profile.png';
 import profileImg from '../assets/cat.jpg';
 import logoImg from '../assets/await.png';
 import styled from 'styled-components';
+import { apiKey } from '../api/firebaseService';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,13 +26,20 @@ const Navbar = () => {
       });
   };
 
-  //새로고침해도 닉네임 유지 방법 1
-  // let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
-  // console.log(userObj);
-  // let userObjParsed = JSON.parse(userObj!); //null 이 올 수도 있다. 근데 이 방법은 좋진 않다.
-  // console.log(userObjParsed);
+  //새로고침해도 닉네임 유지 방법 1 => 새로고침 할 때 깜빡임 없어서 선택
+  //닉네임 유지용
+  let userObj = sessionStorage.getItem(`firebase:authUser:${apiKey}:[DEFAULT]`);
+  let userObjParsed;
+  if (userObj) {
+    userObjParsed = JSON.parse(userObj);
+  } else {
+    userObjParsed = {
+      displayName: 'Visitor',
+    };
+  }
 
-  //새로고침해도 닉네임 유지 방법 2
+  //새로고침해도 닉네임 유지 방법 2 => 로딩 시간 때문인지 깜빡임이 있음
+  //프로필 사진 유지용
   useEffect(() => {
     authService.onAuthStateChanged(() => {
       setInit(true);
@@ -70,12 +77,12 @@ const Navbar = () => {
               )}
             </FbImg>
             <FontBox>
-              <Font>{authService.currentUser?.displayName} </Font>
+              <Font>{userObjParsed.displayName} </Font>
             </FontBox>
           </ImgNick>
         ) : (
           <FontBox>
-            <Font>{authService.currentUser?.displayName} </Font>
+            <Font>{userObjParsed.displayName} </Font>
           </FontBox>
         )}
         {/* <LoginButtonBox to="/login"> */}

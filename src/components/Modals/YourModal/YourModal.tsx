@@ -9,6 +9,8 @@ import {
   YourModalSapan,
   YourModlasText,
   YourModalTitle,
+  YourModalTime,
+  YourModalHeader,
 } from './style';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { fireStore } from '../../../api/firebaseService';
@@ -85,10 +87,11 @@ export default function YourModal({ item }: any) {
       <YourModalsLayout>
         {/* {item.displayName} */}
         <YourModals>
-          <YourModalTitle>{item.displayName}</YourModalTitle>
-
+          <YourModalHeader>
+            <YourModalTitle>작성자 : {item.displayName}</YourModalTitle>
+            <YourModalTime>{item.createdAt}</YourModalTime>
+          </YourModalHeader>
           <YourModlasText ref={input}>{item.content}</YourModlasText>
-
           <YourModalsInput
             style={{ display: 'none' }}
             id="text"

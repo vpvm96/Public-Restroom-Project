@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const YourModlasText = styled.div`
-  font-size: 13px;
+  font-size: 15px;
   position: absolute;
 `;
 const YourModals = styled.div`
@@ -45,6 +45,17 @@ const YourModalSapan = styled.span`
 const YourModalTitle = styled.div`
   font-weight: 600;
   margin-bottom: 20px;
+  margin-left: 0;
+`;
+
+const YourModalTime = styled.div`
+  font-size: 10px;
+  color: gray;
+  margin-right: 0;
+`;
+const YourModalHeader = styled.div`
+  display: flex;
+  width: 100%;
 `;
 export {
   YourModalSapan,
@@ -54,4 +65,6 @@ export {
   YourModalsInput,
   YourModlasText,
   YourModalTitle,
+  YourModalTime,
+  YourModalHeader,
 };

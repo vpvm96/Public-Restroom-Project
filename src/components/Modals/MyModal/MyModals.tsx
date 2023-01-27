@@ -17,6 +17,7 @@ import {
   collection,
   onSnapshot,
   orderBy,
+  query,
 } from 'firebase/firestore';
 export interface ModalState {
   [key: string]: string | number;
@@ -39,12 +40,15 @@ export default function MyModals({
 }: ModalProps) {
   const [content, setcontent] = useState('');
   const InputRef = useRef<HTMLInputElement>(null);
-
+  // 시간나타내줌
+  const date = new Date().toString().slice(0, 25);
   // 파이어베이스에 리뷰가져오기
   useEffect(() => {
-    const q = collection(fireStore, 'reviews');
-    //orderBY로 최신순정렬함
-    orderBy('createdAt');
+    //파이어베이스에서 query로 감싸고 orderBy로 최신순으로 정렬함
+    const q = query(
+      collection(fireStore, 'reviews'),
+      orderBy('createdAt', 'desc')
+    );
     onSnapshot(q, (snapshot) => {
       const reviews = snapshot.docs.map((doc) => {
         const review = {
@@ -86,7 +90,7 @@ export default function MyModals({
       authId,
       content,
       title: `${GU_NM + ' ' + HNR_NAM} 공용 화장실`,
-      createdAt: new Date(),
+      createdAt: date,
     });
     return;
   };

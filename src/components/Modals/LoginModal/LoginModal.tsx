@@ -8,11 +8,13 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
   const [findPwd, setFindPwd] = useState('');
   const email = findPwd;
 
+  // 인풋값을 저장
   const findPasswordfnc = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFindPwd(e.target.value);
     console.log(findPwd);
   };
 
+  // 비밀번호 찾기
   const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (emailRegex.test(findPwd) === true) {
@@ -35,6 +37,7 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
     }
   };
 
+  // 모달을 끄고있게 해준다.
   if (!open) return null;
 
   return (
@@ -44,20 +47,20 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
         <CloseBtn onClick={onClose} className="closeBtn">
           x
         </CloseBtn>
-        <Content className="content">
+        <InputContent className="content">
           <Input
             onChange={findPasswordfnc}
             placeholder="이메일을 입력하세요"
             className="EmailSubmit"
           ></Input>
-        </Content>
+        </InputContent>
         <BtnContainer className="btnContainer">
           <Btnprimary
             onClick={handleSubmitClick}
             type="submit"
             className="btnprimary"
           >
-            <Span className="bold">제출</Span>
+            <Span className="bold">제 출</Span>
           </Btnprimary>
         </BtnContainer>
         {/* </div> */}
@@ -68,6 +71,7 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
 
 export default LoginModal;
 
+// 배경의 색(회색)
 const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -77,6 +81,7 @@ const Overlay = styled.div`
   z-index: 2;
 `;
 
+//모달 박스 (흰색)
 const ModalContainer = styled.div`
   max-width: 600px;
   width: 100%;
@@ -89,13 +94,15 @@ const ModalContainer = styled.div`
   border-radius: 20px;
 `;
 
+// X버튼
 const CloseBtn = styled.p`
   position: absolute;
   top: 5px;
   right: 15px;
 `;
 
-const Content = styled.div`
+// 인풋바깥 테두리
+const InputContent = styled.div`
   border-radius: 35px;
   border: 3px solid #b2c8df;
   width: 380px;
@@ -105,6 +112,7 @@ const Content = styled.div`
   left: 20px;
 `;
 
+//인풋창
 const Input = styled.input`
   border: none;
   width: 300px;
@@ -125,10 +133,12 @@ const Btnprimary = styled.button`
   padding: 16px 0;
   border: none;
   color: #2192ff;
+  background-color: aliceblue;
   border-radius: 35px;
   cursor: pointer;
 `;
 
+//버튼 글자
 const Span = styled.span`
   position: relative;
   bottom: 6px;

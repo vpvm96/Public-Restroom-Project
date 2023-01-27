@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
-import { emailRegex, pwdRegex } from '../utils/UserInfoRegex';
+import { emailRegex, nicknameRegex, pwdRegex } from '../utils/UserInfoRegex';
+import { type } from '@testing-library/user-event/dist/type';
 
 const SignUpPage = () => {
   const [email, setEmail] = useState('');
@@ -14,11 +15,13 @@ const SignUpPage = () => {
 
   //유효성검사
   const [validateEmail, setValidateEmail] = useState('');
-  const [validateEmailColor, setValidateEmailColor] = useState(true);
+  const [validateEmailColor, setValidateEmailColor] = useState(false);
   const [validatePw, setValidatePw] = useState('');
   const [validatePwColor, setValidatePwColor] = useState(true);
   const [validatePwconfirm, setValidatePwconfirm] = useState('');
   const [validatePwconfirmColor, setValidatePwconfirmColor] = useState(true);
+  const [validateDisplayname, setValidateDisplayname] = useState('');
+  const [validateDisplaynameColor, setValidateDisplayColor] = useState(true);
 
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,10 +30,10 @@ const SignUpPage = () => {
     if (email.length > 5) {
       if (emailRegex.test(email) === false) {
         setValidateEmail(' 옳바른 형식을 입력해 주십시오.');
-        setValidateEmailColor(true);
+        setValidateEmailColor(false);
       } else {
         setValidateEmail(' 올바른 형식의 이메일 주소입니다.');
-        setValidateEmailColor(false);
+        setValidateEmailColor(true);
       }
     }
   };
@@ -43,8 +46,10 @@ const SignUpPage = () => {
     if (password.length > 0) {
       if (pwdRegex.test(password) === false) {
         setValidatePw(' 옳바른 형식을 입력해 주십시오.');
+        setValidatePwColor(false);
       } else {
         setValidatePw(' 올바른 형식의 비밀번호 입니다.');
+        setValidatePwColor(true);
       }
     }
   };
@@ -54,8 +59,10 @@ const SignUpPage = () => {
     if (confirmPwd.length > 0) {
       if (password === confirmPwd) {
         setValidatePwconfirm('비밀번호와 일치합니다.');
+        setValidatePwconfirmColor(true);
       } else {
         setValidatePwconfirm('비밀번호와 일치하지 않습니다.');
+        setValidatePwconfirmColor(false);
       }
     }
   }, [confirmPwd]);
@@ -65,20 +72,34 @@ const SignUpPage = () => {
     console.log('onchnageconfirmPwd:', confirmPwd);
   };
 
+  //닉네임
   const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayname(e.target.value);
     console.log('onchnageemail:', displayname);
+    //유효성검사
+    if (displayname.length > 0) {
+      if (nicknameRegex.test(displayname) === false) {
+        setValidateDisplayname(
+          '한글,영문,숫자 포함 1자 이상 7자 이하로 작성해 주세요.'
+        );
+        setValidateDisplayColor(false);
+      } else {
+        setValidateDisplayname('옳바른 형식의 닉네임 입니다.');
+        setValidateDisplayColor(true);
+      }
+    }
   };
 
   // submit & firebase
   const handleSubmitClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // //확인
-    // console.log('handleSubmitClick');
-
-    //인증부분
-    //패스워드와 패스워드 확인이 일치하고 패스워드의 유효성 검사를 통과해야만 로그인이 가능하다.
-    if (password === confirmPwd && pwdRegex.test(password) === true) {
+    //패스워드와 패스워드 확인이 일치하고 패스워드의 유효성 검사를 통과하고 닉네임을 작성해야만 로그인이 가능하다.
+    if (
+      nicknameRegex.test(displayname) === true &&
+      password === confirmPwd &&
+      pwdRegex.test(password) === true &&
+      emailRegex.test(email) === true
+    ) {
       await createUserWithEmailAndPassword(authService, email, password)
         .then((result) => {
           updateProfile(result.user, {
@@ -91,25 +112,30 @@ const SignUpPage = () => {
               navigate('/login');
             })
             .catch((error) => {
-              console.log('닉네임 입력실패:', error);
+              console.log('에러 발생:', error);
+              alert('에러 발생');
             });
         })
         .catch((error) => {
           console.log(error);
+
           if (
             (error =
               'FirebaseError: Firebase: Error (auth/email-already-in-use).')
           ) {
             alert('중복된 이메일 입니다 다시 확인해 주세요');
-          } else if (
-            (error =
-              'FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password).')
-          ) {
-            alert('비밀번호는 최소6글자 이상을 입력해야 합니다.');
           }
         });
-    } else {
-      alert('이메일과 비밀번호를 확인해 주세요.');
+    } else if (confirmPwd !== password) {
+      alert('비밀번호가 일치하지 않습니다.');
+    } else if (nicknameRegex.test(displayname) === false) {
+      alert('닉네임을 입력해 주세요');
+    } else if (email.length === 0) {
+      alert('이메일을 입력해 주세요');
+    } else if (emailRegex.test(email) === false) {
+      alert('옳바른 형식의 이메일을 입력해 주세요.');
+    } else if (pwdRegex.test(password) === false) {
+      alert('비밀번호를 확인해 주세요');
     }
   };
 
@@ -119,7 +145,8 @@ const SignUpPage = () => {
     <div>
       <form onSubmit={handleSubmitClick}>
         <InputBox>
-          <button
+          <Backbtn
+            type="button"
             onClick={() => navigate('/login')}
             style={{
               border: 'none',
@@ -129,7 +156,7 @@ const SignUpPage = () => {
             }}
           >
             뒤로가기
-          </button>
+          </Backbtn>
           <LoginLogo>
             <h1>회원가입</h1>
           </LoginLogo>
@@ -137,49 +164,74 @@ const SignUpPage = () => {
           <InputBoxContent>
             <Inputholder>
               <Input
+                type="text"
                 name="닉네임"
                 placeholder="닉네임"
                 onChange={onChangeDisplayname}
               ></Input>
+              <Validityfontbox>
+                {
+                  <ValidityNicnamefont
+                    validateDisplaynameColor={validateDisplaynameColor}
+                  >
+                    {validateDisplayname}
+                  </ValidityNicnamefont>
+                }
+              </Validityfontbox>
             </Inputholder>
             <Inputholder>
               <Input
+                type="email"
                 name="아이디"
                 placeholder="아이디"
                 onChange={onChangeEmail}
               ></Input>
               <Validityfontbox>
-                {<Validityfont>{validateEmail}</Validityfont>}
+                {
+                  <ValidityEmailfont validateEmailColor={validateEmailColor}>
+                    {validateEmail}
+                  </ValidityEmailfont>
+                }
               </Validityfontbox>
             </Inputholder>
             <Inputholder>
               <Input
-                // type="password"
+                type="password"
                 name="비밀번호"
                 placeholder="비밀번호"
                 onChange={onChangePassword}
                 value={password}
               ></Input>
               <Validityfontbox>
-                {<Validityfont>{validatePw}</Validityfont>}
+                {
+                  <ValidityPasswordfont validatePwColor={validatePwColor}>
+                    {validatePw}
+                  </ValidityPasswordfont>
+                }
               </Validityfontbox>
             </Inputholder>
             <Inputholder>
               <Input
                 value={confirmPwd}
-                // type="password"
+                type="password"
                 name="비밀번호 확인"
                 placeholder="비밀번호 확인"
                 onChange={onChangeconfirmPwd}
               ></Input>
               <Validityfontbox>
-                {<Validityfont>{validatePwconfirm}</Validityfont>}
+                {
+                  <ValidityConfirmPwdfont
+                    validatePwconfirmColor={validatePwconfirmColor}
+                  >
+                    {validatePwconfirm}
+                  </ValidityConfirmPwdfont>
+                }
               </Validityfontbox>
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>
             {/* <RegisterBtn>회원 가입</RegisterBtn> */}
-            <LoginBtn>회원 가입</LoginBtn>
+            <LoginBtn type="submit">회원 가입</LoginBtn>
           </ButtonBox>
         </InputBox>
       </form>
@@ -259,18 +311,37 @@ const LoginBtn = styled.button`
 `;
 
 //유효성검사시 글자
-const Validityfont = styled.span`
-  color: blue;
+const ValidityNicnamefont = styled.span<{ validateDisplaynameColor: boolean }>`
+  color: ${(Props) => (Props.validateDisplaynameColor ? 'blue' : 'red')};
+  font-size: 15px;
+`;
+const ValidityEmailfont = styled.span<{ validateEmailColor: boolean }>`
+  color: ${(Props) => (Props.validateEmailColor ? 'blue' : 'red')};
+  font-size: 15px;
+`;
+const ValidityPasswordfont = styled.span<{ validatePwColor: boolean }>`
+  color: ${(Props) => (Props.validatePwColor ? 'blue' : 'red')};
+  font-size: 15px;
+`;
+const ValidityConfirmPwdfont = styled.span<{
+  validatePwconfirmColor: boolean;
+}>`
+  color: ${(Props) => (Props.validatePwconfirmColor ? 'blue' : 'red')};
   font-size: 15px;
 `;
 
 const Validityfontbox = styled.div`
   border: none;
-  width: 300px;
+  width: 330px;
   height: 38px;
   position: relative;
   right: 10px;
   margin-top: 3px;
   outline: none;
   color: blue;
+`;
+
+const Backbtn = styled.button`
+  position: relative;
+  left: 22px;
 `;

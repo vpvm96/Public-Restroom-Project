@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { authService } from '../api/firebaseService';
 import profileImgDefault from '../assets/profile.png';
 import useLoginState from '../hooks/useLoginState';
-// import CustomButton from './CustomButton';
 
 const ProfileImage = ({
   attachment,
@@ -44,12 +43,6 @@ const ProfileImage = ({
         style={{ display: 'none' }}
         onChange={onChangeProfileImg}
       />
-      <BtnWrapper>
-        {/* <button onClick={storeImg}>이미지 등록</button> */}
-        {/* <button onClick={() => setAttachment(null)}>이미지 제거</button> */}
-        {/* <button onClick={clearImg}>이미지 제거</button> */}
-      </BtnWrapper>
-      {/* <CustomButton onClickEvent={storeImg}>프로필 수정</CustomButton> */}
     </>
   );
 };
@@ -63,8 +56,4 @@ const ProfileImg = styled.img`
   border: 1px solid #d3d3d3;
   border-radius: 50%;
   cursor: pointer;
-`;
-
-const BtnWrapper = styled.div`
-  flex-direction: row;
 `;

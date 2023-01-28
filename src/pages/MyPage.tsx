@@ -154,7 +154,6 @@ const Container = styled.div`
   margin-top: 8rem;
   padding: 50px;
   width: 70%;
-  /* height: 80%; */
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -195,7 +194,6 @@ const ProfileWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  /* align-items: baseline; */
 `;
 
 const ProfileEditToggle = styled.button`
@@ -231,7 +229,6 @@ const EditNicknameBtn = styled.button<{ isDisabled: boolean }>`
   width: 6rem;
   height: 2rem;
   border: none;
-  /* background-color: #468bfb; */
   background-color: ${(props) => (props.isDisabled ? '#468bfb' : '#a4cdfe')};
   margin: 10px;
   color: white;

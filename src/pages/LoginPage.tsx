@@ -5,7 +5,6 @@ import {
   signInWithEmailAndPassword,
   setPersistence,
   browserSessionPersistence,
-  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
@@ -23,11 +22,9 @@ const LoginPage = () => {
   //onchange로 값을 저장.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    console.log('onchnageemail:', email);
   };
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    console.log('onchnageemail:', password);
   };
 
   //firebase
@@ -37,10 +34,8 @@ const LoginPage = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => {
         return signInWithEmailAndPassword(authService, email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-            console.log(user);
-            navigate('/');
+          .then(() => {
+            navigate('/', { replace: true });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -61,8 +56,6 @@ const LoginPage = () => {
           });
       })
       .catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage);
       });
@@ -72,7 +65,6 @@ const LoginPage = () => {
   const findPwd = (e: any) => {
     e.preventDefault();
     setLoginModalopen(true);
-    console.log(loginModalopen);
   };
 
   return (

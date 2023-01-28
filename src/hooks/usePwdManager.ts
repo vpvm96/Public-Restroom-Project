@@ -13,7 +13,7 @@ const usePwdManager = () => {
     newPwdObserver: '',
     confirmNewPwdObserver: '',
   });
-  const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
+  const { newPwd, confirmNewPwd } = pwdRelatedValues;
 
   const onChangePwd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

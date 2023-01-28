@@ -11,8 +11,6 @@ const useEditProfile = () => {
     userNicknameObserver: '',
     isValidNickname: false,
   });
-  // const { userNickname, userNicknameObserver, isValidNickname } =
-  //   profileRelatedValues;
   const [attachment, setAttachment] = useState<string | null>();
   const navigate = useNavigate();
 

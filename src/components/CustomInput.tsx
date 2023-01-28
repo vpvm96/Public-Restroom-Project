@@ -1,18 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// interface pwdRelatedValueTypes {
-//   currentPwd: string;
-//   newPwd: string;
-//   confirmNewPwd: string;
-//   isCurrentPwd: boolean;
-//   isValidPwd: boolean;
-//   isSamePwd: boolean;
-//   currentPwdObserver: string;
-//   newPwdObserver: string;
-//   confirmNewPwdObserver: string;
-// }
-
 const CustomInput = ({
   type,
   value,
@@ -20,7 +8,6 @@ const CustomInput = ({
   observeContent,
   placeholder,
   name,
-  // pwdRelatedValues,
   onChangeEvent,
 }: {
   type: string;
@@ -29,13 +16,11 @@ const CustomInput = ({
   observeContent: string;
   placeholder: string;
   name: string;
-  // pwdRelatedValues: pwdRelatedValueTypes;
   onChangeEvent: React.ChangeEventHandler<HTMLInputElement>;
 }): JSX.Element | null => {
   return (
     <>
       <InputStyle
-        // ref={currentPwdInput}
         type={type}
         value={value}
         placeholder={placeholder}
@@ -69,7 +54,6 @@ const ValueObserver = styled.p<{ observeValue: boolean }>`
   letter-spacing: -0.5px;
   position: relative;
   bottom: 20px;
-  /* left: 0; */
   color: ${(props) => (props.observeValue ? '#189701' : '#ff2727')};
 `;
 

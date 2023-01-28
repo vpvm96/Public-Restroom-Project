@@ -11,7 +11,6 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
   // 인풋값을 저장
   const findPasswordfnc = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFindPwd(e.target.value);
-    console.log(findPwd);
   };
 
   // 비밀번호 찾기
@@ -25,7 +24,6 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
           console.log(errorCode);
           alert('등록되지 않은 아이디 입니다.');
           // ..
@@ -43,7 +41,6 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
   return (
     <Overlay>
       <ModalContainer className="modalContainer">
-        {/* <div className="modalRight"> */}
         <CloseBtn onClick={onClose} className="closeBtn">
           x
         </CloseBtn>
@@ -63,7 +60,6 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
             <Span className="bold">제 출</Span>
           </Btnprimary>
         </BtnContainer>
-        {/* </div> */}
       </ModalContainer>
     </Overlay>
   );

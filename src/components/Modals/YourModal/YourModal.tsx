@@ -15,7 +15,6 @@ import {
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { fireStore } from '../../../api/firebaseService';
 import { authService } from '../../../api/firebaseService';
-import { formatDate } from '../../../utils/common';
 
 export default function YourModal({ item }: any) {
   // 수정,버튼
@@ -64,7 +63,6 @@ export default function YourModal({ item }: any) {
   return (
     <div style={{ display: 'block' }}>
       <YourModalsLayout>
-        {/* {item.displayName} */}
         <YourModals>
           <YourModalHeader>
             <YourModalTitle>작성자 : {item.displayName}</YourModalTitle>

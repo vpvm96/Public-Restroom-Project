@@ -55,7 +55,7 @@ const Navbar = () => {
         ) : null}
         <LoginButtonBox>
           {isLoggedIn && isAuthorizedInSession ? (
-            <LoginButton onClick={handleLogout}>Logout</LoginButton> //React.MouseEventHandler<HTMLButtonElement>
+            <LoginButton onClick={handleLogout}>Logout</LoginButton>
           ) : (
             <LoginButton onClick={() => navigate('/login')}>Login</LoginButton>
           )}
@@ -126,8 +126,6 @@ const NavLi = styled.li`
   list-style: none;
   text-decoration: none;
   &:hover {
-    /* background-color: #4285f4; */
-    /* color: white; */
     text-decoration: underline;
     color: #4285f4;
   }

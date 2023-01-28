@@ -25,7 +25,6 @@ const SignUpPage = () => {
   //onchange로 값을 저장한다.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    // console.log('onchnageemail:', email);
     if (email.length > 5) {
       if (emailRegex.test(email) === false) {
         setValidateEmail(' 옳바른 형식을 입력해 주십시오.');
@@ -40,7 +39,6 @@ const SignUpPage = () => {
   // password값을 저장하고 유효성검사를 실시한다.
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    console.log('onchnagepassword:', password);
     //비밀번호 유효성 검사
     if (password.length > 0) {
       if (pwdRegex.test(password) === false) {
@@ -68,13 +66,11 @@ const SignUpPage = () => {
 
   const onChangeconfirmPwd = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCnfirmPwd(e.target.value);
-    console.log('onchnageconfirmPwd:', confirmPwd);
   };
 
   //닉네임
   const onChangeDisplayname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayname(e.target.value);
-    console.log('onchnageemail:', displayname);
     //유효성검사
     if (displayname.length > 0) {
       if (nicknameRegex.test(displayname) === false) {
@@ -106,7 +102,6 @@ const SignUpPage = () => {
           })
             .then(() => {
               console.log('닉네임 입력 성공');
-              console.log('회원가입성공:', result.user);
               alert('회원가입성공');
               navigate('/login');
             })
@@ -157,7 +152,6 @@ const SignUpPage = () => {
           <LoginLogo>
             <h1>회원가입</h1>
           </LoginLogo>
-
           <InputBoxContent>
             <Inputholder>
               <Input
@@ -227,7 +221,6 @@ const SignUpPage = () => {
             </Inputholder>
           </InputBoxContent>
           <ButtonBox>
-            {/* <RegisterBtn>회원 가입</RegisterBtn> */}
             <LoginBtn type="submit">회원 가입</LoginBtn>
           </ButtonBox>
         </InputBox>

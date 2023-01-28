@@ -60,7 +60,7 @@ const ProfileImg = styled.img`
   position: relative;
   margin: auto;
   width: 30%;
-  border: 1px solid black;
+  border: 1px solid #d3d3d3;
   border-radius: 50%;
   cursor: pointer;
 `;

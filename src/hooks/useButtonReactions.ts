@@ -8,9 +8,7 @@ import {
   reauthenticateWithCredential,
   updateProfile,
 } from 'firebase/auth';
-import usePwdManager from './usePwdManager';
 import useEditProfile from './useEditProfile';
-// import useLoginState from './useLoginState';
 
 interface pwdRelatedValueTypes {
   currentPwd: string;
@@ -30,28 +28,20 @@ interface profileRelatedValueTypes {
   isValidNickname: boolean;
 }
 
-// interface profilePersistenceTypes {
-//   userObj: object;
-//   setUserObj: React.Dispatch<React.SetStateAction<string>>;
-// }
-
 const useButtonReactions = ({
   pwdRelatedValues,
   profileRelatedValues,
   setPwdRelatedValues,
-}: // setUserNickname,
-{
+}: {
   pwdRelatedValues: pwdRelatedValueTypes;
   profileRelatedValues: profileRelatedValueTypes;
   setPwdRelatedValues: React.Dispatch<
     React.SetStateAction<pwdRelatedValueTypes>
   >;
-  // setUserNickname: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const navigate = useNavigate();
   const { currentPwd, newPwd, confirmNewPwd } = pwdRelatedValues;
   const { userNickname } = profileRelatedValues;
-  // const { setPwdRelatedValues } = usePwdManager();
   const { setProfileRelatedValues } = useEditProfile();
   const newPwdConfirmed = newPwd === confirmNewPwd;
 
@@ -89,8 +79,6 @@ const useButtonReactions = ({
   };
 
   const handleChangePwd = () => {
-    console.log('비밀번호 변경');
-
     if (authService.currentUser?.email) {
       const credential = EmailAuthProvider.credential(
         authService.currentUser.email,
@@ -109,7 +97,6 @@ const useButtonReactions = ({
             newPwd: '',
             confirmNewPwd: '',
           }));
-          console.log('비밀번호값들', currentPwd, newPwd, confirmNewPwd);
           navigate('/mypage', { replace: true });
         })
         .catch((error) => {

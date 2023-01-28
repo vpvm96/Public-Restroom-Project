@@ -15,28 +15,7 @@ import {
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { fireStore } from '../../../api/firebaseService';
 import { authService } from '../../../api/firebaseService';
-
-// interface YourModalProps {
-//   item: {
-//     ModalId: string | number;
-//     authId: string | number;
-//     content: string | number;
-//     createdAt: { nanoseconds: number; seconds: number }[];
-//     displayName: string | number;
-//     id: string | number;
-//     title: string | number;
-//   };
-// }
-
-// interface iem {
-//   ModalId: number;
-//   authId: string | number;
-//   content: string | number;
-//   createdAt: { nanoseconds: number; seconds: number };
-//   displayName: string | number;
-//   id: string | number;
-//   title: string | number;
-// }
+import { formatDate } from '../../../utils/common';
 
 export default function YourModal({ item }: any) {
   // 수정,버튼

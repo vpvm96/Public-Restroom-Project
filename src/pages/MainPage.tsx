@@ -1,23 +1,46 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  DocumentData,
+  limit,
+  query,
+  orderBy,
+} from 'firebase/firestore';
 import { fireStore } from '../api/firebaseService';
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import mainImg from '../assets/Banner.jpg';
 import InfoImg from '../assets/Info.png';
 import styled from 'styled-components';
+import { formatDate } from '../utils/common';
+
+interface Review {
+  ModalId: number;
+  authId: string;
+  content: string;
+  createdAt: string;
+  displayName: string;
+  title: string;
+  id: string;
+}
 
 const MainPage = () => {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const testCollectionRef = collection(fireStore, 'reviews');
+  const q = query(testCollectionRef, limit(9), orderBy('createdAt', 'desc'));
 
   useEffect(() => {
     const getReviews = async () => {
-      const data = await getDocs(testCollectionRef);
+      const data = await getDocs(q);
+
       setReviews(
-        data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
+        data.docs.map((doc: DocumentData) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+            createdAt: formatDate(doc.data().createdAt),
+          };
+        })
       );
     };
     getReviews();
@@ -55,7 +78,8 @@ const MainPage = () => {
               <p style={{ position: 'absolute', top: '25%' }}>{r.title}</p>
               <p style={{ position: 'absolute', top: '45%' }}>{r.content}</p>
               <p style={{ position: 'absolute', top: '80%', right: '5%' }}>
-                {new Date(r.createdAt.seconds * 1000).toString().slice(0, 25)}
+                {/* {r.createdAt.toString().slice(0, 24)} */}
+                {r.createdAt}
               </p>
             </ReviewBox>
           );
@@ -88,7 +112,6 @@ const InfoWrap = styled.div`
   margin-top: 70px;
   padding: 150px;
   justify-content: space-evenly;
-  /* height: 1000px; */
   border-bottom: 1px solid #d3d3d3;
   width: 95%;
 `;
@@ -118,11 +141,12 @@ const ReviewBoxWrap = styled.div`
   width: 95%;
   display: flex;
   flex-wrap: wrap;
+  margin-top: 70px;
 `;
 
 const ReviewBox = styled.div`
   background-color: #f2f2f2;
-  margin-top: 100px;
+  margin-top: 20px;
   width: 30%;
   height: 200px;
   padding: 50px;
@@ -130,8 +154,6 @@ const ReviewBox = styled.div`
   font-size: 20px;
   margin-bottom: 100px;
   position: relative;
-  /* border-radius: 10px; */
-  /* box-shadow: 5px 5px 5px; */
 `;
 
 const Icon = styled.div`

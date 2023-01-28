@@ -10,12 +10,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../api/firebaseService';
 import { emailRegex, pwdRegex } from '../utils/UserInfoRegex';
+import LoginModal from '../components/Modals/LoginModal/LoginModal';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  // const auth = getAuth();
+
+  //아이디 찾기 모달창
+  const [loginModalopen, setLoginModalopen] = useState(false);
 
   //onchange로 값을 저장.
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +47,7 @@ const LoginPage = () => {
             const errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+
             alert('로그인 실패');
             if (email.length === 0) {
               alert('이메일을 입력해 주세요');
@@ -67,19 +71,8 @@ const LoginPage = () => {
   //firebase 비밀번호 찾기 작업중...
   const findPwd = (e: any) => {
     e.preventDefault();
-
-    sendPasswordResetEmail(authService, email)
-      .then(() => {
-        // Password reset email sent!
-        console.log('성공');
-        alert('비밀번호 초기화 이메일이 전송되었습니다.');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        alert(errorMessage);
-      });
+    setLoginModalopen(true);
+    console.log(loginModalopen);
   };
 
   return (
@@ -121,6 +114,11 @@ const LoginPage = () => {
           </ButtonBox>
         </InputBox>
       </form>
+      <LoginModal
+        open={loginModalopen}
+        setLoginModalopen={setLoginModalopen}
+        onClose={() => setLoginModalopen(false)}
+      />
     </div>
   );
 };
@@ -135,6 +133,7 @@ const InputBox = styled.div`
   padding: 5px;
   top: 150px;
   border: 2px solid #2192ff;
+  z-index: 1;
 `;
 
 // 인풋태그

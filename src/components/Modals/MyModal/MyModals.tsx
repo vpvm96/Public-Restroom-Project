@@ -19,6 +19,7 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore';
+import { formatDate } from '../../../utils/common';
 export interface ModalState {
   [key: string]: string | number;
 }
@@ -54,6 +55,7 @@ export default function MyModals({
         const review = {
           id: doc.id,
           ...doc.data(),
+          createdAt: formatDate(doc.data().createdAt),
         };
         return review;
       });

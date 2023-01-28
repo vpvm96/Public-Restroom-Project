@@ -78,7 +78,6 @@ const MainPage = () => {
               <p style={{ position: 'absolute', top: '25%' }}>{r.title}</p>
               <p style={{ position: 'absolute', top: '45%' }}>{r.content}</p>
               <p style={{ position: 'absolute', top: '80%', right: '5%' }}>
-                {/* {r.createdAt.toString().slice(0, 24)} */}
                 {r.createdAt}
               </p>
             </ReviewBox>

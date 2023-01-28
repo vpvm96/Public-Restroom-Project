@@ -50,7 +50,7 @@ function LoginModal({ open, onClose, setLoginModalopen }: any) {
         <InputContent className="content">
           <Input
             onChange={findPasswordfnc}
-            placeholder="이메일을 입력하세요"
+            placeholder="이메일을 입력해 주세요."
             className="EmailSubmit"
           ></Input>
         </InputContent>
@@ -90,7 +90,7 @@ const ModalContainer = styled.div`
   top: 40%;
   display: flex;
   background-color: white;
-  box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
   border-radius: 20px;
 `;
 
@@ -99,6 +99,7 @@ const CloseBtn = styled.p`
   position: absolute;
   top: 5px;
   right: 15px;
+  cursor: pointer;
 `;
 
 // 인풋바깥 테두리

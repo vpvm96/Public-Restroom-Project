@@ -122,7 +122,7 @@ const SignUpPage = () => {
             (error =
               'FirebaseError: Firebase: Error (auth/email-already-in-use).')
           ) {
-            alert('중복된 이메일 입니다 다시 확인해 주세요');
+            alert('중복된 이메일 입니다. 새로운 이메일 주소를 입력해 주세요.');
           }
         });
     } else if (confirmPwd !== password) {
